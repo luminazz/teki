@@ -1,12 +1,12 @@
 {
-	"providers": [
-		"dist/providers/cineb.js",
-		"dist/providers/fmovies_a.js",
-		"dist/providers/vumoo.js",
-		"dist/providers/fsapi.js",
-		"dist/providers/fmovies.js",
-		"dist/providers/lookmovie.js",
-		"dist/providers/bflix.js",
-		"dist/providers/membed.js"
-	]
+  "providers": [
+    "dist/providers/cineb.js",
+    "dist/providers/fmovies_a.js",
+    "dist/providers/vumoo.js",
+    "dist/providers/fsapi.js",
+    "dist/providers/fmovies.js",
+    "dist/providers/lookmovie.js",
+    "dist/providers/bflix.js",
+    "dist/providers/membed.js"
+  ]
 }
