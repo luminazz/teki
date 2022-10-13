@@ -36,255 +36,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, userAgent, urlSearch, parseSearch, LINK_DETAIL, parseTvDetail_1, hasLinkTv_1;
+    var PROVIDER, DOMAIN, userAgent, urlSearch, LINK_DETAIL, parseTvDetail_1, hasLinkTv_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 PROVIDER = 'M4UFREE';
-                DOMAIN = "https://m4ufree.tv";
+                DOMAIN = "https://ww1.m4ufree.tv";
                 userAgent = libs.request_getRandomUserAgent();
-                urlSearch = DOMAIN + "/search/" + libs.url_slug_search(movieInfo, '-', true, 2) + ".html";
+                urlSearch = "".concat(DOMAIN, "/search/").concat(libs.url_slug_search(movieInfo, '-', true, 2), ".html");
                 libs.log({ urlSearch: urlSearch }, PROVIDER, 'URL SEARCH');
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 1:
-                parseSearch = _a.sent();
-                if (!!parseSearch) return [3, 3];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 2:
-                parseSearch = _a.sent();
-                _a.label = 3;
-            case 3:
-                if (!!parseSearch) return [3, 5];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 4:
-                parseSearch = _a.sent();
-                _a.label = 5;
-            case 5:
-                if (!!parseSearch) return [3, 7];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 6:
-                parseSearch = _a.sent();
-                _a.label = 7;
-            case 7:
-                if (!!parseSearch) return [3, 9];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 8:
-                parseSearch = _a.sent();
-                _a.label = 9;
-            case 9:
-                if (!!parseSearch) return [3, 11];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 10:
-                parseSearch = _a.sent();
-                _a.label = 11;
-            case 11:
-                if (!!parseSearch) return [3, 13];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 12:
-                parseSearch = _a.sent();
-                _a.label = 13;
-            case 13:
-                if (!!parseSearch) return [3, 15];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 14:
-                parseSearch = _a.sent();
-                _a.label = 15;
-            case 15:
-                if (!!parseSearch) return [3, 17];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 16:
-                parseSearch = _a.sent();
-                _a.label = 17;
-            case 17:
-                if (!!parseSearch) return [3, 19];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 18:
-                parseSearch = _a.sent();
-                _a.label = 19;
-            case 19:
-                if (!!parseSearch) return [3, 21];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 20:
-                parseSearch = _a.sent();
-                _a.label = 21;
-            case 21:
-                if (!!parseSearch) return [3, 23];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 22:
-                parseSearch = _a.sent();
-                _a.label = 23;
-            case 23:
-                if (!!parseSearch) return [3, 25];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 24:
-                parseSearch = _a.sent();
-                _a.label = 25;
-            case 25:
-                if (!!parseSearch) return [3, 27];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 26:
-                parseSearch = _a.sent();
-                _a.label = 27;
-            case 27:
-                if (!!parseSearch) return [3, 29];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 28:
-                parseSearch = _a.sent();
-                _a.label = 29;
-            case 29:
-                if (!!parseSearch) return [3, 31];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 30:
-                parseSearch = _a.sent();
-                _a.label = 31;
-            case 31:
-                if (!!parseSearch) return [3, 33];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 32:
-                parseSearch = _a.sent();
-                _a.label = 33;
-            case 33:
-                if (!!parseSearch) return [3, 35];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 34:
-                parseSearch = _a.sent();
-                _a.label = 35;
-            case 35:
-                if (!!parseSearch) return [3, 37];
-                return [4, libs.request_get(urlSearch, {
-                        'user-agent': userAgent,
-                        origin: DOMAIN,
-                        'x-requested-with': 'XMLHttpRequest',
-                        'te': 'trailers',
-                    }, true)];
-            case 36:
-                parseSearch = _a.sent();
-                _a.label = 37;
-            case 37:
-                LINK_DETAIL = "";
-                libs.log({ length: parseSearch("div.imagecover").length, urlSearch: urlSearch }, PROVIDER, 'SEARCH');
-                parseSearch("div.imagecover").each(function (keySearch, itemSearch) {
-                    var title = parseSearch(itemSearch).find("a").attr("title");
-                    if (title) {
-                        var year = title.match(/\( *([0-9]+)/i);
-                        year = year ? year[1] : 0;
-                        title = title.replace(/\( *[0-9]+ *\)/i, "").trim();
-                        var href = parseSearch(itemSearch).find("a").attr("href");
-                        var parseYear = parseSearch(itemSearch).find('.jtip-top .jt-info').last().text();
-                        if (parseYear) {
-                            parseYear = parseYear.match(/([0-9]+)/i);
-                            parseYear = parseYear ? parseYear[1] : 0;
-                        }
-                        else {
-                            parseYear = 0;
-                        }
-                        if (parseYear > 0 && !year) {
-                            year = parseYear;
-                        }
-                        console.log({ title: title, year: year, href: href, matching: libs.string_matching_title(movieInfo, title, true, '') }, "--------- M4uFREE SEARCH INFO ---------");
-                        if (libs.string_matching_title(movieInfo, title, true, '') && year == movieInfo.year && !LINK_DETAIL) {
-                            LINK_DETAIL = href;
-                        }
-                    }
-                });
-                libs.log(LINK_DETAIL, PROVIDER, 'LINK DETAIL');
-                if (!LINK_DETAIL) {
-                    return [2];
-                }
-                LINK_DETAIL = DOMAIN + "/" + LINK_DETAIL;
-                if (!(movieInfo.type == "tv")) return [3, 39];
+                LINK_DETAIL = "https://ww1.m4ufree.tv/watch-yibaa-thor-love-and-thunder-2022-movie-online-free-m4ufree.html";
+                if (!(movieInfo.type == "tv")) return [3, 2];
                 return [4, libs.request_get(LINK_DETAIL, {}, true)];
-            case 38:
+            case 1:
                 parseTvDetail_1 = _a.sent();
                 hasLinkTv_1 = false;
                 parseTvDetail_1('.episode').each(function (key, item) {
@@ -295,7 +59,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     var rowname = parseTvDetail_1(item).attr('rowname');
                     libs.log({ id: id, epiLInk: epiLInk, season: season, episode: episode, rowname: rowname }, PROVIDER, 'TVSHOW MATCHING');
                     if (season == movieInfo.season && episode == movieInfo.episode) {
-                        LINK_DETAIL = DOMAIN + "/tvshow/" + rowname + "-season-" + season + "-episode-" + episode + "-" + epiLInk + ".html";
+                        LINK_DETAIL = "".concat(DOMAIN, "/tvshow/").concat(rowname, "-season-").concat(season, "-episode-").concat(episode, "-").concat(epiLInk, ".html");
                         libs.log(LINK_DETAIL, PROVIDER, 'LINK TV DETAIL');
                         hasLinkTv_1 = true;
                     }
@@ -303,8 +67,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!hasLinkTv_1) {
                     return [2];
                 }
-                _a.label = 39;
-            case 39:
+                _a.label = 2;
+            case 2:
                 callback({
                     callback: {
                         provider: PROVIDER,

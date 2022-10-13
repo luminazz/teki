@@ -23,7 +23,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 case 7: op = _.ops.pop(); _.trys.pop(); continue;
                 default:
                     if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
                     if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
                     if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
                     if (t[2]) _.ops.pop();
@@ -35,58 +35,32 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, hrefs, _i, hrefs_1, hrefItem, dataEmbed, redirectUrl;
+hosts["pelisplay"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var DOMAIN, HOST, headers, htmlDetail, sourcesUrl, source1, resultData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                PROVIDER = 'HFSAPI';
-                DOMAIN = "https://www.fsapi.xyz";
-                urlSearch = '';
-                if (movieInfo.type == 'tv') {
-                    urlSearch = DOMAIN + "/tv-imdb/" + movieInfo.imdb_id + "-" + movieInfo.season + "-" + movieInfo.episode;
-                }
-                else {
-                    urlSearch = DOMAIN + "/movie/" + movieInfo.imdb_id;
-                }
-                libs.log({ urlSearch: urlSearch }, PROVIDER, 'URL SEARCH');
-                return [4, libs.request_get(urlSearch, {}, true)];
+                DOMAIN = 'https://pelisplay.cc';
+                HOST = 'pelisplay';
+                headers = {
+                    'content-type': 'application/json;charset=UTF-8'
+                };
+                return [4, libs.request_get(url, {
+                        Referer: url
+                    }, false)];
             case 1:
-                parseSearch = _a.sent();
-                hrefs = [];
-                libs.log({ length: parseSearch('.play-video').length }, PROVIDER, 'PARSE SEARCH');
-                parseSearch('.play-video').each(function (key, item) {
-                    var href = parseSearch(item).attr('href');
-                    if (href) {
-                        hrefs.push(href);
-                    }
-                });
-                libs.log({ hrefs: hrefs }, PROVIDER, 'HREF');
-                _i = 0, hrefs_1 = hrefs;
-                _a.label = 2;
-            case 2:
-                if (!(_i < hrefs_1.length)) return [3, 6];
-                hrefItem = hrefs_1[_i];
-                return [4, fetch(hrefItem, {
-                        redirect: 'manual',
-                        headers: {},
-                        method: "HEAD",
-                    })];
-            case 3:
-                dataEmbed = _a.sent();
-                libs.log({ dataEmbed: dataEmbed }, PROVIDER, 'DATA EMBED');
-                redirectUrl = dataEmbed.url;
-                if (!redirectUrl) {
-                    return [3, 5];
+                htmlDetail = _a.sent();
+                sourcesUrl = htmlDetail.match(/sources *\: *\[ *\{ *file *\: *\'([^\']+)/i);
+                source1 = sourcesUrl ? sourcesUrl[1] : '';
+                if (!source1) {
+                    return [2];
                 }
-                return [4, libs.embed_redirect(redirectUrl, '', movieInfo, PROVIDER, callback, undefined, [])];
-            case 4:
-                _a.sent();
-                _a.label = 5;
-            case 5:
-                _i++;
-                return [3, 2];
-            case 6: return [2, true];
+                libs.log({ source1: source1, sourcesUrl: sourcesUrl }, provider, 'SOURCE');
+                return [4, axiosS.get(source1)];
+            case 2:
+                resultData = _a.sent();
+                libs.embed_callback(source1, provider, HOST, 'Hls', callback, 1, [], [], {});
+                return [2];
         }
     });
 }); };

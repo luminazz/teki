@@ -57,7 +57,7 @@ callbacksEmbed["lookmovie"] = function (dataCallback, provider, host, callback, 
                     if (!item.file) {
                         continue;
                     }
-                    tracks.push({ file: "" + metadata.DOMAIN + item.file,
+                    tracks.push({ file: "".concat(metadata.DOMAIN).concat(item.file),
                         label: item.language,
                         kind: item.kind });
                 }

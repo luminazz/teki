@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,27 +45,93 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var _this = this;
 hosts["rabbitstream"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, headers;
-    return __generator(this, function (_a) {
-        libs.log({ provider: provider }, provider, 'PROVIDER RABBIT');
-        DOMAIN = 'https://rabbitstream.net';
-        HOST = 'Rabbitstream';
-        headers = {
-            "referer": provider == 'ETOWEMBED' ? 'https://www.2embed.ru/' : "https://fmovies.ps",
-            "user-agent": libs.request_getRandomUserAgent(),
-        };
-        callback({
-            callback: {
-                provider: provider,
-                host: HOST,
-                url: url,
-                headers: headers,
-                callback: callback,
-                beforeLoadScript: "var open = XMLHttpRequest.prototype.open;\n            XMLHttpRequest.prototype.open = function() {\n                this.addEventListener(\"load\", function() {\n                    var message = {\"status\" : this.status, \"responseURL\" : this.responseURL, \"responseText\": this.responseText, \"response\": this.response}\n                    \n                    window.ReactNativeWebView.postMessage(JSON.stringify(message));\n                });\n                open.apply(this, arguments);\n            };"
-            }
-        });
-        return [2];
+    var DOMAIN, HOST, headers, id, urlDirect, parseDirect, source1, source2, source3, tracks, rank, _i, source1_1, item, directSizes, patternSize, directQuality, _a, patternSize_1, patternItem, sizeQuality;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                libs.log({ provider: provider }, provider, 'PROVIDER');
+                DOMAIN = 'https://rabbitstream.net';
+                HOST = 'Rabbitstream';
+                headers = {
+                    'referer': 'https://fmovies.ps'
+                };
+                id = url.match(/embed\-[0-9]+\/([A-z0-9]+)/);
+                id = id ? id[1] : '';
+                libs.log({
+                    id: id
+                }, HOST, 'ID');
+                if (!id) {
+                    return [2];
+                }
+                urlDirect = "".concat(DOMAIN, "/ajax/embed-4/getSources?id=").concat(id);
+                return [4, libs.request_get(urlDirect, __assign(__assign({}, headers), { 'x-requested-with': 'XMLHttpRequest' }))];
+            case 1:
+                parseDirect = _b.sent();
+                libs.log({
+                    parseDirect: parseDirect
+                }, HOST, "PARSE DIRECT");
+                return [4, libs.embed_fmovies_id(parseDirect['sources'], headers)];
+            case 2:
+                source1 = (_b.sent()) || [];
+                libs.log({ source1: source1, tracks: tracks }, HOST, 'SOURCES_1');
+                return [4, libs.embed_fmovies_id(parseDirect['sourcesBackup'], headers)];
+            case 3:
+                source2 = (_b.sent()) || [];
+                source3 = __spreadArray(__spreadArray([], source1, true), source2, true);
+                tracks = parseDirect['tracks'] || [];
+                libs.log({ source3: source3, tracks: tracks }, HOST, 'SOURCES');
+                rank = 0;
+                _i = 0, source1_1 = source1;
+                _b.label = 4;
+            case 4:
+                if (!(_i < source1_1.length)) return [3, 7];
+                item = source1_1[_i];
+                if (!item.file) {
+                    return [3, 6];
+                }
+                if (item.file.indexOf('thedaywestream') !== -1) {
+                    return [3, 6];
+                }
+                if (item.file.indexOf('birdsystem') !== -1) {
+                    return [3, 6];
+                }
+                return [4, libs.request_get(item.file, {})];
+            case 5:
+                directSizes = _b.sent();
+                patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
+                if (!patternSize) {
+                    libs.embed_callback(item.file, provider, host, item.type, callback, ++rank, tracks);
+                    return [3, 6];
+                }
+                directQuality = [];
+                libs.log({ patternSize: patternSize }, provider, 'PATTERN SIZE');
+                for (_a = 0, patternSize_1 = patternSize; _a < patternSize_1.length; _a++) {
+                    patternItem = patternSize_1[_a];
+                    sizeQuality = patternItem.match(/\/([0-9]+)\//i);
+                    sizeQuality = sizeQuality ? sizeQuality[1] : 'HD';
+                    directQuality.push({
+                        file: patternItem,
+                        quality: sizeQuality
+                    });
+                }
+                libs.log({ directQuality: directQuality }, provider, 'DIRECT QUALITY');
+                libs.embed_callback(item.file, provider, HOST, 'Hls', callback, ++rank, tracks, directQuality);
+                _b.label = 6;
+            case 6:
+                _i++;
+                return [3, 4];
+            case 7: return [2];
+        }
     });
 }); };

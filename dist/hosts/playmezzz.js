@@ -50,7 +50,7 @@ hosts["playmezzz"] = function (url, movieInfo, provider, config, callback) { ret
                 if (!movieId) {
                     return [2];
                 }
-                domainGetDirect = DOMAIN + "/api/video/get";
+                domainGetDirect = "".concat(DOMAIN, "/api/video/get");
                 body = {
                     id: movieId
                 };

@@ -42,7 +42,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 0:
                 PROVIDER = 'FMOVIES';
                 DOMAIN = "https://fmovies.ps";
-                urlSearch = DOMAIN + "/search/" + libs.url_slug_search(movieInfo);
+                urlSearch = "".concat(DOMAIN, "/search/").concat(libs.url_slug_search(movieInfo));
                 return [4, libs.request_get(urlSearch, {}, true)];
             case 1:
                 parseSearch = _a.sent();
@@ -57,14 +57,20 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     if (title && href && !LINK_DETAIL && type) {
                         if (libs.string_matching_title(movieInfo, title)) {
                             if (movieInfo.type == 'tv' && type.toLowerCase() == 'tv') {
-                                LINK_DETAIL = "" + DOMAIN + href;
+                                LINK_DETAIL = "".concat(DOMAIN).concat(href);
                             }
                             if (movieInfo.type == 'movie' && type.toLowerCase() == 'movie' && movieInfo.year == year) {
-                                LINK_DETAIL = "" + DOMAIN + href;
+                                LINK_DETAIL = "".concat(DOMAIN).concat(href);
                             }
                         }
                     }
                 });
+                if (movieInfo.title == 'Wire Room' && movieInfo.type === 'movie' && movieInfo.year == 2022) {
+                    LINK_DETAIL = 'https://fmovies.ps/movie/watch-wire-room-online-87096';
+                }
+                else if (movieInfo.title == 'The Lord of the Rings: The Rings of Power' && movieInfo.type == 'tv') {
+                    LINK_DETAIL = 'https://fmovies.ps/tv/watch-the-lord-of-the-rings-the-rings-of-power-online-87087';
+                }
                 libs.log(LINK_DETAIL, PROVIDER, "LINK DETAIL");
                 if (!LINK_DETAIL) {
                     return [2];
@@ -77,7 +83,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 serverIds = [];
                 if (!(movieInfo.type == 'movie')) return [3, 3];
-                apiUrlEmbed = DOMAIN + "/ajax/movie/episodes/" + filmId;
+                apiUrlEmbed = "".concat(DOMAIN, "/ajax/movie/episodes/").concat(filmId);
                 return [4, libs.request_get(apiUrlEmbed, {}, true)];
             case 2:
                 parseEmbedServer_1 = _a.sent();
@@ -91,7 +97,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 return [3, 7];
             case 3:
                 if (!(movieInfo.type == 'tv')) return [3, 7];
-                apiUrlGetSeason = DOMAIN + "/ajax/v2/tv/seasons/" + filmId;
+                apiUrlGetSeason = "".concat(DOMAIN, "/ajax/v2/tv/seasons/").concat(filmId);
                 return [4, libs.request_get(apiUrlGetSeason, {}, true)];
             case 4:
                 parseGetSeason_1 = _a.sent();
@@ -112,7 +118,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!seasonId_1) {
                     return [2];
                 }
-                apiUrlGetEpisode = DOMAIN + "/ajax/v2/season/episodes/" + seasonId_1;
+                apiUrlGetEpisode = "".concat(DOMAIN, "/ajax/v2/season/episodes/").concat(seasonId_1);
                 episodeId_1 = 0;
                 return [4, libs.request_get(apiUrlGetEpisode, {}, true)];
             case 5:
@@ -135,7 +141,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!episodeId_1) {
                     return [2];
                 }
-                urlGetEmbedTv = DOMAIN + "/ajax/v2/episode/servers/" + episodeId_1;
+                urlGetEmbedTv = "".concat(DOMAIN, "/ajax/v2/episode/servers/").concat(episodeId_1);
                 return [4, libs.request_get(urlGetEmbedTv, {}, true)];
             case 6:
                 parseEmbedTv_1 = _a.sent();
@@ -149,7 +155,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 _a.label = 7;
             case 7:
                 libs.log({ serverIds: serverIds }, PROVIDER, 'SERVER IDS');
-                apiGetLinkEmbed = DOMAIN + "/ajax/get_link/";
+                apiGetLinkEmbed = "".concat(DOMAIN, "/ajax/get_link/");
                 _i = 0, serverIds_1 = serverIds;
                 _a.label = 8;
             case 8:

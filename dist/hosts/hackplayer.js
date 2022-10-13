@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,37 +46,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["streamtape"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, headers, htmlDetail, parseHtmlDetail, videoDataUri;
+hosts["hackplayer"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var DOMAIN, HOST, headers, parseHackPlayer, hackId, hackToken, requestOptions, requestData, id, urlDirect, directData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                DOMAIN = 'https://streamtape.com';
-                HOST = 'Streamtape';
+                DOMAIN = 'https://hackplayer.org';
+                HOST = 'HACKPLAYER';
                 headers = {
-                    "referer": url,
-                    "user-agent": libs.request_getRandomUserAgent(),
+                    'content-type': 'application/json;charset=UTF-8'
                 };
-                return [4, libs.request_get(url, headers, false)];
+                return [4, libs.request_get(url, {}, true)];
             case 1:
-                htmlDetail = _a.sent();
-                parseHtmlDetail = htmlDetail.match(/'robotlink'\)\.innerHTML = '(.+?)'\+ \('(.+?)'\)/i);
-                libs.log({ parseHtmlDetail: parseHtmlDetail }, provider, 'parseHtmlDetail');
-                if (!parseHtmlDetail) {
-                    return [2];
-                }
-                parseHtmlDetail = "https:".concat(parseHtmlDetail[1]).concat(parseHtmlDetail[2].substring(3));
-                videoDataUri = parseHtmlDetail;
-                if (!videoDataUri) {
-                    return [2];
-                }
-                libs.log({ videoDataUri: videoDataUri }, provider, 'videoDataUri');
-                if (!videoDataUri) return [3, 3];
-                return [4, libs.embed_redirect(videoDataUri, 'hls', movieInfo, provider, callback, undefined, [])];
+                parseHackPlayer = _a.sent();
+                hackId = parseHackPlayer('input[name="id"]').attr('value');
+                hackToken = parseHackPlayer('input[name="token"]').attr('value');
+                libs.log({
+                    hackId: hackId,
+                    hackToken: hackToken
+                }, provider, "HACK_DATA");
+                requestOptions = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: qs.stringify({ id: hackId, token: hackToken })
+                };
+                return [4, fetch("https://hackplayer.org/r.php", __assign(__assign({}, requestOptions), { redirect: 'manual' }))];
             case 2:
-                _a.sent();
-                _a.label = 3;
-            case 3: return [2];
+                requestData = _a.sent();
+                libs.log({
+                    requestData: requestData
+                }, provider, 'HACK_REQUEST_DATA');
+                id = requestData.url.match(/\?t\=([^\&]+)/i);
+                id = id ? id[1] : '';
+                libs.log({
+                    id: id
+                }, provider, 'HACK_ID');
+                if (!id) {
+                    return [2];
+                }
+                urlDirect = "https://cinestart.net/vr.php?v=".concat(id);
+                libs.log({
+                    urlDirect: urlDirect
+                }, provider, 'urlDirect');
+                return [4, libs.request_get(urlDirect, {})];
+            case 3:
+                directData = _a.sent();
+                libs.log({
+                    directData: directData
+                }, provider, 'directData');
+                if (!directData.file) {
+                    return [2];
+                }
+                libs.embed_callback(directData.file, provider, HOST, 'Hls', callback, 1);
+                return [2];
         }
     });
 }); };

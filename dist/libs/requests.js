@@ -286,6 +286,7 @@ libs.request_post = function (url, headers, body, isCheerio, isUserAgentDefault)
                     }
                     return [4, axiosS.post(url, body, {
                             headers: defaultHeaders,
+                            responseType: 'json'
                         })];
                 case 1:
                     requestData = _a.sent();

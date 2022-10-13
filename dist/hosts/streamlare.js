@@ -36,19 +36,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 hosts["streamlare"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, headers, urlDirect, id, body, result, directUrls, directQuality, directItem, label, directUrl;
+    var DOMAIN, HOST, headers, urlDirect, id, body, result, directUrls, directQuality, playlistDirect, patternSize, i, directUrl, size;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 libs.log({ provider: provider }, provider, 'PROVIDER RABBIT');
-                DOMAIN = 'https://slwatch.co';
+                DOMAIN = 'https://sltube.org';
                 HOST = 'Streamlare';
                 headers = {
                     "referer": url,
                     "user-agent": libs.request_getRandomUserAgent(),
                     "content-type": 'application/json;charset=UTF-8'
                 };
-                urlDirect = url.replace('streamlare.com', 'slwatch.co');
+                urlDirect = url.replace('streamlare.com', 'sltube.org');
                 id = url.match(/\/e\/(.+)/i);
                 id = id ? id[1] : '';
                 if (!id) {
@@ -58,7 +58,7 @@ hosts["streamlare"] = function (url, movieInfo, provider, config, callback) { re
                 body = {
                     id: id
                 };
-                return [4, libs.request_post(DOMAIN + "/api/video/stream/get", headers, body)];
+                return [4, libs.request_post("".concat(DOMAIN, "/api/video/stream/get"), headers, body)];
             case 1:
                 result = _a.sent();
                 if (!result.status || result.status != 'success') {
@@ -69,21 +69,51 @@ hosts["streamlare"] = function (url, movieInfo, provider, config, callback) { re
                 }, HOST, 'result api');
                 directUrls = result.result || {};
                 directQuality = [];
-                for (directItem in directUrls) {
-                    label = directUrls[directItem].label = 'Original' ? 720 : directUrls[directItem].label.replace('p', '') || '720';
-                    directUrl = directUrls[directItem].file;
-                    directQuality.push({
-                        file: directUrl,
-                        quality: Number(label),
-                    });
-                }
                 libs.log({
-                    directQuality: directQuality,
-                }, HOST, 'directQuality');
-                directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
-                directQuality = _.uniqBy(directQuality, 'quality');
-                if (directQuality.length > 0) {
-                    libs.embed_callback(directQuality[0].file, provider, HOST, 'Hls', callback, 1, [], directQuality);
+                    directUrls: directUrls.file
+                }, HOST, 'DIRECT URL');
+                return [4, libs.request_get(directUrls.file)];
+            case 2:
+                playlistDirect = _a.sent();
+                libs.log({ playlistDirect: playlistDirect }, HOST, 'PLAYLIST DIRECT');
+                try {
+                    patternSize = playlistDirect.split('\n');
+                    libs.log({ patternSize: patternSize }, HOST, 'patternSize');
+                    for (i = 0; i < patternSize.length; i++) {
+                        if (patternSize[i].indexOf('.m3u8') == -1) {
+                            continue;
+                        }
+                        directUrl = "".concat(directUrls.file.replace('master.m3u8', patternSize[i]));
+                        size = patternSize[i - 1].match(/RESOLUTION\=([0-9]+)/);
+                        size = size ? size[1] : '852';
+                        if (size == '640') {
+                            size = 480;
+                        }
+                        else if (size == '852') {
+                            size = 720;
+                        }
+                        else if (size == '1280') {
+                            size = 1080;
+                        }
+                        else {
+                            size = 720;
+                        }
+                        directQuality.push({
+                            file: directUrl,
+                            quality: size,
+                        });
+                    }
+                    libs.log({
+                        directQuality: directQuality,
+                    }, HOST, 'directQuality');
+                    directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
+                    directQuality = _.uniqBy(directQuality, 'quality');
+                    if (directQuality.length > 0) {
+                        libs.embed_callback(directQuality[0].file, provider, HOST, 'Hls', callback, 1, [], directQuality);
+                    }
+                }
+                catch (e) {
+                    libs.log({ e: e }, HOST, 'ERROR PARSE');
                 }
                 return [2];
         }

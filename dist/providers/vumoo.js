@@ -44,10 +44,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 DOMAIN = "https://embed.meomeo.pw";
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
-                    urlSearch = DOMAIN + "/fastmedia/" + movieInfo.imdb_id + "-" + movieInfo.season + "-" + movieInfo.episode;
+                    urlSearch = "".concat(DOMAIN, "/fastmedia/").concat(movieInfo.imdb_id, "-").concat(movieInfo.season, "-").concat(movieInfo.episode);
                 }
                 else {
-                    urlSearch = DOMAIN + "/fastmedia/" + movieInfo.imdb_id;
+                    urlSearch = "".concat(DOMAIN, "/fastmedia/").concat(movieInfo.imdb_id);
                 }
                 libs.log({ urlSearch: urlSearch }, PROVIDER, 'URL SEARCH');
                 return [4, libs.request_get(urlSearch, {
@@ -62,10 +62,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 _a.label = 2;
             case 2:
                 if (!(sourceItem < sources.length)) return [3, 7];
-                source = sources[sourceItem] ? (sources[sourceItem] + ";").replace('});', '') : '[]';
+                source = sources[sourceItem] ? "".concat(sources[sourceItem], ";").replace('});', '') : '[]';
                 libs.log({ source: source }, PROVIDER, 'SOURCE');
                 parse = [];
-                source = "parse = " + source;
+                source = "parse = ".concat(source);
                 eval(source);
                 libs.log(parse, PROVIDER, 'SOURCES');
                 length_1 = parse.length;
@@ -75,7 +75,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!(i < length_1)) return [3, 6];
                 file = parse[i].file;
                 if (file && _.startsWith(file, '/')) {
-                    file = "https:" + file;
+                    file = "https:".concat(file);
                 }
                 libs.log({ file: file }, PROVIDER, 'FILE');
                 if (!file) return [3, 5];

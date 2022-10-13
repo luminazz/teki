@@ -84,7 +84,7 @@ hosts["vidembed"] = function (url, movieInfo, provider, config, callback) { retu
                     token: token,
                     id: id.toString(),
                 }, provider, 'IDS');
-                urlEmbed = DOMAIN + "/encrypt-ajax.php?id=" + id.toString();
+                urlEmbed = "".concat(DOMAIN, "/encrypt-ajax.php?id=").concat(id.toString());
                 return [4, libs.request_get(urlEmbed, {
                         responseType: 'json',
                         'x-requested-with': 'XMLHttpRequest'

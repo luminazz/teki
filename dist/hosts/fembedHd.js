@@ -35,42 +35,73 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["dood"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, headers, htmlDetail, md5Token, urlEmbed, dataEmbed, md5LastToken;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+hosts["fembed-hd"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var DOMAIN, HOST, headers, urlReplace, headers, body, parseDetail, directQuality, _i, _a, embedItem, requestData, errorFvs_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                DOMAIN = 'https://dood.ws';
-                HOST = 'DOOD';
+                DOMAIN = 'https://fembed-hd.com';
+                HOST = 'Fembed-hd';
                 headers = {
                     'content-type': 'application/json;charset=UTF-8'
                 };
-                return [4, libs.request_get(url, {
-                        Referer: url
-                    }, false)];
+                urlReplace = url.replace("".concat(DOMAIN, "/v/"), "".concat(DOMAIN, "/api/source/"));
+                headers = {
+                    'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                };
+                body = "r=&d=fembed-hd.com";
+                return [4, libs.request_post(urlReplace, headers, body)];
             case 1:
-                htmlDetail = _a.sent();
-                md5Token = htmlDetail.match(/(\/pass_md5\/[^']*)/i);
-                md5Token = md5Token ? md5Token[1] : '';
-                libs.log({ md5Token: md5Token, url: url }, provider, 'md5 token');
-                if (!md5Token) {
+                parseDetail = _b.sent();
+                libs.log({
+                    parseDetail: parseDetail.data
+                }, provider, 'PARSE DETAIL FMMBED');
+                if (!parseDetail.data) {
                     return [2];
                 }
-                urlEmbed = "".concat(DOMAIN).concat(md5Token);
-                return [4, libs.request_get(urlEmbed, {
-                        Referer: url
-                    })];
+                directQuality = [];
+                _i = 0, _a = parseDetail.data;
+                _b.label = 2;
             case 2:
-                dataEmbed = _a.sent();
-                md5LastToken = md5Token.split('/');
-                dataEmbed = "".concat(dataEmbed, "zUEJeL3mUN?token=").concat(md5LastToken[md5LastToken.length - 1]);
-                libs.log({ urlEmbed: urlEmbed, dataEmbed: dataEmbed }, provider, 'DOOD_EMBED');
-                if (!_.startsWith(dataEmbed, 'https')) {
-                    return [2];
+                if (!(_i < _a.length)) return [3, 7];
+                embedItem = _a[_i];
+                _b.label = 3;
+            case 3:
+                _b.trys.push([3, 5, , 6]);
+                libs.log({
+                    embedItem: embedItem,
+                }, provider, 'EMBED ITEM');
+                return [4, fetch(embedItem.file, {
+                        redirect: 'manual',
+                        method: 'HEAD'
+                    })];
+            case 4:
+                requestData = _b.sent();
+                if (requestData.url) {
+                    directQuality.push({
+                        file: requestData.url,
+                        quality: embedItem.label.replace('p', '')
+                    });
                 }
-                libs.embed_callback(dataEmbed, provider, HOST, 'Hls', callback, 1, [], [], {
-                    Referer: DOMAIN,
-                });
+                libs.log({
+                    requestData: requestData.url,
+                }, provider, 'requestData');
+                return [3, 6];
+            case 5:
+                errorFvs_1 = _b.sent();
+                libs.log({ errorFvs: errorFvs_1 }, provider, 'ERROR_FVS');
+                return [3, 6];
+            case 6:
+                _i++;
+                return [3, 2];
+            case 7:
+                if (directQuality.length) {
+                    directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
+                    libs.log({
+                        directQuality: directQuality
+                    }, provider, 'DIRECT URL');
+                    libs.embed_callback(directQuality[0].file, provider, HOST, 'Hls', callback, 1, [], directQuality);
+                }
                 return [2];
         }
     });

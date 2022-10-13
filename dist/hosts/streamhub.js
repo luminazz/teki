@@ -23,7 +23,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 case 7: op = _.ops.pop(); _.trys.pop(); continue;
                 default:
                     if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
                     if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
                     if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
                     if (t[2]) _.ops.pop();
@@ -35,58 +35,43 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, hrefs, _i, hrefs_1, hrefItem, dataEmbed, redirectUrl;
+hosts["streamhub"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var DOMAIN, HOST, headers, parseEmbed, scriptEval, unpack, source;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                PROVIDER = 'HFSAPI';
-                DOMAIN = "https://www.fsapi.xyz";
-                urlSearch = '';
-                if (movieInfo.type == 'tv') {
-                    urlSearch = DOMAIN + "/tv-imdb/" + movieInfo.imdb_id + "-" + movieInfo.season + "-" + movieInfo.episode;
-                }
-                else {
-                    urlSearch = DOMAIN + "/movie/" + movieInfo.imdb_id;
-                }
-                libs.log({ urlSearch: urlSearch }, PROVIDER, 'URL SEARCH');
-                return [4, libs.request_get(urlSearch, {}, true)];
+                DOMAIN = 'https://streamhub.to/';
+                HOST = 'STREAMHUB';
+                headers = {
+                    'content-type': 'application/json;charset=UTF-8'
+                };
+                return [4, libs.request_get(url, {}, true)];
             case 1:
-                parseSearch = _a.sent();
-                hrefs = [];
-                libs.log({ length: parseSearch('.play-video').length }, PROVIDER, 'PARSE SEARCH');
-                parseSearch('.play-video').each(function (key, item) {
-                    var href = parseSearch(item).attr('href');
-                    if (href) {
-                        hrefs.push(href);
+                parseEmbed = _a.sent();
+                scriptEval = '';
+                parseEmbed('script').each(function (key, item) {
+                    if (parseEmbed(item).text().indexOf('eval(') != -1) {
+                        scriptEval = parseEmbed(item).text();
                     }
                 });
-                libs.log({ hrefs: hrefs }, PROVIDER, 'HREF');
-                _i = 0, hrefs_1 = hrefs;
-                _a.label = 2;
-            case 2:
-                if (!(_i < hrefs_1.length)) return [3, 6];
-                hrefItem = hrefs_1[_i];
-                return [4, fetch(hrefItem, {
-                        redirect: 'manual',
-                        headers: {},
-                        method: "HEAD",
-                    })];
-            case 3:
-                dataEmbed = _a.sent();
-                libs.log({ dataEmbed: dataEmbed }, PROVIDER, 'DATA EMBED');
-                redirectUrl = dataEmbed.url;
-                if (!redirectUrl) {
-                    return [3, 5];
+                if (!scriptEval) {
+                    return [2];
                 }
-                return [4, libs.embed_redirect(redirectUrl, '', movieInfo, PROVIDER, callback, undefined, [])];
-            case 4:
-                _a.sent();
-                _a.label = 5;
-            case 5:
-                _i++;
-                return [3, 2];
-            case 6: return [2, true];
+                unpack = libs.string_unpack(scriptEval);
+                libs.log({
+                    unpack: unpack,
+                }, provider, 'UNPACK REPLACE');
+                source = unpack.match(/src *\: *\"([^\"]+)/i);
+                source = source ? source[1] : '';
+                libs.log({
+                    unpack: unpack,
+                    source: source
+                }, provider, 'UNPACK');
+                if (!source) {
+                    return [2];
+                }
+                libs.embed_callback(source, provider, HOST, 'Hls', callback);
+                return [2];
         }
     });
 }); };

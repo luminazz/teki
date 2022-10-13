@@ -46,8 +46,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 PROXY = "https://cors-anywhere.herokuapp.com/";
                 userAgent = libs.request_getRandomUserAgent();
                 LINK_DETAIL = '';
-                urlSearchMovie = DOMAIN + "/movies/search/?q=" + libs.url_slug_search(movieInfo, '%20');
-                urlSearchTvshow = DOMAIN + "/shows/search/?q=" + libs.url_slug_search(movieInfo, '%20');
+                urlSearchMovie = "".concat(DOMAIN, "/movies/search/?q=").concat(libs.url_slug_search(movieInfo, '%20'));
+                urlSearchTvshow = "".concat(DOMAIN, "/shows/search/?q=").concat(libs.url_slug_search(movieInfo, '%20'));
                 parseSearch = null;
                 if (!(movieInfo.type == 'movie')) return [3, 2];
                 return [4, libs.request_get(urlSearchMovie, {}, true)];
@@ -77,7 +77,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!LINK_DETAIL) {
                     return [2];
                 }
-                LINK_DETAIL = "" + DOMAIN + LINK_DETAIL;
+                LINK_DETAIL = "".concat(DOMAIN).concat(LINK_DETAIL);
                 return [4, libs.request_get(LINK_DETAIL, {}, true)];
             case 5:
                 parseDetailMovie = _b.sent();
@@ -114,7 +114,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 for (_i = 0, _a = tvInfo.seasons; _i < _a.length; _i++) {
                     seasonItem = _a[_i];
                     if (seasonItem.season == movieInfo.season && seasonItem.episode == movieInfo.episode) {
-                        LINK_DETAIL = linkRedirect + ("#S" + movieInfo.season + "-E" + movieInfo.episode + "-" + seasonItem.id_episode);
+                        LINK_DETAIL = linkRedirect + "#S".concat(movieInfo.season, "-E").concat(movieInfo.episode, "-").concat(seasonItem.id_episode);
                         break;
                     }
                 }

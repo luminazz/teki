@@ -36,28 +36,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 hosts["mcloud"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var userAgent, DOMAIN, HOST, headers, secretKey, id, hashMovie, urlEmbed, dataEmbed, rank, _i, _a, embedItem, embedData, patternQuality, directQuality, _b, patternQuality_1, patternItem, sizeQuality, urlDirect, urlDirect;
+    var userAgent, DOMAIN, HOST, secretKey, id, hashMovie, urlEmbed, dataEmbed, rank, _i, _a, embedItem, embedData, patternQuality, directQuality, _b, patternQuality_1, patternItem, sizeQuality, urlDirect, urlDirect;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
                 userAgent = libs.request_getRandomUserAgent();
                 DOMAIN = 'https://mcloud.to';
                 HOST = 'MCloud';
-                headers = {
-                    'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
-                    'Accept': 'application/json, text/javascript, */*; q=0.01',
-                    'DNT': '1',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'sec-ch-ua-mobile': '?0',
-                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.61 Safari/537.36',
-                    'sec-ch-ua-platform': '"macOS"',
-                    'Sec-Fetch-Site': 'same-origin',
-                    'Sec-Fetch-Mode': 'cors',
-                    'Sec-Fetch-Dest': 'empty',
-                    'Referer': url,
-                    'Accept-Encoding': 'gzip, deflate, br',
-                    'Accept-Language': 'vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5'
-                };
                 secretKey = 'G1UcnhKcRLT1gcdb';
                 id = url.match(/\/e\/([^\?]+)/i);
                 id = id ? id[1] : '';
@@ -67,7 +52,7 @@ hosts["mcloud"] = function (url, movieInfo, provider, config, callback) { return
                 libs.log({ id: id }, provider, 'ID mcloud');
                 hashMovie = libs.string_join_fmovies(libs.string_encrypt_fmovies(libs.string_cipher_fmovies("yLiqSRbm5p9ZSFva", libs.string_encrypt_fmovies(id))).replace(/\//g, "_").replace(/=+$/, ""));
                 libs.log({ hashMovie: hashMovie }, provider, 'HASH mcloud');
-                urlEmbed = DOMAIN + "/mediainfo/" + hashMovie + "?key=" + secretKey;
+                urlEmbed = "".concat(DOMAIN, "/mediainfo/").concat(hashMovie, "?key=").concat(secretKey);
                 return [4, libs.request_get(urlEmbed, headers, false)];
             case 1:
                 dataEmbed = _c.sent();

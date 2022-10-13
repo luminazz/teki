@@ -276,7 +276,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 26:
                 _i++;
                 return [3, 23];
-            case 27: return [3, 44];
+            case 27:
+                LINK_DETAIL = LINK_DETAIL + "/" + movieInfo.season + "-" + movieInfo.episode;
+                return [3, 45];
             case 28:
                 movieId = LINK_DETAIL.match(/.([A-z0-9]+)$/i);
                 movieId = movieId ? movieId[1] : '';
@@ -368,7 +370,33 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 43:
                 _e++;
                 return [3, 40];
-            case 44: return [2, true];
+            case 44:
+                LINK_DETAIL = LINK_DETAIL + "/1-full";
+                _f.label = 45;
+            case 45:
+                libs.log({
+                    PROVIDER: PROVIDER,
+                    LINK_DETAIL: LINK_DETAIL,
+                }, PROVIDER, 'LINK CALLBACK');
+                callback({
+                    callback: {
+                        provider: PROVIDER,
+                        host: PROVIDER,
+                        url: LINK_DETAIL,
+                        callback: callback,
+                        headers: {
+                            "referer": "https://fmovies.to",
+                            "user-agent": libs.request_getRandomUserAgent(),
+                        },
+                        beforeLoadScript: "var open = XMLHttpRequest.prototype.open;\n            XMLHttpRequest.prototype.open = function() {\n                this.addEventListener(\"load\", function() {\n                    var message = {\"status\" : this.status, \"responseURL\" : this.responseURL, \"responseText\": this.responseText, \"response\": this.response}\n                    \n                    window.ReactNativeWebView.postMessage(JSON.stringify(message));\n                });\n                open.apply(this, arguments);\n            };",
+                        metadata: {
+                            PROVIDER: PROVIDER,
+                            DOMAIN: DOMAIN,
+                            movieInfo: movieInfo,
+                        }
+                    }
+                });
+                return [2, true];
         }
     });
 }); };

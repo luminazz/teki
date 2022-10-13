@@ -52,10 +52,9 @@ hosts["play.playm4u"] = function (url, movieInfo, provider, config, callback) { 
                 if (!movieId) {
                     return [2];
                 }
-                domainGetDirect = "https://api-plhq.playm4u.xyz/apiv4/5e8dd16b70eac4137a676553/" + movieId;
+                domainGetDirect = "https://api-plhq.playm4u.xyz/apidatard/5e8dd16b70eac4137a676553/".concat(movieId);
                 body = qs.stringify({
-                    referrer: 'https://m4ufree.tv',
-                    typeend: 'html'
+                    referrer: 'https://ww1.m4ufree.tv',
                 });
                 return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
             case 1:

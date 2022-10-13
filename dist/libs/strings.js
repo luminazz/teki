@@ -8,7 +8,7 @@ libs.string_matching_title = function (movieInfo, titleSearch, regex, replacemen
     if (!regex) {
         return false;
     }
-    var reg = new RegExp("^" + movieInfo.title + " *.+", 'gi');
+    var reg = new RegExp("^".concat(movieInfo.title, " *.+"), 'gi');
     return titleSearch.match(reg) ? true : false;
 };
 libs.string_get_season_tvshow = function (title) {
@@ -48,9 +48,9 @@ libs.string_atob = function (input) {
 libs.string_provider = function (provider, rank) {
     if (rank === void 0) { rank = 0; }
     if (!rank) {
-        return "Server " + provider[0].toUpperCase();
+        return "Server ".concat(provider[0].toUpperCase());
     }
-    return "Server " + provider[0].toUpperCase() + rank;
+    return "Server ".concat(provider[0].toUpperCase()).concat(rank);
 };
 libs.string_encrypt_fmovies = function (input) {
     var keytwo = "51wJ0FDq/UVCefLopEcmK3ni4WIQztMjZdSYOsbHr9R2h7PvxBGAuglaN8+kXT6y";
@@ -106,7 +106,7 @@ libs.string_cipher_fmovies = function (inputOne, inputTwo) {
         r = arr[c];
         arr[c] = arr[u];
         arr[u] = r;
-        output += String.fromCharCode("" + ((inputTwo[a_1].charCodeAt() | 0) ^ arr[(arr[c] + arr[u] | 0) % 256]));
+        output += String.fromCharCode("".concat((inputTwo[a_1].charCodeAt() | 0) ^ arr[(arr[c] + arr[u] | 0) % 256]));
     }
     return output;
 };
@@ -116,4 +116,46 @@ libs.string_join_fmovies = function (_0x4a7250) {
         _0x40fc17 % 5 == 0 ? _0x2fcc8a ^= 4 : _0x40fc17 % 5 == 1 ? _0x2fcc8a *= 4 : _0x40fc17 % 5 == 2 ? _0x2fcc8a ^= 3 : _0x40fc17 % 5 == 3 ? _0x2fcc8a ^= 4 : _0x40fc17 % 5 == 4 && (_0x2fcc8a *= 3), _0x1f5f88["push"](_0x2fcc8a);
     }
     return _0x1f5f88.join("-");
+};
+libs.string_unpack = function (code) {
+    function indent(code) {
+        try {
+            var tabs = 0, old = -1, add = '';
+            for (var i = 0; i < code.length; i++) {
+                if (code[i].indexOf("{") != -1)
+                    tabs++;
+                if (code[i].indexOf("}") != -1)
+                    tabs--;
+                if (old != tabs) {
+                    old = tabs;
+                    add = "";
+                    while (old > 0) {
+                        add += "\t";
+                        old--;
+                    }
+                    old = tabs;
+                }
+                code[i] = add + code[i];
+            }
+        }
+        finally {
+            tabs = null;
+            old = null;
+            add = null;
+        }
+        return code;
+    }
+    var env = {
+        eval: function (c) {
+            code = c;
+        },
+        window: {},
+        document: {}
+    };
+    eval("with(env) {" + code + "}");
+    code = (code + "").replace(/;/g, ";\n").replace(/{/g, "\n{\n").replace(/}/g, "\n}\n").replace(/\n;\n/g, ";\n").replace(/\n\n/g, "\n");
+    code = code.split("\n");
+    code = indent(code);
+    code = code.join("\n");
+    return code;
 };
