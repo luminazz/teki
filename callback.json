@@ -3,6 +3,7 @@
 		"dist/callback/streamrapid.js",
 		"dist/callback/m4ufree.js",
 		"dist/callback/lookmovie.js",
-		"dist/callback/rabbitstream.js"
+		"dist/callback/rabbitstream.js",
+		"dist/callback/mcloud.js"
 	]
 }

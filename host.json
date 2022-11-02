@@ -9,7 +9,6 @@
 "dist/hosts/vidstream.js",
 "dist/hosts/vizcloud2.js",
 "dist/hosts/vidembed.js",
-"dist/hosts/streamtape.js",
 "dist/hosts/vizcloud.js",
 "dist/hosts/mzzcloud.js",
 "dist/hosts/streamhub.js",
@@ -17,7 +16,6 @@
 "dist/hosts/pelisplay.js",
 "dist/hosts/fembedHd.js",
 "dist/hosts/vanfem.js",
-"dist/hosts/rabbitstream.js"
-		
+"dist/hosts/rabbitstream.js"	
 	]
 }
