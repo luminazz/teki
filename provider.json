@@ -1,6 +1,8 @@
 {
 	"providers": [		
-		"dist/providers/rezka.js",
+		
+"dist/providers/st.js",
+"dist/providers/rezka.js",
 "dist/providers/theflix.js",
 "dist/providers/pelisplus.js",
 "dist/providers/cinecalidad.js",

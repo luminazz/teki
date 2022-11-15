@@ -40,7 +40,7 @@ libs.tmdb_movie_info = function (id, lang) { return __awaiter(_this, void 0, voi
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                API_KEY = 'bdc91e1fc57d80a61ef951849a6854d1';
+                API_KEY = '00edb12a3dbca2c4013e03169c67ecbb';
                 url = "https://api.themoviedb.org/3/movie/".concat(id, "?api_key=").concat(API_KEY, "&language=").concat(lang);
                 return [4, libs.request_get(url)];
             case 1:
@@ -56,7 +56,7 @@ libs.tmdb_tv_info = function (id, lang) { return __awaiter(_this, void 0, void 0
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                API_KEY = 'bdc91e1fc57d80a61ef951849a6854d1';
+                API_KEY = '00edb12a3dbca2c4013e03169c67ecbb';
                 url = "https://api.themoviedb.org/3/tv/".concat(id, "?api_key=").concat(API_KEY, "&language=").concat(lang);
                 return [4, libs.request_get(url)];
             case 1:
