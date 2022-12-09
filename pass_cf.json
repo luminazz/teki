@@ -1,0 +1,23 @@
+{
+    "prefix": "TOKEN_",
+    "sources": [
+        {
+            "name": "secretlink",
+            "url": "https://secretlink.xyz",
+            "key": "cf_clearance",
+            "headers": {
+                "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+            },
+            "response": {}
+        },
+        {
+            "name": "crocovid",
+            "url": "https://crocovid.com/",
+            "key": "cf_clearance",
+            "headers": {
+                "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+            },
+            "response": {}
+        }
+    ]
+}
