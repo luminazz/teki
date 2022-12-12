@@ -1,0 +1,30 @@
+{
+    "notification_config": {
+      "content": "",
+      "type": "movie",
+      "id": "521034"
+    },
+    "ads_config": {
+      "init_ads": "admob"
+    },
+    "tmdb_apikey": {
+      "ios_key": "5228bff935f7bd2b18c04fc3439828c0",
+      "android_key": "5228bff935f7bd2b18c04fc3439828c0"
+    },
+    "update_release": {
+      "version": "2.9",
+      "url": "https://github.com/hdoonline/hdonline/releases/download/rl/hdo-betav2.0.9.apk",
+      "contents1": "Fix recent postion.",
+      "contents2": "Fix loading source.",
+      "contents3": "Update more source.",
+      "force_update": true,
+      "isUpdate": true
+    },
+    "timeout_priority_source": 10,
+    "host_priority": [
+      "Rabbitstream",
+      "MCloud",
+      "PTOWEMBED",
+      "NAFDAH"
+    ]
+  }
