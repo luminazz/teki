@@ -41,7 +41,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         switch (_f.label) {
             case 0:
                 PROVIDER = 'LFLIXHQ';
-                DOMAIN = "https://proxy-1.movie-web.workers.dev/?destination=";
+                DOMAIN = "https://proxy-02.no-cors-proxy.workers.dev/?destination=";
                 urlSearch = "".concat(DOMAIN, "https://api.consumet.org/movies/flixhq/").concat(libs.url_slug_search(movieInfo, '+'));
                 return [4, libs.request_get(urlSearch, {})];
             case 1:
