@@ -16,6 +16,7 @@
 "dist/hosts/pelisplay.js",
 "dist/hosts/fembedHd.js",
 "dist/hosts/vanfem.js",
-"dist/hosts/rabbitstream.js"	
+"dist/hosts/rabbitstream.js",
+"dist/hosts/streamsss.js"
 	]
 }

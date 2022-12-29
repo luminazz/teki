@@ -36,43 +36,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, urlKey, parseUrlKey, scriptUrl, headers, parseScript, proxyRegex, DOMAIN, urlSearch, resultSearch, MEDIA_ID, EPISODE_ID, _i, _a, searchItem, id, image, title, type, url, year, filmType, urlInfo, resultInfo, listEpisodeData, _b, listEpisodeData_1, episodeItem, urlWatch, resultWatch, listDirectData, tracks, directQuality, _c, listDirectData_1, directItem, quality, url, _d, _e, trackItem;
+    var PROVIDER, headers, urlSearch, resultSearch, MEDIA_ID, EPISODE_ID, _i, _a, searchItem, id, image, title, type, url, year, filmType, urlInfo, resultInfo, listEpisodeData, _b, listEpisodeData_1, episodeItem, urlWatch, resultWatch, listDirectData, tracks, directQuality, _c, listDirectData_1, directItem, quality, url, _d, _e, trackItem;
     return __generator(this, function (_f) {
         switch (_f.label) {
             case 0:
                 PROVIDER = 'LFLIXHQ';
-                urlKey = 'https://movie.squeezebox.dev/#/search/movie';
-                return [4, libs.request_get(urlKey, {}, true)];
-            case 1:
-                parseUrlKey = _f.sent();
-                scriptUrl = '';
-                parseUrlKey('script').each(function (key, item) {
-                    var scriptSrc = parseUrlKey(item).attr('src');
-                    libs.log({ scriptSrc: scriptSrc }, PROVIDER, 'SCRIPT INFO');
-                    if (scriptSrc && scriptSrc.indexOf('/assets/') !== -1) {
-                        scriptUrl = "https://movie.squeezebox.dev".concat(scriptSrc);
-                    }
-                });
-                libs.log({ scriptUrl: scriptUrl }, PROVIDER, 'SCRIPT_URL');
-                if (!scriptUrl) {
-                    return [2];
-                }
-                headers = {
-                    referer: 'https://movie.squeezebox.dev/'
-                };
-                return [4, libs.request_get(scriptUrl)];
-            case 2:
-                parseScript = _f.sent();
-                proxyRegex = parseScript.match(/CORS_PROXY_URL\=\"([^\"]+)/i);
-                proxyRegex = proxyRegex ? proxyRegex[1] : '';
-                libs.log({ proxyRegex: proxyRegex }, PROVIDER, "PROXY REGEX");
-                if (!proxyRegex) {
-                    return [2];
-                }
-                DOMAIN = proxyRegex;
-                urlSearch = "".concat(DOMAIN, "https://api.consumet.org/movies/flixhq/").concat(libs.url_slug_search(movieInfo, '+'));
+                headers = {};
+                urlSearch = "https://api.consumet.org/movies/flixhq/".concat(libs.url_slug_search(movieInfo, '+'));
                 return [4, libs.request_get(urlSearch, headers)];
-            case 3:
+            case 1:
                 resultSearch = _f.sent();
                 MEDIA_ID = '';
                 EPISODE_ID = '';
@@ -106,9 +78,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!MEDIA_ID) {
                     return [2];
                 }
-                urlInfo = "".concat(DOMAIN, "https://api.consumet.org/movies/flixhq/info?id=").concat(MEDIA_ID);
+                urlInfo = "https://api.consumet.org/movies/flixhq/info?id=".concat(MEDIA_ID);
                 return [4, libs.request_get(urlInfo, headers)];
-            case 4:
+            case 2:
                 resultInfo = _f.sent();
                 libs.log({ resultInfo: resultInfo }, PROVIDER, 'RESULT_INFO');
                 listEpisodeData = resultInfo.episodes || [];
@@ -129,9 +101,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!EPISODE_ID) {
                     return [2];
                 }
-                urlWatch = "".concat(DOMAIN).concat(encodeURIComponent("https://api.consumet.org/movies/flixhq/watch?episodeId=".concat(EPISODE_ID, "&mediaId=").concat(MEDIA_ID)));
+                urlWatch = "https://api.consumet.org/movies/flixhq/watch?episodeId=".concat(EPISODE_ID, "&mediaId=").concat(MEDIA_ID);
                 return [4, libs.request_get(urlWatch, headers)];
-            case 5:
+            case 3:
                 resultWatch = _f.sent();
                 libs.log({
                     urlWatch: urlWatch,
