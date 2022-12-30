@@ -120,10 +120,17 @@ hosts["rabbitstream"] = function (url, movieInfo, provider, config, callback) { 
                     patternItem = patternSize_1[_a];
                     sizeQuality = patternItem.match(/\/([0-9]+)\//i);
                     sizeQuality = sizeQuality ? sizeQuality[1] : 'HD';
+                    if (patternItem.indexOf('feetcdn.com:2223') != -1 && movieInfo.platform && movieInfo.platform == 'android') {
+                        libs.log({ patternItem: patternItem, movieInfo: movieInfo }, provider, 'ignorePattern');
+                        continue;
+                    }
                     directQuality.push({
                         file: patternItem,
                         quality: sizeQuality
                     });
+                }
+                if (!directQuality.length) {
+                    return [3, 6];
                 }
                 libs.log({ directQuality: directQuality }, provider, 'DIRECT QUALITY');
                 libs.embed_callback(item.file, provider, HOST, 'Hls', callback, ++rank, tracks, directQuality);

@@ -36,13 +36,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, headerLokLok, searchInfo, FILM_ID, _i, _a, searchItem, title, year, type, season, id, urlGetInfo, filmInfoData, episodeInfo, _b, episodeInfo_1, episodeItem, sources, _c, _d, defItem, urlPreview, previewData;
-    return __generator(this, function (_e) {
-        switch (_e.label) {
+    var PROVIDER, DOMAIN, APIDOMAIN, urlSearch, headerLokLok, parseSearch_1, LINK_DETAIL_1, splitDetail, id, type, directUrl, parseDirect, subs, codeId, quality, _i, _a, episodeItem, _b, _c, subItem, episodeItem, _d, _e, subItem, fileUrl, body, result, mediaUrl, e_1;
+    return __generator(this, function (_f) {
+        switch (_f.label) {
             case 0:
                 PROVIDER = 'ZLOKLOK';
-                DOMAIN = "https://ga-mobile-api.loklok.tv";
-                urlSearch = DOMAIN + "/cms/app/search/v1/searchWithKeyWord";
+                DOMAIN = "https://loklok.com";
+                APIDOMAIN = "https://ga-mobile-api.loklok.tv/cms/app";
+                _f.label = 1;
+            case 1:
+                _f.trys.push([1, 5, , 6]);
+                urlSearch = "".concat(DOMAIN, "/search?keyword=").concat(libs.url_slug_search(movieInfo));
                 libs.log({ urlSearch: urlSearch }, PROVIDER, 'URL SEARCH');
                 headerLokLok = {
                     versioncode: 11,
@@ -50,97 +54,114 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     clienttype: 'ios_jike_default',
                     'sec-ch-ua-platform': '"macOS"',
                 };
-                return [4, libs.request_post(urlSearch, {
-                        accept: 'application/json, text/plain, */*',
-                        'content-type': 'application/json',
+                return [4, libs.request_get(urlSearch, {}, true)];
+            case 2:
+                parseSearch_1 = _f.sent();
+                LINK_DETAIL_1 = '';
+                libs.log({
+                    length: parseSearch_1('div.search-list div.search-video-card').length,
+                }, PROVIDER, 'LENGHT');
+                parseSearch_1('div.search-list div.search-video-card').each(function (key, item) {
+                    var title = parseSearch_1(item).find('h2.title').text();
+                    var href = "".concat(DOMAIN).concat(parseSearch_1(item).find('a').attr('href'));
+                    var parseYear = parseSearch_1(item).find('.desc').text();
+                    parseYear = parseYear.split('.');
+                    parseYear = Number(parseYear[0]);
+                    var season = title.match(/season *([0-9]+)/i);
+                    season = season ? season[1] : '';
+                    title = title.replace(/season *[0-9]+/i, '').trim();
+                    title = title.replace(/\[.*\]/i, '').trim();
+                    var type = parseSearch_1(item).find(".tip").text();
+                    libs.log({ title: title, href: href, parseYear: parseYear, season: season }, PROVIDER, "INFO");
+                    if (movieInfo.title == title) {
+                        if (movieInfo.type == 'movie' && type == 'movie') {
+                            if (movieInfo.year == parseYear) {
+                                LINK_DETAIL_1 = href;
+                            }
+                        }
+                        else {
+                            if (season == movieInfo.season || !season && movieInfo.season == 1) {
+                                LINK_DETAIL_1 = href;
+                            }
+                        }
+                    }
+                });
+                libs.log({ LINK_DETAIL: LINK_DETAIL_1 }, PROVIDER, 'LINK_DETAIL');
+                if (!LINK_DETAIL_1) {
+                    return [2];
+                }
+                splitDetail = LINK_DETAIL_1.split('/');
+                id = splitDetail[splitDetail.length - 1];
+                type = splitDetail[splitDetail.length - 2];
+                libs.log({ splitDetail: splitDetail, id: id, type: type }, PROVIDER, 'TYPE');
+                directUrl = "".concat(APIDOMAIN, "/movieDrama/get?id=").concat(id, "&category=").concat(type);
+                return [4, libs.request_get(directUrl, headerLokLok)];
+            case 3:
+                parseDirect = _f.sent();
+                libs.log({ parseDirect: parseDirect }, PROVIDER, 'PARSE DIRECT');
+                if (parseDirect.code != '00000') {
+                    return [2];
+                }
+                subs = [];
+                codeId = '';
+                quality = '';
+                if (movieInfo.type == 'tv') {
+                    for (_i = 0, _a = parseDirect.data.episodeVo; _i < _a.length; _i++) {
+                        episodeItem = _a[_i];
+                        if (episodeItem.seriesNo == movieInfo.episode) {
+                            for (_b = 0, _c = episodeItem.subtitlingList; _b < _c.length; _b++) {
+                                subItem = _c[_b];
+                                subs.push({
+                                    label: subItem.language,
+                                    file: subItem.subtitlingUrl,
+                                    kind: 'Captions'
+                                });
+                            }
+                            codeId = episodeItem.definitionList[0].code;
+                            quality = episodeItem.definitionList[0].description;
+                        }
+                    }
+                }
+                else {
+                    episodeItem = parseDirect.data.episodeVo[0];
+                    for (_d = 0, _e = episodeItem.subtitlingList; _d < _e.length; _d++) {
+                        subItem = _e[_d];
+                        subs.push({
+                            label: subItem.language,
+                            file: subItem.subtitlingUrl,
+                            kind: 'Captions'
+                        });
+                    }
+                    codeId = episodeItem.definitionList[0].code;
+                    quality = episodeItem.definitionList[0].description;
+                }
+                libs.log({ codeId: codeId, quality: quality }, PROVIDER, 'CODE_ID');
+                if (!codeId) {
+                    return [2];
+                }
+                fileUrl = "".concat(APIDOMAIN, "/media/bathGetplayInfo");
+                body = [{ "category": type, "contentId": id, "episodeId": parseDirect.data.id, "definition": codeId }];
+                return [4, libs.request_post(fileUrl, {
                         versioncode: 11,
                         lang: 'en',
                         clienttype: 'ios_jike_default',
                         'sec-ch-ua-platform': '"macOS"',
-                    }, {
-                        searchKeyWord: libs.url_slug_search(movieInfo),
-                        searchType: "",
-                        size: 200,
-                        sort: "",
-                    })];
-            case 1:
-                searchInfo = _e.sent();
-                libs.log({ searchInfo: searchInfo }, PROVIDER, 'SEARCH INFO');
-                FILM_ID = '';
-                for (_i = 0, _a = searchInfo.data.searchResults; _i < _a.length; _i++) {
-                    searchItem = _a[_i];
-                    title = searchItem.name;
-                    year = searchItem.releaseTime;
-                    type = 'movie';
-                    season = title.match(/season *([0-9]+)/i);
-                    season = season ? season[1] : 0;
-                    title = title.replace(/season *[0-9]+/i, '');
-                    if (season) {
-                        type = 'tv';
-                    }
-                    id = searchItem.id;
-                    libs.log({ title: title, year: year, type: type, season: season, id: id }, PROVIDER, 'SEARCH ITEM');
-                    if (libs.string_matching_title(movieInfo, title)) {
-                        if (movieInfo.type == 'movie' && year == movieInfo.year && type == 'movie') {
-                            FILM_ID = id;
-                        }
-                        else if (movieInfo.type == 'tv' && type == 'tv' && season == movieInfo.season) {
-                            FILM_ID = id;
-                        }
-                    }
-                }
-                libs.log({ FILM_ID: FILM_ID }, PROVIDER, 'FILM ID');
-                if (!FILM_ID) {
-                    return [2];
-                }
-                urlGetInfo = DOMAIN + "/cms/app/movieDrama/get?id=" + FILM_ID + "&category=" + (movieInfo.type == 'tv' ? 1 : 0);
-                return [4, libs.request_get(urlGetInfo, headerLokLok)];
-            case 2:
-                filmInfoData = _e.sent();
-                libs.log({ filmInfoData: filmInfoData }, PROVIDER, 'FILM INFO DATA');
-                if (!filmInfoData.data) {
-                    return [2];
-                }
-                episodeInfo = filmInfoData.data.episodeVo || [];
-                _b = 0, episodeInfo_1 = episodeInfo;
-                _e.label = 3;
-            case 3:
-                if (!(_b < episodeInfo_1.length)) return [3, 9];
-                episodeItem = episodeInfo_1[_b];
-                if (!(movieInfo.type == 'movie' ||
-                    (movieInfo.type == 'tv' && movieInfo.episode == episodeItem.seriesNo))) return [3, 8];
-                sources = [];
-                _c = 0, _d = episodeItem.definitionList;
-                _e.label = 4;
+                        'content-type': 'application/json'
+                    }, body)];
             case 4:
-                if (!(_c < _d.length)) return [3, 7];
-                defItem = _d[_c];
-                urlPreview = DOMAIN + "/cms/app/media/previewInfo?category=" + (movieInfo.type === 'tv' ? 1 : 0) + "&contentId=" + FILM_ID + "&episodeId=" + episodeItem.id + "&definition=" + defItem.code;
-                return [4, libs.request_get(urlPreview, headerLokLok)];
+                result = _f.sent();
+                libs.log({ fileUrl: fileUrl, body: body, result: result, headerLokLok: headerLokLok }, PROVIDER, 'FILE ULR');
+                if (result.code != '00000') {
+                    return [2];
+                }
+                mediaUrl = Array.isArray(result.data) ? result.data[0] : result.data;
+                libs.embed_callback(mediaUrl.mediaUrl, PROVIDER, PROVIDER, 'Hls', callback, 1, subs, [{ file: mediaUrl.mediaUrl, quality: Number(quality.replace(/p/i, '')) }]);
+                return [3, 6];
             case 5:
-                previewData = _e.sent();
-                libs.log({ previewData: previewData, urlPreview: urlPreview }, PROVIDER, 'PREVIEW DATA');
-                if (!previewData.data) {
-                    return [3, 6];
-                }
-                sources.push({
-                    file: previewData.data.mediaUrl,
-                    quality: defItem.description.replace('P', ''),
-                });
-                _e.label = 6;
-            case 6:
-                _c++;
-                return [3, 4];
-            case 7:
-                libs.log({ sources: sources }, PROVIDER, 'SOURCES');
-                if (sources.length > 0) {
-                    libs.embed_callback(sources[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], sources);
-                }
-                _e.label = 8;
-            case 8:
-                _b++;
-                return [3, 3];
-            case 9: return [2, true];
+                e_1 = _f.sent();
+                libs.log(e_1, PROVIDER, "ERROR");
+                return [3, 6];
+            case 6: return [2, true];
         }
     });
 }); };

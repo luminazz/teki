@@ -62,7 +62,7 @@ hosts["dokicloud"] = function (url, movieInfo, provider, config, callback) { ret
             case 0:
                 libs.log({ provider: provider }, provider, 'PROVIDER');
                 DOMAIN = 'https://dokicloud.one';
-                HOST = 'Rabbitstream';
+                HOST = 'DokiCloud';
                 headers = {
                     'referer': 'https://fmovies.ps'
                 };
@@ -120,10 +120,17 @@ hosts["dokicloud"] = function (url, movieInfo, provider, config, callback) { ret
                     patternItem = patternSize_1[_a];
                     sizeQuality = patternItem.match(/\/([0-9]+)\//i);
                     sizeQuality = sizeQuality ? sizeQuality[1] : 'HD';
+                    if (patternItem.indexOf('feetcdn.com:2223') != -1 && movieInfo.platform && movieInfo.platform == 'android') {
+                        libs.log({ patternItem: patternItem, movieInfo: movieInfo }, provider, 'ignorePattern');
+                        continue;
+                    }
                     directQuality.push({
                         file: patternItem,
                         quality: sizeQuality
                     });
+                }
+                if (!directQuality.length) {
+                    return [3, 6];
                 }
                 libs.log({ directQuality: directQuality }, provider, 'DIRECT QUALITY');
                 libs.embed_callback(item.file, provider, HOST, 'Hls', callback, ++rank, tracks, directQuality);

@@ -16,3 +16,25 @@ libs.url_slug_search = function (movieInfo, replacement, isConcatYear, minConcat
     }
     return slugify(movieInfo.title, { lower: true, replacement: replacement, remove: /[*+~.()'"!:?@]/g });
 };
+libs.url_extractHostname = function (url) {
+    var hostname;
+    if (url.indexOf("//") > -1) {
+        hostname = url.split('/')[2];
+    }
+    else {
+        hostname = url.split('/')[0];
+    }
+    hostname = hostname.split(':')[0];
+    hostname = hostname.split('?')[0];
+    return hostname;
+};
+libs.url_extractRootDomain = function (url) {
+    var domain = libs.url_extractHostname(url), splitArr = domain.split('.'), arrLen = splitArr.length;
+    if (arrLen > 2) {
+        domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
+        if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
+            domain = splitArr[arrLen - 3] + '.' + domain;
+        }
+    }
+    return domain;
+};
