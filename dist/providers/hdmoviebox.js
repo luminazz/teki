@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, id, urlIframe, body, headers, iframeData, apiIFrame, parseIFrame, iframeUrl, parseDetailIframe, firePlayer, parseFirePlayer, words, textString, domainIframe, directUrl, e_1;
+    var PROVIDER, DOMAIN, urlSearch, parseSearch, id, urlIframe, body, headers, iframeData, apiIFrame, headers, parseIFrame, iframeUrl, parseDetailIframe, firePlayer, parseFirePlayer, words, textString, domainIframe, directUrl, parseM3u8Data, parseM3u8, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -44,7 +44,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 DOMAIN = "https://hdmoviebox.net";
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 6, , 7]);
+                _a.trys.push([1, 7, , 8]);
                 urlSearch = "";
                 if (movieInfo.type == 'movie') {
                     urlSearch = "".concat(DOMAIN, "/watch/").concat(libs.url_slug_search(movieInfo));
@@ -76,9 +76,11 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!apiIFrame) {
                     return [2];
                 }
-                return [4, libs.request_get(apiIFrame, {
-                        referer: "".concat(DOMAIN, "/")
-                    }, true)];
+                headers = {
+                    'user-agent': libs.request_getRandomUserAgent(),
+                    Referer: "".concat(DOMAIN, "/")
+                };
+                return [4, libs.request_get(apiIFrame, headers, true)];
             case 4:
                 parseIFrame = _a.sent();
                 iframeUrl = parseIFrame('iframe').attr('src');
@@ -88,9 +90,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!iframeUrl) {
                     return [2];
                 }
-                return [4, libs.request_get(iframeUrl, {
-                        referer: "".concat(DOMAIN, "/")
-                    })];
+                return [4, libs.request_get(iframeUrl, headers)];
             case 5:
                 parseDetailIframe = _a.sent();
                 firePlayer = parseDetailIframe.match(/FirePlayer\(vhash\, *([^\)]+)/i);
@@ -108,15 +108,27 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 domainIframe = "https://".concat(libs.url_extractRootDomain(iframeUrl));
                 directUrl = "".concat(domainIframe).concat(parseFirePlayer.videoUrl, "?s=").concat(parseFirePlayer.videoServer, "&d=").concat(textString);
                 libs.log({ directUrl: directUrl, domainIframe: domainIframe }, PROVIDER, 'DIRECT URL');
-                libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: directUrl, quality: 1080 }], {
-                    Referer: DOMAIN
-                });
-                return [3, 7];
+                return [4, libs.request_get(directUrl, {
+                        Referer: "".concat(domainIframe, "/"),
+                        'Accept': '*/*'
+                    })];
             case 6:
+                parseM3u8Data = _a.sent();
+                parseM3u8 = parseM3u8Data.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
+                libs.log({ parseM3u8: parseM3u8, parseM3u8Data: parseM3u8Data }, PROVIDER, 'PARSE m3u8');
+                parseM3u8 = parseM3u8 ? parseM3u8[parseM3u8.length - 1] : '';
+                if (!parseM3u8) {
+                    return [2];
+                }
+                libs.embed_callback(parseM3u8, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: parseM3u8, quality: 1080 }], {
+                    Referer: "".concat(domainIframe, "/")
+                });
+                return [3, 8];
+            case 7:
                 e_1 = _a.sent();
                 libs.log(e_1, PROVIDER, 'ERROR');
-                return [3, 7];
-            case 7: return [2, true];
+                return [3, 8];
+            case 8: return [2, true];
         }
     });
 }); };
