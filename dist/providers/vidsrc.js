@@ -40,7 +40,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                PROVIDER = 'TVIDSRC';
+                PROVIDER = 'RVIDSRC';
                 DOMAIN = "https://v2.vidsrc.me";
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
@@ -87,7 +87,6 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 hlsItem = hlsData_1[_i];
                 return [4, libs.embed_callback(hlsItem, PROVIDER, PROVIDER, 'HLS', callback, 1, [], [{ file: hlsItem, quality: 1080 }], {
                         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36',
-                        origin: 'https://vidsrc.stream',
                         referer: 'https://vidsrc.stream/',
                     })];
             case 4:

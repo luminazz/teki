@@ -107,7 +107,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 headers = {
                     'Host': 'theflixvd.b-cdn.net',
                     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
-                    'referer': 'https://theflix.to/',
+                    'referer': LINK_DETAIL,
                 };
                 return [4, libs.request_get(urlDirectData, {
                         Cookie: "theflix.ipiid=6320b59054023c11feb17fa7;",

@@ -46,7 +46,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         }
         return result;
     }
-    var iv, key, ip, appKey, appId, PROVIDER, encrypt_1, md5_1, getVerify_1, randomString_1, headers_1, getExpiryDate, queryAPI, searchQuery, resultSearch, ID, _i, _a, searchItem, title, year, id, queryDirect, directData, listDirectData, _b, listDirectData_1, directItem, quality, url, e_1;
+    var iv, key, ip, appKey, appId, PROVIDER, encrypt_1, md5_1, getVerify_1, randomString_1, headers_1, getExpiryDate, queryAPI, searchQuery, resultSearch, ID, _i, _a, searchItem, title, year, id, queryDirect, directData, listDirectData, directUrls, _b, listDirectData_1, directItem, quality, url, e_1;
     var _this = this;
     return __generator(this, function (_c) {
         switch (_c.label) {
@@ -106,7 +106,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                 libs.log({
                                     data: data
                                 }, PROVIDER, 'DATA QUERY API');
-                                return [4, libs.request_post('http://152.32.149.160/api/api_client/index/', headers_1, data)];
+                                return [4, libs.request_post('https://showbox.shegu.net/api/api_client/index/', headers_1, data)];
                             case 1:
                                 parseData = _a.sent();
                                 return [2, parseData];
@@ -168,9 +168,14 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 listDirectData = directData.data.list || [];
+                directUrls = [];
                 for (_b = 0, listDirectData_1 = listDirectData; _b < listDirectData_1.length; _b++) {
                     directItem = listDirectData_1[_b];
                     quality = (directItem.real_quality.toLowerCase().replace('K', '').replace('p', '')) || 720;
+                    quality = Number(isNaN(quality) ? 720 : quality);
+                    if (quality == 4) {
+                        quality = 2048;
+                    }
                     url = directItem.path;
                     libs.log({
                         quality: quality,
@@ -182,8 +187,17 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     if (url.indexOf('.mkv') != -1) {
                         continue;
                     }
-                    libs.embed_callback(url, PROVIDER, PROVIDER, quality, callback, 1, [], [{ file: url, quality: Number(isNaN(quality) ? 720 : quality) }]);
+                    directUrls.push({
+                        file: url,
+                        quality: quality,
+                    });
                 }
+                directUrls = _.orderBy(directUrls, ['quality'], ['desc']);
+                if (!directUrls.length) {
+                    return [2];
+                }
+                directUrls = _.uniqBy(directUrls, 'quality');
+                libs.embed_callback(directUrls[0].file, PROVIDER, PROVIDER, 'hls', callback, 1, [], directUrls);
                 return [3, 5];
             case 4:
                 e_1 = _c.sent();
