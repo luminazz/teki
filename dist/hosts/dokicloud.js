@@ -56,9 +56,9 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 var _this = this;
 hosts["dokicloud"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, headers, id, urlDirect, parseDirect, source1, source2, source3, tracks, rank, _i, source1_1, item, directSizes, patternSize, directQuality, _a, patternSize_1, patternItem, sizeQuality;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var DOMAIN, HOST, headers, id, urlDirect, parseDirect, source1, source2, source3, parseTrack, tracks, _i, parseTrack_1, trackItem, lang, parseLang, rank, _a, source1_1, item, directSizes, patternSize, directQuality, _b, patternSize_1, patternItem, sizeQuality;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0:
                 libs.log({ provider: provider }, provider, 'PROVIDER');
                 DOMAIN = 'https://dokicloud.one';
@@ -77,26 +77,45 @@ hosts["dokicloud"] = function (url, movieInfo, provider, config, callback) { ret
                 urlDirect = "".concat(DOMAIN, "/ajax/embed-4/getSources?id=").concat(id);
                 return [4, libs.request_get(urlDirect, __assign(__assign({}, headers), { 'x-requested-with': 'XMLHttpRequest' }))];
             case 1:
-                parseDirect = _b.sent();
+                parseDirect = _c.sent();
                 libs.log({
                     parseDirect: parseDirect
                 }, HOST, "PARSE DIRECT");
                 return [4, libs.embed_fmovies_id(parseDirect['sources'], headers)];
             case 2:
-                source1 = (_b.sent()) || [];
+                source1 = (_c.sent()) || [];
                 libs.log({ source1: source1, tracks: tracks }, HOST, 'SOURCES_1');
                 return [4, libs.embed_fmovies_id(parseDirect['sourcesBackup'], headers)];
             case 3:
-                source2 = (_b.sent()) || [];
+                source2 = (_c.sent()) || [];
                 source3 = __spreadArray(__spreadArray([], source1, true), source2, true);
-                tracks = parseDirect['tracks'] || [];
-                libs.log({ source3: source3, tracks: tracks }, HOST, 'SOURCES');
+                parseTrack = parseDirect['tracks'] || [];
+                tracks = [];
+                for (_i = 0, parseTrack_1 = parseTrack; _i < parseTrack_1.length; _i++) {
+                    trackItem = parseTrack_1[_i];
+                    lang = trackItem.label;
+                    if (!lang) {
+                        continue;
+                    }
+                    libs.log({ lang: lang, trackItem: trackItem }, HOST, "TRACK ITEM");
+                    parseLang = lang.match(/([A-z0-9]+)/i);
+                    parseLang = parseLang ? parseLang[1].trim() : '';
+                    if (!parseLang) {
+                        continue;
+                    }
+                    tracks.push({
+                        file: trackItem.file,
+                        kind: 'captions',
+                        label: parseLang
+                    });
+                }
+                libs.log({ source3: source3, tracks: tracks }, HOST, 'SOURCES_TRACK');
                 rank = 0;
-                _i = 0, source1_1 = source1;
-                _b.label = 4;
+                _a = 0, source1_1 = source1;
+                _c.label = 4;
             case 4:
-                if (!(_i < source1_1.length)) return [3, 7];
-                item = source1_1[_i];
+                if (!(_a < source1_1.length)) return [3, 7];
+                item = source1_1[_a];
                 if (!item.file) {
                     return [3, 6];
                 }
@@ -108,7 +127,7 @@ hosts["dokicloud"] = function (url, movieInfo, provider, config, callback) { ret
                 }
                 return [4, libs.request_get(item.file, {})];
             case 5:
-                directSizes = _b.sent();
+                directSizes = _c.sent();
                 patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
                 if (!patternSize) {
                     libs.embed_callback(item.file, provider, host, item.type, callback, ++rank, tracks);
@@ -116,8 +135,8 @@ hosts["dokicloud"] = function (url, movieInfo, provider, config, callback) { ret
                 }
                 directQuality = [];
                 libs.log({ patternSize: patternSize }, provider, 'PATTERN SIZE');
-                for (_a = 0, patternSize_1 = patternSize; _a < patternSize_1.length; _a++) {
-                    patternItem = patternSize_1[_a];
+                for (_b = 0, patternSize_1 = patternSize; _b < patternSize_1.length; _b++) {
+                    patternItem = patternSize_1[_b];
                     sizeQuality = patternItem.match(/\/([0-9]+)\//i);
                     sizeQuality = sizeQuality ? sizeQuality[1] : 'HD';
                     if (patternItem.indexOf('feetcdn.com:2223') != -1 && movieInfo.platform && movieInfo.platform == 'android') {
@@ -134,9 +153,9 @@ hosts["dokicloud"] = function (url, movieInfo, provider, config, callback) { ret
                 }
                 libs.log({ directQuality: directQuality }, provider, 'DIRECT QUALITY');
                 libs.embed_callback(item.file, provider, HOST, 'Hls', callback, ++rank, tracks, directQuality);
-                _b.label = 6;
+                _c.label = 6;
             case 6:
-                _i++;
+                _a++;
                 return [3, 4];
             case 7: return [2];
         }

@@ -1,8 +1,7 @@
 {
 	"providers": [			
-
 		"dist/providers/uniquestream.js",
-		"dist/providers/loklok.js",
+"dist/providers/loklok.js",
 "dist/providers/series9.js",
 "dist/providers/flixhq.js",
 "dist/providers/st.js",
@@ -13,11 +12,12 @@
 "dist/providers/cineb.js",
 "dist/providers/vumoo.js",
 "dist/providers/fmovies.js",
-"dist/providers/goku.js",
 "dist/providers/afdah.js",
 "dist/providers/fa.js",
 "dist/providers/svetacdn.js",
 "dist/providers/vidsrc.js",
-"dist/providers/hdmoviebox.js"
+"dist/providers/hdmoviebox.js",
+"dist/providers/xmovies.js",
+"dist/providers/noverse.js"
 	]
 }

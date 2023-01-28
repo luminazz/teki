@@ -36,17 +36,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, LINK_DETAIL, tvshowFilmId, parseFilmId, metaUrl, filmId, serverId, urlSeason, parseSeasonData_1, seasonId_1, urlEpisode, parseEpisodeData_1, episodeId_1, urlServerId, parseServerId, serverIds, embeds, _i, serverIds_1, id, urlGetEmbed, dataEmbed, _a, embeds_1, embedItem;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var PROVIDER, DOMAIN, urlSearch, parseSearch, LINK_DETAIL, TV_LINK_DETAIL, _loop_1, _i, TV_LINK_DETAIL_1, linkTvItem, tvshowFilmId, parseFilmId, metaUrl, filmId, serverId, urlSeason, parseSeasonData_1, seasonId_1, urlEpisode, parseEpisodeData_1, episodeId_1, urlServerId, parseServerId, serverIds, embeds, _a, serverIds_1, id, urlGetEmbed, dataEmbed, _b, embeds_1, embedItem;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0:
                 PROVIDER = 'GOKU';
                 DOMAIN = "https://goku.to";
                 urlSearch = "".concat(DOMAIN, "/search?keyword=").concat(libs.url_slug_search(movieInfo, '+'));
                 return [4, libs.request_get(urlSearch, {}, true)];
             case 1:
-                parseSearch = _b.sent();
+                parseSearch = _c.sent();
                 LINK_DETAIL = '';
+                TV_LINK_DETAIL = [];
                 libs.log({ urlSearch: urlSearch, length: parseSearch('.section-items .item').length }, PROVIDER, 'SEARCH');
                 parseSearch('.section-items .item').each(function (key, item) {
                     var title = parseSearch(item).find('.movie-info .movie-name').text();
@@ -57,7 +58,11 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     if (title && href && !LINK_DETAIL) {
                         if (libs.string_matching_title(movieInfo, title)) {
                             if (movieInfo.type == 'tv' && type.toLowerCase() == 'tv') {
-                                LINK_DETAIL = "".concat(DOMAIN).concat(href);
+                                var tvLinkDetail = href;
+                                if (_.startsWith(tvLinkDetail, '/')) {
+                                    tvLinkDetail = "".concat(DOMAIN).concat(href);
+                                }
+                                TV_LINK_DETAIL.push(tvLinkDetail);
                             }
                             if (movieInfo.type == 'movie' && (!type || type.toLowerCase() == 'movie') && movieInfo.year == year) {
                                 LINK_DETAIL = "".concat(DOMAIN).concat(href);
@@ -65,12 +70,48 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         }
                     }
                 });
-                if (movieInfo.title == 'Wire Room' && movieInfo.type === 'movie' && movieInfo.year == 2022) {
-                    LINK_DETAIL = 'https://goku.to/movie/watch-wire-room-87096';
-                }
-                else if (movieInfo.title == 'The Lord of the Rings: The Rings of Power' && movieInfo.type == 'tv') {
-                    LINK_DETAIL = 'https://goku.to/series/watch-the-lord-of-the-rings-the-rings-of-power-87087';
-                }
+                libs.log({ TV_LINK_DETAIL: TV_LINK_DETAIL }, PROVIDER, 'TV_LINK_DETAIL');
+                if (!(movieInfo.type == 'tv' && TV_LINK_DETAIL.length)) return [3, 5];
+                _loop_1 = function (linkTvItem) {
+                    var parseTvLinkDetail, yearTv;
+                    return __generator(this, function (_d) {
+                        switch (_d.label) {
+                            case 0:
+                                libs.log({ linkTvItem: linkTvItem }, PROVIDER, 'TV LINK DETAIL');
+                                return [4, libs.request_get(linkTvItem, {}, true)];
+                            case 1:
+                                parseTvLinkDetail = _d.sent();
+                                yearTv = 0;
+                                libs.log({ length: parseTvLinkDetail('.m_i-d-content .elements .row-line').length }, PROVIDER, 'LENGTH TV');
+                                parseTvLinkDetail('.m_i-d-content .elements .row-line').each(function (keyTv, itemTv) {
+                                    var text = parseTvLinkDetail(itemTv).text();
+                                    libs.log({ text: text }, PROVIDER, 'TEXT TV');
+                                    if (text && text.toLowerCase().indexOf('released') != -1) {
+                                        yearTv = text.match(/Released *\: *([0-9]+)/i);
+                                        yearTv = yearTv ? yearTv[1] : 0;
+                                        libs.log({ yearTv: yearTv }, PROVIDER, 'YEARTV');
+                                        if (yearTv == movieInfo.year) {
+                                            LINK_DETAIL = linkTvItem;
+                                        }
+                                    }
+                                });
+                                return [2];
+                        }
+                    });
+                };
+                _i = 0, TV_LINK_DETAIL_1 = TV_LINK_DETAIL;
+                _c.label = 2;
+            case 2:
+                if (!(_i < TV_LINK_DETAIL_1.length)) return [3, 5];
+                linkTvItem = TV_LINK_DETAIL_1[_i];
+                return [5, _loop_1(linkTvItem)];
+            case 3:
+                _c.sent();
+                _c.label = 4;
+            case 4:
+                _i++;
+                return [3, 2];
+            case 5:
                 libs.log(LINK_DETAIL, PROVIDER, "LINK DETAIL");
                 if (!LINK_DETAIL) {
                     return [2];
@@ -84,8 +125,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     LINK_DETAIL = LINK_DETAIL.replace('/series/', '/watch-series/');
                 }
                 return [4, libs.request_get(LINK_DETAIL, {}, true)];
-            case 2:
-                parseFilmId = _b.sent();
+            case 6:
+                parseFilmId = _c.sent();
                 metaUrl = parseFilmId('meta[property="og:url"]').attr('content');
                 libs.log({
                     metaUrl: metaUrl
@@ -100,15 +141,15 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 serverId = '';
-                if (!(movieInfo.type == 'movie')) return [3, 3];
+                if (!(movieInfo.type == 'movie')) return [3, 7];
                 serverId = filmId;
-                return [3, 6];
-            case 3:
-                if (!(movieInfo.type == 'tv')) return [3, 6];
+                return [3, 10];
+            case 7:
+                if (!(movieInfo.type == 'tv')) return [3, 10];
                 urlSeason = "".concat(DOMAIN, "/ajax/movie/seasons/").concat(tvshowFilmId);
                 return [4, libs.request_get(urlSeason, {}, true)];
-            case 4:
-                parseSeasonData_1 = _b.sent();
+            case 8:
+                parseSeasonData_1 = _c.sent();
                 libs.log({
                     season_length: parseSeasonData_1('.ss-item').length
                 }, PROVIDER, 'SEASON LENGTH');
@@ -134,8 +175,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 urlEpisode = "".concat(DOMAIN, "/ajax/movie/season/episodes/").concat(seasonId_1);
                 return [4, libs.request_get(urlEpisode, {}, true)];
-            case 5:
-                parseEpisodeData_1 = _b.sent();
+            case 9:
+                parseEpisodeData_1 = _c.sent();
                 libs.log({
                     episode_length: parseEpisodeData_1('.ep-item').length,
                 }, PROVIDER, 'EPISODE LENGTH');
@@ -160,12 +201,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 serverId = episodeId_1;
-                _b.label = 6;
-            case 6:
+                _c.label = 10;
+            case 10:
                 urlServerId = "".concat(DOMAIN, "/ajax/movie/episode/servers/").concat(serverId);
                 return [4, libs.request_get(urlServerId, {}, true)];
-            case 7:
-                parseServerId = _b.sent();
+            case 11:
+                parseServerId = _c.sent();
                 libs.log({ server_id_length: parseServerId('.sv-item').length }, PROVIDER, 'SERVER LENGTH');
                 serverIds = [];
                 embeds = [];
@@ -178,39 +219,39 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({
                     serverIds: serverIds
                 }, PROVIDER, 'SERVER IDS');
-                _i = 0, serverIds_1 = serverIds;
-                _b.label = 8;
-            case 8:
-                if (!(_i < serverIds_1.length)) return [3, 11];
-                id = serverIds_1[_i];
+                _a = 0, serverIds_1 = serverIds;
+                _c.label = 12;
+            case 12:
+                if (!(_a < serverIds_1.length)) return [3, 15];
+                id = serverIds_1[_a];
                 urlGetEmbed = "".concat(DOMAIN, "/ajax/movie/episode/server/sources/").concat(id);
                 return [4, libs.request_get(urlGetEmbed, {})];
-            case 9:
-                dataEmbed = _b.sent();
+            case 13:
+                dataEmbed = _c.sent();
                 if (dataEmbed.data && dataEmbed.data.link) {
                     embeds.push(dataEmbed.data.link);
                 }
-                _b.label = 10;
-            case 10:
-                _i++;
-                return [3, 8];
-            case 11:
-                libs.log({
-                    embeds: embeds
-                }, PROVIDER, 'EMBEDS');
-                _a = 0, embeds_1 = embeds;
-                _b.label = 12;
-            case 12:
-                if (!(_a < embeds_1.length)) return [3, 15];
-                embedItem = embeds_1[_a];
-                return [4, libs.embed_redirect(embedItem, '', movieInfo, PROVIDER, callback, '')];
-            case 13:
-                _b.sent();
-                _b.label = 14;
+                _c.label = 14;
             case 14:
                 _a++;
                 return [3, 12];
-            case 15: return [2, true];
+            case 15:
+                libs.log({
+                    embeds: embeds
+                }, PROVIDER, 'EMBEDS');
+                _b = 0, embeds_1 = embeds;
+                _c.label = 16;
+            case 16:
+                if (!(_b < embeds_1.length)) return [3, 19];
+                embedItem = embeds_1[_b];
+                return [4, libs.embed_redirect(embedItem, '', movieInfo, PROVIDER, callback, '')];
+            case 17:
+                _c.sent();
+                _c.label = 18;
+            case 18:
+                _b++;
+                return [3, 16];
+            case 19: return [2, true];
         }
     });
 }); };

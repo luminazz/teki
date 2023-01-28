@@ -36,34 +36,82 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, LINK_DETAIL, filmId, serverIds, apiUrlEmbed, parseEmbedServer_1, apiUrlGetSeason, parseGetSeason_1, seasonId_1, apiUrlGetEpisode, episodeId_1, parseGetEpisode_1, urlGetEmbedTv, parseEmbedTv_1, apiGetLinkEmbed, _i, serverIds_1, serverIdItem, getLinkEmbedData;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var PROVIDER, DOMAIN, urlSearch, parseSearch, LINK_DETAIL, TV_LINK_DETAIL, _loop_1, _i, TV_LINK_DETAIL_1, linkTvItem, filmId, serverIds, apiUrlEmbed, parseEmbedServer_1, apiUrlGetSeason, parseGetSeason_1, seasonId_1, apiUrlGetEpisode, episodeId_1, parseGetEpisode_1, urlGetEmbedTv, parseEmbedTv_1, apiGetLinkEmbed, _a, serverIds_1, serverIdItem, getLinkEmbedData;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
                 PROVIDER = 'CNEB';
                 DOMAIN = "https://cineb.net";
                 urlSearch = "".concat(DOMAIN, "/search/").concat(libs.url_slug_search(movieInfo));
                 return [4, libs.request_get(urlSearch, {}, true)];
             case 1:
-                parseSearch = _a.sent();
+                parseSearch = _b.sent();
                 LINK_DETAIL = '';
+                TV_LINK_DETAIL = [];
                 libs.log({ urlSearch: urlSearch, length: parseSearch('.flw-item') }, PROVIDER, 'SEARCH');
                 parseSearch('.flw-item').each(function (key, item) {
                     var title = parseSearch(item).find('.film-poster-ahref').attr('title');
                     var href = parseSearch(item).find('.film-poster-ahref').attr('href');
                     var year = parseSearch(item).find('.fdi-item').first().text();
+                    var type = isNaN(Number(year)) ? 'tv' : 'movie';
                     libs.log({ title: title, href: href, year: year }, PROVIDER, 'SEARCH ITEM');
                     if (title && href && !LINK_DETAIL) {
                         if (libs.string_matching_title(movieInfo, title)) {
-                            if (movieInfo.type == 'tv' && isNaN(Number(year))) {
-                                LINK_DETAIL = "".concat(DOMAIN).concat(href);
+                            if (movieInfo.type == 'tv' && type.toLowerCase() == 'tv') {
+                                var tvLinkDetail = href;
+                                if (_.startsWith(tvLinkDetail, '/')) {
+                                    tvLinkDetail = "".concat(DOMAIN).concat(href);
+                                }
+                                TV_LINK_DETAIL.push(tvLinkDetail);
                             }
-                            if (movieInfo.type == 'movie' && !isNaN(Number(year)) && movieInfo.year == year) {
-                                LINK_DETAIL = "".concat(DOMAIN).concat(href);
+                            if (movieInfo.type == 'movie' && type.toLowerCase() == 'movie' && movieInfo.year == year) {
+                                LINK_DETAIL = _.startsWith(href, '/') ? "".concat(DOMAIN).concat(href) : href;
                             }
                         }
                     }
                 });
+                libs.log({ TV_LINK_DETAIL: TV_LINK_DETAIL }, PROVIDER, 'TV_LINK_DETAIL');
+                if (!(movieInfo.type == 'tv' && TV_LINK_DETAIL.length)) return [3, 5];
+                _loop_1 = function (linkTvItem) {
+                    var parseTvLinkDetail, yearTv;
+                    return __generator(this, function (_c) {
+                        switch (_c.label) {
+                            case 0:
+                                libs.log({ linkTvItem: linkTvItem }, PROVIDER, 'TV LINK DETAIL');
+                                return [4, libs.request_get(linkTvItem, {}, true)];
+                            case 1:
+                                parseTvLinkDetail = _c.sent();
+                                yearTv = 0;
+                                libs.log({ length: parseTvLinkDetail('.dp-i-content .elements .row-line').length }, PROVIDER, 'LENGTH TV');
+                                parseTvLinkDetail('.dp-i-content .elements .row-line').each(function (keyTv, itemTv) {
+                                    var text = parseTvLinkDetail(itemTv).text();
+                                    libs.log({ text: text }, PROVIDER, 'TEXT TV');
+                                    if (text && text.toLowerCase().indexOf('released') != -1) {
+                                        yearTv = text.match(/Released *\: *([0-9]+)/i);
+                                        yearTv = yearTv ? yearTv[1] : 0;
+                                        libs.log({ yearTv: yearTv }, PROVIDER, 'YEARTV');
+                                        if (yearTv == movieInfo.year) {
+                                            LINK_DETAIL = linkTvItem;
+                                        }
+                                    }
+                                });
+                                return [2];
+                        }
+                    });
+                };
+                _i = 0, TV_LINK_DETAIL_1 = TV_LINK_DETAIL;
+                _b.label = 2;
+            case 2:
+                if (!(_i < TV_LINK_DETAIL_1.length)) return [3, 5];
+                linkTvItem = TV_LINK_DETAIL_1[_i];
+                return [5, _loop_1(linkTvItem)];
+            case 3:
+                _b.sent();
+                _b.label = 4;
+            case 4:
+                _i++;
+                return [3, 2];
+            case 5:
                 libs.log(LINK_DETAIL, PROVIDER, "LINK DETAIL");
                 if (!LINK_DETAIL) {
                     return [2];
@@ -75,11 +123,11 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 serverIds = [];
-                if (!(movieInfo.type == 'movie')) return [3, 3];
+                if (!(movieInfo.type == 'movie')) return [3, 7];
                 apiUrlEmbed = "".concat(DOMAIN, "/ajax/movie/episodes/").concat(filmId);
                 return [4, libs.request_get(apiUrlEmbed, {}, true)];
-            case 2:
-                parseEmbedServer_1 = _a.sent();
+            case 6:
+                parseEmbedServer_1 = _b.sent();
                 libs.log({ apiUrlEmbed: apiUrlEmbed, length: parseEmbedServer_1('.link-item').length }, PROVIDER, "LENGTH LINK ITEM");
                 parseEmbedServer_1('.link-item').each(function (key, item) {
                     var serverId = parseEmbedServer_1(item).attr('data-linkid');
@@ -87,13 +135,13 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         serverIds.push(serverId);
                     }
                 });
-                return [3, 7];
-            case 3:
-                if (!(movieInfo.type == 'tv')) return [3, 7];
+                return [3, 11];
+            case 7:
+                if (!(movieInfo.type == 'tv')) return [3, 11];
                 apiUrlGetSeason = "".concat(DOMAIN, "/ajax/v2/tv/seasons/").concat(filmId);
                 return [4, libs.request_get(apiUrlGetSeason, {}, true)];
-            case 4:
-                parseGetSeason_1 = _a.sent();
+            case 8:
+                parseGetSeason_1 = _b.sent();
                 seasonId_1 = 0;
                 libs.log({ apiUrlGetSeason: apiUrlGetSeason, length: parseGetSeason_1('.ss-item').length }, PROVIDER, "SEASSON INFO");
                 parseGetSeason_1('.ss-item').each(function (key, item) {
@@ -114,8 +162,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 apiUrlGetEpisode = "".concat(DOMAIN, "/ajax/v2/season/episodes/").concat(seasonId_1);
                 episodeId_1 = 0;
                 return [4, libs.request_get(apiUrlGetEpisode, {}, true)];
-            case 5:
-                parseGetEpisode_1 = _a.sent();
+            case 9:
+                parseGetEpisode_1 = _b.sent();
                 libs.log({ apiUrlGetEpisode: apiUrlGetEpisode, length: parseGetEpisode_1('.eps-item').length }, PROVIDER, 'SEASON INFO');
                 parseGetEpisode_1('.eps-item').each(function (key, item) {
                     var episode = parseGetEpisode_1(item).find('strong').text();
@@ -136,8 +184,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 urlGetEmbedTv = "".concat(DOMAIN, "/ajax/v2/episode/servers/").concat(episodeId_1);
                 return [4, libs.request_get(urlGetEmbedTv, {}, true)];
-            case 6:
-                parseEmbedTv_1 = _a.sent();
+            case 10:
+                parseEmbedTv_1 = _b.sent();
                 libs.log({ urlGetEmbedTv: urlGetEmbedTv, length: parseEmbedTv_1('.link-item').length }, PROVIDER, 'EMBED INFO');
                 parseEmbedTv_1('.link-item').each(function (key, item) {
                     var serverId = parseEmbedTv_1(item).attr('data-id');
@@ -145,28 +193,28 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         serverIds.push(serverId);
                     }
                 });
-                _a.label = 7;
-            case 7:
+                _b.label = 11;
+            case 11:
                 libs.log({ serverIds: serverIds }, PROVIDER, 'SERVER IDS');
                 apiGetLinkEmbed = "".concat(DOMAIN, "/ajax/get_link/");
-                _i = 0, serverIds_1 = serverIds;
-                _a.label = 8;
-            case 8:
-                if (!(_i < serverIds_1.length)) return [3, 12];
-                serverIdItem = serverIds_1[_i];
+                _a = 0, serverIds_1 = serverIds;
+                _b.label = 12;
+            case 12:
+                if (!(_a < serverIds_1.length)) return [3, 16];
+                serverIdItem = serverIds_1[_a];
                 return [4, libs.request_get(apiGetLinkEmbed + serverIdItem, {})];
-            case 9:
-                getLinkEmbedData = _a.sent();
+            case 13:
+                getLinkEmbedData = _b.sent();
                 libs.log({ getLinkEmbedData: getLinkEmbedData }, PROVIDER, 'LINK EMBED DATA');
-                if (!(getLinkEmbedData && getLinkEmbedData.link)) return [3, 11];
+                if (!(getLinkEmbedData && getLinkEmbedData.link)) return [3, 15];
                 return [4, libs.embed_redirect(getLinkEmbedData.link, '', movieInfo, PROVIDER, callback, '')];
-            case 10:
-                _a.sent();
-                _a.label = 11;
-            case 11:
-                _i++;
-                return [3, 8];
-            case 12: return [2, true];
+            case 14:
+                _b.sent();
+                _b.label = 15;
+            case 15:
+                _a++;
+                return [3, 12];
+            case 16: return [2, true];
         }
     });
 }); };
