@@ -159,3 +159,8 @@ libs.string_unpack = function (code) {
     code = code.join("\n");
     return code;
 };
+libs.string_base64_decode = function (str) {
+    var words = cryptoS.enc.Base64.parse(str);
+    var textString = cryptoS.enc.Utf8.stringify(words);
+    return textString;
+};

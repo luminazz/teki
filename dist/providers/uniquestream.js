@@ -41,7 +41,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         switch (_b.label) {
             case 0:
                 PROVIDER = 'DUniqueStream';
-                DOMAIN = "https://uniquestream.net";
+                DOMAIN = "https://uniquestreaming.net";
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
                     urlSearch = "".concat(DOMAIN, "/episodes/").concat(libs.url_slug_search(movieInfo), "-season-").concat(movieInfo.season, "-episode-").concat(movieInfo.episode);
@@ -75,6 +75,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 headers = {
                     'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
                     referer: DOMAIN,
+                    'X-Requested-With': 'XMLHttpRequest'
                 };
                 libs.log({ urlAjax: urlAjax, body: body, headers: headers }, PROVIDER, 'AJAX INFO');
                 return [4, libs.request_post(urlAjax, headers, body)];
