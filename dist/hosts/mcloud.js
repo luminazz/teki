@@ -36,25 +36,42 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 hosts["mcloud"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var userAgent, DOMAIN, HOST, headers;
+    var userAgent, DOMAIN, HOST, subParse, subs, headers;
     return __generator(this, function (_a) {
-        userAgent = libs.request_getRandomUserAgent();
-        DOMAIN = 'https://mcloud.to';
-        HOST = 'MCloud';
-        headers = {
-            'Referer': "https://fmovies.to/",
-            'user-agent': libs.request_getRandomUserAgent()
-        };
-        callback({
-            callback: {
-                provider: provider,
-                host: HOST,
-                url: url,
-                headers: headers,
-                callback: callback,
-                beforeLoadScript: "var open = XMLHttpRequest.prototype.open;\n            XMLHttpRequest.prototype.open = function() {\n                window.ReactNativeWebView.postMessage(JSON.stringify({arguments}));\n                open.apply(this, arguments);\n            };"
-            }
-        });
-        return [2];
+        switch (_a.label) {
+            case 0:
+                userAgent = libs.request_getRandomUserAgent();
+                DOMAIN = 'https://mcloud.to';
+                HOST = 'MCloud';
+                subParse = url.match(/\?sub\.info\=([^\&]+)/i);
+                subParse = subParse ? decodeURIComponent(subParse[1]) : '';
+                libs.log({ subParse: subParse }, HOST, 'SUBPARSE');
+                subs = [];
+                if (!subParse) return [3, 2];
+                return [4, libs.request_get(subParse)];
+            case 1:
+                subs = _a.sent();
+                libs.log({ subs: subs }, HOST, 'SUBTITLE');
+                _a.label = 2;
+            case 2:
+                headers = {
+                    'Referer': "https://fmovies.to/",
+                    'user-agent': libs.request_getRandomUserAgent()
+                };
+                callback({
+                    callback: {
+                        provider: provider,
+                        host: HOST,
+                        url: url,
+                        headers: headers,
+                        metadata: {
+                            subs: subs,
+                        },
+                        callback: callback,
+                        beforeLoadScript: "var open = XMLHttpRequest.prototype.open;\n            XMLHttpRequest.prototype.open = function() {\n                window.ReactNativeWebView.postMessage(JSON.stringify({arguments}));\n                open.apply(this, arguments);\n            };"
+                    }
+                });
+                return [2];
+        }
     });
 }); };

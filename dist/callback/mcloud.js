@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 callbacksEmbed["mcloud"] = function (dataCallback, provider, host, callback, metadata) { return __awaiter(_this, void 0, void 0, function () {
-    var headers, data, endpoint, urlEmbed, dataEmbed, rank, _i, _a, embedItem, embedData, patternQuality, directQuality, _b, patternQuality_1, patternItem, sizeQuality, urlDirect, urlDirect, e_1;
+    var headers, subs, data, endpoint, urlEmbed, dataEmbed, rank, _i, _a, embedItem, embedData, patternQuality, directQuality, _b, patternQuality_1, patternItem, sizeQuality, urlDirect, urlDirect, e_1;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
@@ -46,6 +46,7 @@ callbacksEmbed["mcloud"] = function (dataCallback, provider, host, callback, met
                     'user-agent': libs.request_getRandomUserAgent()
                 };
                 libs.log(dataCallback, provider, 'DATA CALLBACK');
+                subs = metadata.subs ? metadata.subs : [];
                 if (!dataCallback) {
                     return [2];
                 }
@@ -112,7 +113,7 @@ callbacksEmbed["mcloud"] = function (dataCallback, provider, host, callback, met
                 if (!directQuality.length) {
                     return [2];
                 }
-                libs.embed_callback(directQuality[0].file, provider, provider, 'Hls', callback, ++rank, [], directQuality, {
+                libs.embed_callback(directQuality[0].file, provider, provider, 'Hls', callback, ++rank, subs, directQuality, {
                     referer: "https://mcloud.to/",
                     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36',
                     'sec-fetch-dest': 'empty',
