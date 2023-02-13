@@ -79,13 +79,14 @@ hosts["dokicloud"] = function (url, movieInfo, provider, config, callback) { ret
             case 1:
                 parseDirect = _c.sent();
                 libs.log({
-                    parseDirect: parseDirect
+                    parseDirect: parseDirect,
+                    url: url
                 }, HOST, "PARSE DIRECT");
-                return [4, libs.embed_fmovies_id(parseDirect['sources'], headers)];
+                return [4, libs.embed_fmovies_id(parseDirect['sources'], headers, url)];
             case 2:
                 source1 = (_c.sent()) || [];
                 libs.log({ source1: source1, tracks: tracks }, HOST, 'SOURCES_1');
-                return [4, libs.embed_fmovies_id(parseDirect['sourcesBackup'], headers)];
+                return [4, libs.embed_fmovies_id(parseDirect['sourcesBackup'], headers, url)];
             case 3:
                 source2 = (_c.sent()) || [];
                 source3 = __spreadArray(__spreadArray([], source1, true), source2, true);
