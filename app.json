@@ -2,7 +2,8 @@
     "notification_config": {
       "content": "",
       "type": "movie",
-      "id": "521034"
+      "id": "521034",
+      "name": "hdo"
     },
     "ads_config": {
       "init_ads": "admob"

@@ -1,0 +1,15 @@
+{
+  "ads_config": {
+    "init_ads": "admob"
+  },
+  "tmdb_apikey": {
+    "ios_key": "de46e6f53a84b5f39c219d07ad20b698",
+    "android_key": "de46e6f53a84b5f39c219d07ad20b698"
+  },
+  "notification": {
+    "url": "https://hdo.app/",
+    "title": "Welcome!",
+    "contents": "<p>- Due the app has been removed from Store, please DO NOT removed it to use the app in the future 😀 😃<br />- Due the app has been removed from Store, please DO NOT removed it to use the app in the future 🤶🏼 🧑🏼‍🎄</p>",
+    "show": true
+  }
+}
