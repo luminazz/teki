@@ -36,19 +36,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, exist_1, decode, lang, filmInfo_1, urlSearch, parseSearch_1, LINK_DETAIL_1, parseDetail_1, filmIds_2, dataFav, dataId, timestamp, urlGetHash, headersHash, hashData, _i, filmIds_1, filmItem, body, resultHash, _a, hashData_1, hashItem, decryptData, parseDirect, directQuality, _b, parseDirect_1, parseDirectItem, quality, urlDirect, requestData, e_1;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var PROVIDER, DOMAIN, exist_1, decode_1, lang, filmInfo_1, urlSearch, parseSearch_1, LINK_DETAIL_1, parseDetail_1, filmIds_2, dataFav, dataId, timestamp, urlGetHash, headersHash, hashData, _i, filmIds_1, filmItem, body, resultHash, directQuality_1, arrPromise, e_1;
+    var _this = this;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
                 PROVIDER = 'KREZKA';
                 DOMAIN = "https://rezka.ag";
-                _c.label = 1;
+                _a.label = 1;
             case 1:
-                _c.trys.push([1, 18, , 19]);
+                _a.trys.push([1, 13, , 14]);
                 exist_1 = function (x) {
                     return x != null && typeof (x) != 'undefined' && x != 'undefined';
                 };
-                decode = function (x) {
+                decode_1 = function (x) {
                     var a;
                     a = x.substr(2);
                     var v = {
@@ -90,18 +91,18 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!(movieInfo.type == 'movie')) return [3, 3];
                 return [4, libs.tmdb_movie_info(movieInfo.tmdb_id, lang)];
             case 2:
-                filmInfo_1 = _c.sent();
+                filmInfo_1 = _a.sent();
                 return [3, 5];
             case 3: return [4, libs.tmdb_tv_info(movieInfo.tmdb_id, lang)];
             case 4:
-                filmInfo_1 = _c.sent();
-                _c.label = 5;
+                filmInfo_1 = _a.sent();
+                _a.label = 5;
             case 5:
                 urlSearch = "".concat(DOMAIN, "/search/?do=search&subaction=search&q=").concat(libs.url_slug_search(movieInfo, '+'));
                 libs.log({ urlSearch: urlSearch, filmInfo: filmInfo_1 }, PROVIDER, 'URL SEARCH');
                 return [4, libs.request_get(urlSearch, {}, true)];
             case 6:
-                parseSearch_1 = _c.sent();
+                parseSearch_1 = _a.sent();
                 LINK_DETAIL_1 = '';
                 libs.log({
                     urlSearch: urlSearch,
@@ -149,7 +150,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 return [4, libs.request_get(LINK_DETAIL_1, {}, true)];
             case 7:
-                parseDetail_1 = _c.sent();
+                parseDetail_1 = _a.sent();
                 filmIds_2 = [];
                 dataFav = parseDetail_1('#ctrl_favs').val();
                 dataId = parseDetail_1('.b-sidelinks__link.show-trailer').attr('data-id');
@@ -175,10 +176,13 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }, PROVIDER, 'FILM ID');
                 hashData = [];
                 _i = 0, filmIds_1 = filmIds_2;
-                _c.label = 8;
+                _a.label = 8;
             case 8:
                 if (!(_i < filmIds_1.length)) return [3, 11];
                 filmItem = filmIds_1[_i];
+                if (filmItem.data_trans_id != '238') {
+                    return [3, 10];
+                }
                 body = {};
                 if (movieInfo.type == 'movie') {
                     body = {
@@ -203,7 +207,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 return [4, libs.request_post(urlGetHash, headersHash, qs.stringify(body), false, false)];
             case 9:
-                resultHash = _c.sent();
+                resultHash = _a.sent();
                 libs.log({
                     urlGetHash: urlGetHash,
                     headersHash: headersHash,
@@ -213,7 +217,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (resultHash.url) {
                     hashData.push(resultHash.url);
                 }
-                _c.label = 10;
+                _a.label = 10;
             case 10:
                 _i++;
                 return [3, 8];
@@ -221,59 +225,72 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({
                     hashData: hashData
                 }, PROVIDER, 'HASH DATA');
-                _a = 0, hashData_1 = hashData;
-                _c.label = 12;
+                directQuality_1 = [];
+                arrPromise = hashData.map(function (hashItem) { return __awaiter(_this, void 0, void 0, function () {
+                    var decryptData, parseDirect, arrParseDirect;
+                    var _this = this;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                decryptData = decode_1(hashItem);
+                                libs.log({
+                                    decryptData: decryptData
+                                }, PROVIDER, 'DECRYPT DATA');
+                                if (!decryptData) return [3, 2];
+                                parseDirect = decryptData.split(',');
+                                arrParseDirect = parseDirect.map(function (parseDirectItem) { return __awaiter(_this, void 0, void 0, function () {
+                                    var quality, urlDirect, requestData;
+                                    return __generator(this, function (_a) {
+                                        switch (_a.label) {
+                                            case 0:
+                                                quality = parseDirectItem.match(/^\[([0-9]+)p/i);
+                                                quality = quality ? quality[1] : '720';
+                                                urlDirect = parseDirectItem.replace(/^\[[^\]]+\]/i, '');
+                                                urlDirect = urlDirect.split(' or ');
+                                                urlDirect = urlDirect[0].trim();
+                                                libs.log({
+                                                    urlDirect: urlDirect
+                                                }, PROVIDER, 'urlDirect');
+                                                return [4, fetch(urlDirect, {
+                                                        redirect: 'manual',
+                                                    })];
+                                            case 1:
+                                                requestData = _a.sent();
+                                                libs.log({
+                                                    requestData: requestData
+                                                }, PROVIDER, 'REQUEST_DATA');
+                                                urlDirect = requestData.url;
+                                                directQuality_1.push({
+                                                    file: urlDirect,
+                                                    quality: Number(quality),
+                                                });
+                                                return [2];
+                                        }
+                                    });
+                                }); });
+                                return [4, Promise.all(arrParseDirect)];
+                            case 1:
+                                _a.sent();
+                                _a.label = 2;
+                            case 2: return [2];
+                        }
+                    });
+                }); });
+                return [4, Promise.all(arrPromise)];
             case 12:
-                if (!(_a < hashData_1.length)) return [3, 17];
-                hashItem = hashData_1[_a];
-                decryptData = decode(hashItem);
+                _a.sent();
+                directQuality_1 = _.orderBy(directQuality_1, ['quality'], ['desc']);
+                directQuality_1 = _.uniqBy(directQuality_1, 'quality');
                 libs.log({
-                    decryptData: decryptData
-                }, PROVIDER, 'DECRYPT DATA');
-                if (!decryptData) {
-                    return [3, 16];
-                }
-                parseDirect = decryptData.split(',');
-                directQuality = [];
-                _b = 0, parseDirect_1 = parseDirect;
-                _c.label = 13;
+                    directQuality: directQuality_1
+                }, PROVIDER, 'directQuality');
+                libs.embed_callback(directQuality_1[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], directQuality_1);
+                return [2, true];
             case 13:
-                if (!(_b < parseDirect_1.length)) return [3, 16];
-                parseDirectItem = parseDirect_1[_b];
-                quality = parseDirectItem.match(/^\[([0-9]+)p/i);
-                quality = quality ? quality[1] : '720';
-                urlDirect = parseDirectItem.replace(/^\[[^\]]+\]/i, '');
-                urlDirect = urlDirect.split(' or ');
-                urlDirect = urlDirect[0].trim();
-                libs.log({
-                    urlDirect: urlDirect
-                }, PROVIDER, 'urlDirect');
-                return [4, fetch(urlDirect, {
-                        redirect: 'manual',
-                    })];
-            case 14:
-                requestData = _c.sent();
-                libs.log({
-                    requestData: requestData
-                }, PROVIDER, 'REQUEST_DATA');
-                urlDirect = requestData.url;
-                libs.embed_callback(urlDirect, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{
-                        file: urlDirect,
-                        quality: Number(quality)
-                    }]);
-                _c.label = 15;
-            case 15:
-                _b++;
-                return [3, 13];
-            case 16:
-                _a++;
-                return [3, 12];
-            case 17: return [2, true];
-            case 18:
-                e_1 = _c.sent();
+                e_1 = _a.sent();
                 libs.log(e_1, PROVIDER, 'ERROR GET');
                 return [2];
-            case 19: return [2];
+            case 14: return [2];
         }
     });
 }); };

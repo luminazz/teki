@@ -3,13 +3,14 @@
     "init_ads": "admob"
   },
   "tmdb_apikey": {
-    "ios_key": "de46e6f53a84b5f39c219d07ad20b698",
-    "android_key": "de46e6f53a84b5f39c219d07ad20b698"
+    "ios_key": "63cbd7bb8ca53a31817a418b2cfb7e6a",
+    "android_key": "63cbd7bb8ca53a31817a418b2cfb7e6a"
   },
   "notification": {
     "url": "https://t.me/+HMlgAGWThNpkMjg1",
     "title": "Join Us",
     "contents": "<p>Come and be a part of our Telegram community. You can find the latest infomation and enjoy with friends.</p>",
-    "show": true
+    "show": true,
+    "key": "NOTI_1.0"
   }
 }
