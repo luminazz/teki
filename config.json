@@ -6,6 +6,8 @@
 		"dist/libs/embed.js",
 		"dist/libs/strings.js",
 		"dist/libs/logging.js",
-		"dist/libs/tmdb.js"
+		"dist/libs/tmdb.js",
+		"dist/libs/cookies.js",
+		"dist/libs/date.js"
 	]
 }

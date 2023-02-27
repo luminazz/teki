@@ -1,7 +1,8 @@
 {
 	"providers": [			
+		"dist/providers/gomovies.js",
 		"dist/providers/gammovies.js",
-		"dist/providers/uniquestream.js",
+"dist/providers/uniquestream.js",
 "dist/providers/loklok.js",
 "dist/providers/series9.js",
 "dist/providers/flixhq.js",
