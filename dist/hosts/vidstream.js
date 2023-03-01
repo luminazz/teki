@@ -66,6 +66,7 @@ hosts["vidstream"] = function (url, movieInfo, provider, config, callback) { ret
                         headers: headers,
                         metadata: {
                             subs: subs,
+                            url_webview: url,
                         },
                         callback: callback,
                         beforeLoadScript: "var open = XMLHttpRequest.prototype.open;\n            XMLHttpRequest.prototype.open = function() {\n                window.ReactNativeWebView.postMessage(JSON.stringify({arguments}));\n                open.apply(this, arguments);\n            };"

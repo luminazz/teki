@@ -119,6 +119,9 @@ callbacksEmbed["mcloud"] = function (dataCallback, provider, host, callback, met
                     'sec-fetch-dest': 'empty',
                     'sec-fetch-mode': 'cors',
                     'sec-fetch-site': 'cross-site',
+                }, {
+                    is_end_webview: true,
+                    url_webview: metadata.url_webview || ''
                 });
                 _c.label = 4;
             case 4:

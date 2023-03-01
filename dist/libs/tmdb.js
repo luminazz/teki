@@ -36,14 +36,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 libs.tmdb_movie_info = function (id, lang) { return __awaiter(_this, void 0, void 0, function () {
-    var API_KEY, url, result;
+    var configData, API_KEY, url, result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                API_KEY = '56fe967269070acc229414a3bdeed3b5';
+            case 0: return [4, libs.request_get("https://raw.githubusercontent.com/lulunnqqq/configs/main/data.json")];
+            case 1:
+                configData = _a.sent();
+                API_KEY = configData.tmdb_apikey.web_key;
                 url = "https://api.themoviedb.org/3/movie/".concat(id, "?api_key=").concat(API_KEY, "&language=").concat(lang);
                 return [4, libs.request_get(url)];
-            case 1:
+            case 2:
                 result = _a.sent();
                 return [2, {
                         title: result.title,
@@ -52,14 +54,16 @@ libs.tmdb_movie_info = function (id, lang) { return __awaiter(_this, void 0, voi
     });
 }); };
 libs.tmdb_tv_info = function (id, lang) { return __awaiter(_this, void 0, void 0, function () {
-    var API_KEY, url, result;
+    var configData, API_KEY, url, result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                API_KEY = '56fe967269070acc229414a3bdeed3b5';
+            case 0: return [4, libs.request_get("https://raw.githubusercontent.com/lulunnqqq/configs/main/data.json")];
+            case 1:
+                configData = _a.sent();
+                API_KEY = configData.tmdb_apikey.web_key;
                 url = "https://api.themoviedb.org/3/tv/".concat(id, "?api_key=").concat(API_KEY, "&language=").concat(lang);
                 return [4, libs.request_get(url)];
-            case 1:
+            case 2:
                 result = _a.sent();
                 console.log({ result: result }, 'tmdb_tv_info');
                 return [2, {

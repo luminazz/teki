@@ -85,7 +85,10 @@ callbacksEmbed["vidstream"] = function (dataCallback, provider, host, callback, 
                 patternQuality = embedData.match(/H([0-9]+)\/v\.m3u8/ig);
                 libs.log({ patternQuality: patternQuality, file: embedItem.file }, provider, 'PATTERN QUALITY VIDCLOUD');
                 if (!patternQuality || embedItem.file.indexOf('list.m3u8') == -1) {
-                    libs.embed_callback(embedItem.file, provider, host, 'Hls', callback, ++rank, subs);
+                    libs.embed_callback(embedItem.file, provider, host, 'Hls', callback, ++rank, subs, [], {}, {
+                        is_end_webview: true,
+                        url_webview: metadata.url_webview || ''
+                    });
                     return [3, 4];
                 }
                 directQuality = [];
@@ -125,6 +128,9 @@ callbacksEmbed["vidstream"] = function (dataCallback, provider, host, callback, 
                     'sec-fetch-dest': 'empty',
                     'sec-fetch-mode': 'cors',
                     'sec-fetch-site': 'cross-site',
+                }, {
+                    is_end_webview: true,
+                    url_webview: metadata.url_webview || ''
                 });
                 _c.label = 4;
             case 4:

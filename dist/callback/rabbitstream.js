@@ -84,7 +84,10 @@ callbacksEmbed["rabbitstream"] = function (dataCallback, provider, host, callbac
                     });
                 }
                 libs.log({ directQuality: directQuality }, provider, 'DIRECT QUALITY');
-                libs.embed_callback(firstFile, provider, host, 'Hls', callback, ++rank, tracks, directQuality);
+                libs.embed_callback(firstFile, provider, host, 'Hls', callback, ++rank, tracks, directQuality, {}, {
+                    is_end_webview: true,
+                    url_webview: metadata.url_webview || ''
+                });
                 _b.label = 3;
             case 3:
                 _i++;
