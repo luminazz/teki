@@ -9,14 +9,14 @@
       "init_ads": "admob"
     },
     "tmdb_apikey": {
-      "ios_key": "5228bff935f7bd2b18c04fc3439828c0",
-      "android_key": "5228bff935f7bd2b18c04fc3439828c0"
+      "ios_key": "7b1443c1b5f8c326e49e6200814cd220",
+      "android_key": "7b1443c1b5f8c326e49e6200814cd220"
     },
     "update_release": {
-      "version": "2.9",
-      "url": "https://github.com/hdoonline/hdonline/releases/download/rl/hdo-betav2.0.9.apk",
-      "contents1": "Fix recent postion.",
-      "contents2": "Fix loading source.",
+      "version": "3.0",
+      "url": "https://github.com/hdoonline/hdonline/releases/download/v2.0.11/hdobox_2.0.11.apk",
+      "contents1": "Add 4k Stream.",
+      "contents2": "Improvement and stability.",
       "contents3": "Update more source.",
       "force_update": true,
       "isUpdate": true
