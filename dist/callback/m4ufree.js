@@ -36,10 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 callbacksEmbed["m4ufree"] = function (dataCallback, provider, host, callback, metadata) { return __awaiter(_this, void 0, void 0, function () {
-    var parseCallback, parse, iframe;
+    var parseCallback, parse, iframe, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                _a.trys.push([0, 3, , 4]);
                 libs.log(dataCallback, provider, 'dataCallback');
                 parseCallback = JSON.parse(dataCallback);
                 if (!(parseCallback.responseURL.indexOf('/ajax') != -1 && parseCallback.responseText)) return [3, 2];
@@ -47,11 +48,19 @@ callbacksEmbed["m4ufree"] = function (dataCallback, provider, host, callback, me
                 iframe = parse("iframe.video").attr("src");
                 libs.log(iframe, provider, 'IFRAME CALLBACK');
                 if (!iframe) return [3, 2];
-                return [4, libs.embed_redirect(iframe, '', metadata.movieInfo, provider, callback)];
+                return [4, libs.embed_redirect(iframe, '', metadata.movieInfo, provider, callback, null, [], {
+                        is_end_webview: true,
+                        url_webview: metadata.url_webview || '',
+                    })];
             case 1:
                 _a.sent();
                 _a.label = 2;
-            case 2: return [2];
+            case 2: return [3, 4];
+            case 3:
+                error_1 = _a.sent();
+                libs.log({ error: error_1 }, provider, 'ERROR M4UFREE CALLBACK');
+                return [3, 4];
+            case 4: return [2];
         }
     });
 }); };

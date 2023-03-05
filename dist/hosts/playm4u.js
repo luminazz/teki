@@ -36,17 +36,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 hosts["play.playm4u"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, headers, movieId, domainGetDirect, body, playmeData, directUrl;
+    var DOMAIN, HOST, headers, movieId, domainGetDirect, body, playmeData, directUrl, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 DOMAIN = 'https://play.playm4u.xyz';
                 HOST = 'PLAYM4U';
                 headers = {
+                    authority: 'api-plhq.playm4u.xyz',
+                    accept: '*/*',
+                    'accept-language': 'en-US,en;q=0.9',
                     'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                    'referer': 'https://play.playm4u.xyz/',
+                    'origin': 'https://play.playm4u.xyz',
+                    'sec-ch-ua': '"Microsoft Edge";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
+                    'sec-ch-ua-mobile': '?0',
+                    'sec-ch-ua-platform': '"macOS"',
+                    'sec-fetch-dest': 'empty',
+                    'sec-fetch-mode': 'cors',
+                    'sec-fetch-site': 'same-site',
+                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.14'
                 };
-                movieId = url.match(/v1\/([A-z0-9]+)/i);
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                movieId = url.match(/play\/([A-z0-9]+)/i);
                 movieId = movieId ? movieId[1] : '';
                 libs.log(movieId, provider, 'MOVIE ID');
                 if (!movieId) {
@@ -56,173 +69,22 @@ hosts["play.playm4u"] = function (url, movieInfo, provider, config, callback) { 
                 body = qs.stringify({
                     referrer: 'https://ww1.m4ufree.tv',
                 });
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 1:
-                playmeData = _a.sent();
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 3];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
+                return [4, libs.request_post(domainGetDirect, headers, body)];
             case 2:
                 playmeData = _a.sent();
-                _a.label = 3;
-            case 3:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 5];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 4:
-                playmeData = _a.sent();
-                _a.label = 5;
-            case 5:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 7];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 6:
-                playmeData = _a.sent();
-                _a.label = 7;
-            case 7:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 9];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 8:
-                playmeData = _a.sent();
-                _a.label = 9;
-            case 9:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 11];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 10:
-                playmeData = _a.sent();
-                _a.label = 11;
-            case 11:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 13];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 12:
-                playmeData = _a.sent();
-                _a.label = 13;
-            case 13:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 15];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 14:
-                playmeData = _a.sent();
-                _a.label = 15;
-            case 15:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 17];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 16:
-                playmeData = _a.sent();
-                _a.label = 17;
-            case 17:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 19];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 18:
-                playmeData = _a.sent();
-                _a.label = 19;
-            case 19:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 21];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 20:
-                playmeData = _a.sent();
-                _a.label = 21;
-            case 21:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 23];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 22:
-                playmeData = _a.sent();
-                _a.label = 23;
-            case 23:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 25];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 24:
-                playmeData = _a.sent();
-                _a.label = 25;
-            case 25:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 27];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 26:
-                playmeData = _a.sent();
-                _a.label = 27;
-            case 27:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 29];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 28:
-                playmeData = _a.sent();
-                _a.label = 29;
-            case 29:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 31];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 30:
-                playmeData = _a.sent();
-                _a.label = 31;
-            case 31:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 33];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 32:
-                playmeData = _a.sent();
-                _a.label = 33;
-            case 33:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 35];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 34:
-                playmeData = _a.sent();
-                _a.label = 35;
-            case 35:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 37];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 36:
-                playmeData = _a.sent();
-                _a.label = 37;
-            case 37:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 39];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 38:
-                playmeData = _a.sent();
-                _a.label = 39;
-            case 39:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 41];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 40:
-                playmeData = _a.sent();
-                _a.label = 41;
-            case 41:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 43];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 42:
-                playmeData = _a.sent();
-                _a.label = 43;
-            case 43:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 45];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 44:
-                playmeData = _a.sent();
-                _a.label = 45;
-            case 45:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 47];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 46:
-                playmeData = _a.sent();
-                _a.label = 47;
-            case 47:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 49];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 48:
-                playmeData = _a.sent();
-                _a.label = 49;
-            case 49:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 51];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 50:
-                playmeData = _a.sent();
-                _a.label = 51;
-            case 51:
-                if (!(!playmeData.status || playmeData.status != 1 || playmeData.type == 1 || Array.isArray(playmeData.data))) return [3, 53];
-                return [4, libs.request_post(domainGetDirect, headers, body, false, false)];
-            case 52:
-                playmeData = _a.sent();
-                _a.label = 53;
-            case 53:
                 libs.log({ domainGetDirect: domainGetDirect, headers: headers, body: body, playmeData: playmeData }, provider, 'PLAY ME DATA');
                 directUrl = playmeData.data && !Array.isArray(playmeData.data) ? playmeData.data : '';
                 if (!directUrl) {
                     return [2];
                 }
                 libs.log({ headers: headers, body: body, domainGetDirect: domainGetDirect, playmeData: playmeData, directUrl: directUrl }, provider, 'PLAYDATA');
-                libs.embed_callback(directUrl, provider, HOST, 'Hls', callback);
-                return [2];
+                libs.embed_callback(directUrl, provider, HOST, 'Hls', callback, 1, [], [{ file: directUrl, quality: 1080 }], {}, config.options ? config.options : {});
+                return [3, 4];
+            case 3:
+                error_1 = _a.sent();
+                libs.log({ error: error_1 }, HOST, 'ERROR EMBED PLAYU');
+                return [3, 4];
+            case 4: return [2];
         }
     });
 }); };

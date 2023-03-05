@@ -46,44 +46,48 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-libs.embed_redirect = function (embed, quality, movieInfo, provider, callback, host, subs) { return __awaiter(_this, void 0, void 0, function () {
-    var hostname, headersData, contentLength;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!embed) {
+libs.embed_redirect = function (embed, quality, movieInfo, provider, callback, host, subs, options) {
+    if (options === void 0) { options = {}; }
+    return __awaiter(_this, void 0, void 0, function () {
+        var hostname, headersData, contentLength;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!embed) {
+                        return [2];
+                    }
+                    hostname = libs.url_get_host(embed);
+                    libs.log({ hostname: hostname, embed: embed }, provider, 'EMBED HOST');
+                    if (embed.indexOf('.m3u8') != -1 || embed.indexOf('.hls') != -1) {
+                        libs.embed_callback(embed, provider, host ? host : hostname.toUpperCase(), 'Hls', callback);
+                        return [2];
+                    }
+                    if (!hostname) {
+                        return [2];
+                    }
+                    if (quality) {
+                        libs.embed_callback(embed, provider, host ? host : hostname.toUpperCase(), '', callback);
+                        return [2];
+                    }
+                    if (hosts && hosts[hostname]) {
+                        hosts[hostname](embed, movieInfo, provider, {
+                            subs: subs ? subs : [],
+                            options: options,
+                        }, callback);
+                        return [2];
+                    }
+                    return [4, libs.request_head(embed, {})];
+                case 1:
+                    headersData = _a.sent();
+                    contentLength = headersData['content-length'];
+                    if (contentLength > 100000000) {
+                        libs.embed_callback(embed, provider, host ? host : hostname.toUpperCase(), '', callback);
+                    }
                     return [2];
-                }
-                hostname = libs.url_get_host(embed);
-                libs.log({ hostname: hostname, embed: embed }, provider, 'EMBED HOST');
-                if (embed.indexOf('.m3u8') != -1 || embed.indexOf('.hls') != -1) {
-                    libs.embed_callback(embed, provider, host ? host : hostname.toUpperCase(), 'Hls', callback);
-                    return [2];
-                }
-                if (!hostname) {
-                    return [2];
-                }
-                if (quality) {
-                    libs.embed_callback(embed, provider, host ? host : hostname.toUpperCase(), '', callback);
-                    return [2];
-                }
-                if (hosts && hosts[hostname]) {
-                    hosts[hostname](embed, movieInfo, provider, {
-                        subs: subs ? subs : []
-                    }, callback);
-                    return [2];
-                }
-                return [4, libs.request_head(embed, {})];
-            case 1:
-                headersData = _a.sent();
-                contentLength = headersData['content-length'];
-                if (contentLength > 100000000) {
-                    libs.embed_callback(embed, provider, host ? host : hostname.toUpperCase(), '', callback);
-                }
-                return [2];
-        }
+            }
+        });
     });
-}); };
+};
 libs.embed_parse_source = function (html) {
     var source = html.match(/sources *\: *([^\]]+)/i);
     source = source ? source[1] + "]" : "[]";
