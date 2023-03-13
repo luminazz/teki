@@ -36,47 +36,42 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, embeds, xstreamcdn, streamsb, xstreamcdn, streamsb;
+    var PROVIDER, DOMAIN, urlSearch, parseSearch_1, embed, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                PROVIDER = 'IEmbedSmashy';
-                DOMAIN = "https://series9.la";
+                PROVIDER = 'Ydatabasegdriveplayer';
+                DOMAIN = "https://databasegdriveplayer.xyz";
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
                 urlSearch = '';
-                if (movieInfo.type == 'tv') {
-                    urlSearch = "".concat(DOMAIN, "/film/").concat(libs.url_slug_search(movieInfo), "-season-").concat(movieInfo.season, "/watching.html");
+                if (movieInfo.type == 'movie') {
+                    urlSearch = "".concat(DOMAIN, "/player.php?imdb=").concat(movieInfo.imdb_id);
                 }
                 else {
-                    urlSearch = "".concat(DOMAIN, "/film/").concat(libs.url_slug_search(movieInfo), "/watching.html");
+                    urlSearch = "".concat(DOMAIN, "/player.php?imdb=").concat(movieInfo.imdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
                 }
-                libs.log({ urlSearch: urlSearch }, PROVIDER, 'URL SEARCH');
                 return [4, libs.request_get(urlSearch, {}, true)];
-            case 1:
-                parseSearch = _a.sent();
-                embeds = [];
-                if (!(movieInfo.type == 'movie')) return [3, 4];
-                xstreamcdn = parseSearch('div#list-eps div#server-29 a').attr('player-data');
-                streamsb = parseSearch('div#list-eps div#server-13 a').attr('player-data');
-                libs.log({ xstreamcdn: xstreamcdn, streamsb: streamsb }, PROVIDER, 'EMBED');
-                return [4, libs.embed_redirect(xstreamcdn, '', movieInfo, PROVIDER, callback, '')];
             case 2:
-                _a.sent();
-                return [4, libs.embed_redirect(streamsb, '', movieInfo, PROVIDER, callback, '')];
+                parseSearch_1 = _a.sent();
+                embed = [];
+                parseSearch_1('.list-server-items a').each(function (key, item) {
+                    var href = parseSearch_1(item).attr("href");
+                    if (href) {
+                        if (_.startsWith(href, '/')) {
+                            href = "http:".concat(href);
+                        }
+                        libs.log({ href: href }, PROVIDER, 'HREF');
+                        libs.embed_redirect(href, '', movieInfo, PROVIDER, callback, '');
+                    }
+                });
+                return [3, 4];
             case 3:
-                _a.sent();
-                return [3, 7];
-            case 4:
-                xstreamcdn = parseSearch("div#list-eps div#server-29 a[episode-data=".concat(movieInfo.episode, "]")).attr('player-data');
-                streamsb = parseSearch("div#list-eps div#server-13 a[episode-data=".concat(movieInfo.episode, "]")).attr('player-data');
-                libs.log({ xstreamcdn: xstreamcdn, streamsb: streamsb }, PROVIDER, 'EMBED');
-                return [4, libs.embed_redirect(xstreamcdn, '', movieInfo, PROVIDER, callback, '')];
-            case 5:
-                _a.sent();
-                return [4, libs.embed_redirect(streamsb, '', movieInfo, PROVIDER, callback, '')];
-            case 6:
-                _a.sent();
-                _a.label = 7;
-            case 7: return [2, true];
+                e_1 = _a.sent();
+                libs.log({ e: e_1 }, PROVIDER, 'ERROR');
+                return [3, 4];
+            case 4: return [2, true];
         }
     });
 }); };

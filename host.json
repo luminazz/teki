@@ -17,6 +17,7 @@
 "dist/hosts/fembedHd.js",
 "dist/hosts/vanfem.js",
 "dist/hosts/rabbitstream.js",
-"dist/hosts/streamsss.js"
+"dist/hosts/streamsss.js",
+"dist/hosts/membed.js"
 	]
 }

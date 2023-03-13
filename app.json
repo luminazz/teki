@@ -9,8 +9,8 @@
       "init_ads": "admob"
     },
     "tmdb_apikey": {
-      "ios_key": "7b1443c1b5f8c326e49e6200814cd220",
-      "android_key": "7b1443c1b5f8c326e49e6200814cd220"
+      "ios_key": "3f6036e41fc244bd77f0e28bc5f2904d",
+      "android_key": "3f6036e41fc244bd77f0e28bc5f2904d"
     },
     "update_release": {
       "version": "3.0",
