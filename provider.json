@@ -21,6 +21,7 @@
 		"dist/providers/hdmoviebox.js",
 		"dist/providers/xmovies.js",
 		"dist/providers/noverse.js",
-		"dist/providers/databasegdriveplayer.js"
+		"dist/providers/databasegdriveplayer.js",
+		"dist/providers/watchonline.js"
 	]
 }
