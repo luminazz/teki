@@ -81,7 +81,7 @@ hosts["streamsss"] = function (url, movieInfo, provider, config, callback) { ret
                         (code = code[code.length - 1]),
                         (code = code.replace('.html', '')));
                 hashCode = encode(code);
-                urlAjax = "".concat(DOMAIN, "/sources51/").concat(hashCode, "/");
+                urlAjax = "".concat(DOMAIN, "/sources15/").concat(hashCode, "/");
                 libs.log({
                     hashCode: hashCode,
                     urlAjax: urlAjax,
