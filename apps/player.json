@@ -9,5 +9,8 @@
     "build": 100,
     "forceUpdate": false,
     "isUpdate": false
+  },
+  "ads_config" : {
+    "show": false
   }
 }
