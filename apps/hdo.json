@@ -24,6 +24,8 @@
     "isUpdate": true
   },
   "app_player_config": {
-    "player_version_build": 1
+    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.3/mediaon-1.0.3.apk",
+    "player_version_build": 3,
+    "force_player": false
   }
 }
