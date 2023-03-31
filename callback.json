@@ -5,6 +5,7 @@
 		"dist/callback/lookmovie.js",
 		"dist/callback/rabbitstream.js",
 		"dist/callback/mcloud.js",
-		"dist/callback/vidstream.js"
+		"dist/callback/vidstream.js",
+		"dist/callback/soap2day.js"
 	]
 }

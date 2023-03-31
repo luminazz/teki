@@ -2,6 +2,7 @@
 	"providers": [				
 		
 		
+	"dist/providers/soap2day.js",
 	"dist/providers/m4ufree.js",
 	"dist/providers/rezka.js",
 	"dist/providers/gomovies.js",
@@ -18,5 +19,6 @@
 	"dist/providers/xmovies.js",
 	"dist/providers/noverse.js",
 	"dist/providers/databasegdriveplayer.js"
+	
 	]
 }
