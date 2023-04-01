@@ -71,13 +71,13 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 'accept-language': 'en-US,en;q=0.9',
                 'sec-ch-ua': '"Chromium";v="112", "Microsoft Edge";v="112", "Not:A-Brand";v="99"',
                 'sec-ch-ua-mobile': '?0',
-                'sec-ch-ua-platform': movieInfo.platform == 'android' ? "\"Android\"" : "\"macOS\"",
+                'sec-ch-ua-platform': "\"Android\"",
                 'sec-fetch-dest': 'document',
                 'sec-fetch-mode': 'navigate',
                 'sec-fetch-site': 'none',
                 'sec-fetch-user': '?1',
                 'upgrade-insecure-requests': '1',
-                'user-agent': movieInfo.platform == 'android' ? 'Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Mobile Safari/537.36' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.0.0'
+                'user-agent': 'Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Mobile Safari/537.36'
             };
             libs.log({ movieInfo: movieInfo }, PROVIDER, 'MOVIEINFO_SOAP');
             callback({
@@ -86,7 +86,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     host: PROVIDER,
                     url: DOMAINENTER,
                     headers: headers,
-                    userAgent: movieInfo.platform == 'android' ? 'Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Mobile Safari/537.36' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.0.0',
+                    userAgent: 'Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Mobile Safari/537.36',
                     metadata: {
                         url_webview: DOMAINENTER,
                         movieInfo: movieInfo,
