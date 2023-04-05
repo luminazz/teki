@@ -2,6 +2,7 @@
 	"providers": [				
 		
 		
+	"dist/providers/yesmovies.js",
 	"dist/providers/soap2day.js",
 	"dist/providers/m4ufree.js",
 	"dist/providers/rezka.js",

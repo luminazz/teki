@@ -18,6 +18,7 @@
 "dist/hosts/vanfem.js",
 "dist/hosts/rabbitstream.js",
 "dist/hosts/streamsss.js",
-"dist/hosts/membed.js"
+"dist/hosts/membed.js",
+"dist/hosts/vidcloud9.js"
 	]
 }
