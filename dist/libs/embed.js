@@ -402,44 +402,33 @@ libs.embed_fmovies_id = function (hash, headers, embedUrl) { return __awaiter(_t
         }
         return getPassword(js);
     }
-    var secretKey, parseEmbed, parseTime, jsData, js, id, result, e_1, decryptData;
+    var secretKey, e_1, decryptData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 secretKey = '';
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 4, , 5]);
+                _a.trys.push([1, 3, , 4]);
                 libs.log({
                     hash: hash,
                 }, 'HASH EMBED FMOVIES');
                 if (Array.isArray(hash)) {
                     return [2, hash];
                 }
-                return [4, libs.request_get(embedUrl, headers)];
+                return [4, libs.request_get("https://raw.githubusercontent.com/consumet/rapidclown/main/key.txt")];
             case 2:
-                parseEmbed = _a.sent();
-                parseTime = parseEmbed.match(/e4\-player\.min\.js\?v\=([0-9]+)/i);
-                parseTime = parseTime ? parseTime[1] : 0;
-                libs.log({ parseTime: parseTime }, 'PARSE TIME');
-                return [4, libs.request_get("https://dokicloud.one/js/player/prod/e4-player.min.js?v=".concat(parseTime))];
+                secretKey = _a.sent();
+                return [3, 4];
             case 3:
-                jsData = _a.sent();
-                js = jsData;
-                id = 4;
-                result = extractKeyComp(id, js)[0];
-                eval(result);
-                return [3, 5];
-            case 4:
                 e_1 = _a.sent();
                 console.log(e_1, { secretKey: secretKey }, 'errorDecrypt');
-                return [3, 5];
-            case 5:
+                return [3, 4];
+            case 4:
                 try {
                     libs.log({
                         secretKey: secretKey,
                         hash: hash,
-                        result: result
                     }, 'SECRET DECRYPT DATA FMOVIES');
                     decryptData = (crypto.AES.decrypt(hash, secretKey)).toString(crypto.enc.Utf8);
                     libs.log({
