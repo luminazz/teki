@@ -1,25 +1,23 @@
 {
 	"providers": [				
-		
-		
+		"dist/providers/gomovies.js",
 	"dist/providers/yesmovies.js",
-	"dist/providers/soap2day.js",
-	"dist/providers/m4ufree.js",
-	"dist/providers/rezka.js",
-	"dist/providers/gomovies.js",
-	"dist/providers/series9.js",
-	"dist/providers/st.js",
-	"dist/providers/pelisplus.js",
-	"dist/providers/allmovieforyou.js",
-	"dist/providers/cineb.js",
-	"dist/providers/vumoo.js",
-	"dist/providers/fmovies.js",
-	"dist/providers/fa.js",
-	"dist/providers/vidsrc.js",
-	"dist/providers/hdmoviebox.js",
-	"dist/providers/xmovies.js",
-	"dist/providers/noverse.js",
-	"dist/providers/databasegdriveplayer.js"
+"dist/providers/soap2day.js",
+"dist/providers/m4ufree.js",
+"dist/providers/rezka.js",
+"dist/providers/series9.js",
+"dist/providers/st.js",
+"dist/providers/pelisplus.js",
+"dist/providers/allmovieforyou.js",
+"dist/providers/cineb.js",
+"dist/providers/vumoo.js",
+"dist/providers/fmovies.js",
+"dist/providers/fa.js",
+"dist/providers/vidsrc.js",
+"dist/providers/hdmoviebox.js",
+"dist/providers/xmovies.js",
+"dist/providers/noverse.js",
+"dist/providers/databasegdriveplayer.js"
 	
 	]
 }
