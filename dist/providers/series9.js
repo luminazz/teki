@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, embeds, xstreamcdn, streamsb, xstreamcdn, streamsb;
+    var PROVIDER, DOMAIN, urlSearch, parseSearch, embeds;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -44,7 +44,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 DOMAIN = "https://series9.la";
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
-                    urlSearch = "".concat(DOMAIN, "/film/").concat(libs.url_slug_search(movieInfo), "-season-").concat(movieInfo.season, "/watching.html");
+                    urlSearch = "".concat(DOMAIN, "/film/").concat(libs.url_slug_search(movieInfo), "-season-").concat(movieInfo.season, "/watching.html?ep=").concat(movieInfo.episode);
                 }
                 else {
                     urlSearch = "".concat(DOMAIN, "/film/").concat(libs.url_slug_search(movieInfo), "/watching.html");
@@ -54,29 +54,34 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 1:
                 parseSearch = _a.sent();
                 embeds = [];
-                if (!(movieInfo.type == 'movie')) return [3, 4];
-                xstreamcdn = parseSearch('div#list-eps div#server-29 a').attr('player-data');
-                streamsb = parseSearch('div#list-eps div#server-13 a').attr('player-data');
-                libs.log({ xstreamcdn: xstreamcdn, streamsb: streamsb }, PROVIDER, 'EMBED');
-                return [4, libs.embed_redirect(xstreamcdn, '', movieInfo, PROVIDER, callback, '')];
-            case 2:
-                _a.sent();
-                return [4, libs.embed_redirect(streamsb, '', movieInfo, PROVIDER, callback, '')];
-            case 3:
-                _a.sent();
-                return [3, 7];
-            case 4:
-                xstreamcdn = parseSearch("div#list-eps div#server-29 a[episode-data=".concat(movieInfo.episode, "]")).attr('player-data');
-                streamsb = parseSearch("div#list-eps div#server-13 a[episode-data=".concat(movieInfo.episode, "]")).attr('player-data');
-                libs.log({ xstreamcdn: xstreamcdn, streamsb: streamsb }, PROVIDER, 'EMBED');
-                return [4, libs.embed_redirect(xstreamcdn, '', movieInfo, PROVIDER, callback, '')];
-            case 5:
-                _a.sent();
-                return [4, libs.embed_redirect(streamsb, '', movieInfo, PROVIDER, callback, '')];
-            case 6:
-                _a.sent();
-                _a.label = 7;
-            case 7: return [2, true];
+                libs.log('asdasdasdasdas', 'asdasd', 'asdasd');
+                if (movieInfo.type == 'movie') {
+                    libs.log({ length: parseSearch('.btn-eps').length }, PROVIDER, 'MOVIE LENGTH');
+                    parseSearch('.btn-eps').each(function (key, item) {
+                        var embedUrl = parseSearch(item).attr('player-data');
+                        libs.log({ embedUrl: embedUrl }, PROVIDER, 'EMBED URL');
+                        if (embedUrl) {
+                            if (_.startsWith(embedUrl, '/')) {
+                                embedUrl = "https:".concat(embedUrl);
+                            }
+                            libs.embed_redirect(embedUrl, '', movieInfo, PROVIDER, callback, '');
+                        }
+                    });
+                }
+                else {
+                    libs.log({ length: parseSearch("a[episode-data=".concat(movieInfo.episode, "]")).length }, PROVIDER, 'EPISODE LENGTH');
+                    parseSearch("a[episode-data=".concat(movieInfo.episode, "]")).each(function (key, item) {
+                        var embedUrl = parseSearch(item).attr('player-data');
+                        libs.log({ embedUrl: embedUrl }, PROVIDER, 'EMBED URL');
+                        if (embedUrl) {
+                            if (_.startsWith(embedUrl, '/')) {
+                                embedUrl = "https:".concat(embedUrl);
+                            }
+                            libs.embed_redirect(embedUrl, '', movieInfo, PROVIDER, callback, '');
+                        }
+                    });
+                }
+                return [2, true];
         }
     });
 }); };

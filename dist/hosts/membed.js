@@ -35,10 +35,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["membed"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var userAgent, decrypt, encrypt, DOMAIN, HOST, newUrl, parseURl, scriptData, encryptParam, parseEncypt, parseArrEncrypt, _i, parseEncypt_1, parseItem, splitItem, id, hashId, directUrl, directData, decryptDirectData, parseDirectData, directQuality, directFile;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+hosts["movembed"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var userAgent, decrypt, encrypt, DOMAIN, HOST, newUrl, parseURl, scriptData, encryptParam, parseEncypt, parseArrEncrypt, _i, parseEncypt_1, parseItem, splitItem, id, hashId, directUrl, directData, decryptDirectData, parseDirectData, directQuality, directFile, parseDirectFile, matchQuality, parseDirectQuality, _a, matchQuality_1, matchQualityItem, quality;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
                 userAgent = libs.request_getRandomUserAgent();
                 decrypt = function (str) {
@@ -56,13 +56,13 @@ hosts["membed"] = function (url, movieInfo, provider, config, callback) { return
                         'iv': cryptoS['enc']['Utf8']['parse'](_0x48af28)
                     })['toString']();
                 };
-                DOMAIN = 'https://membed1.net';
+                DOMAIN = 'https://movembed.cc';
                 HOST = 'MEMBED';
                 newUrl = url.replace('membed.net', 'membed1.net');
                 newUrl = url.replace('http:', 'https:');
                 return [4, libs.request_get(newUrl, {}, true)];
             case 1:
-                parseURl = _a.sent();
+                parseURl = _b.sent();
                 scriptData = parseURl("script[data-name='crypto']").attr('data-value');
                 libs.log({ scriptData: scriptData }, provider, 'SCRIPT Data');
                 encryptParam = decrypt(scriptData);
@@ -76,13 +76,13 @@ hosts["membed"] = function (url, movieInfo, provider, config, callback) { return
                     hashId = encrypt(id);
                     parseArrEncrypt.push("".concat(splitItem[0], "=").concat(hashId));
                 }
-                directUrl = "https://membed1.com/encrypt-ajax.php?".concat(parseArrEncrypt.join('&'));
+                directUrl = "".concat(DOMAIN, "/encrypt-ajax.php?").concat(parseArrEncrypt.join('&'));
                 return [4, libs.request_get(directUrl, {
                         'Accept': 'application/json, text/javascript, */*; q=0.01',
                         'X-Requested-With': 'XMLHttpRequest'
                     })];
             case 2:
-                directData = _a.sent();
+                directData = _b.sent();
                 libs.log({ directUrl: directUrl }, provider, 'direct url');
                 libs.log({ directData: directData }, provider, 'direct Data');
                 decryptDirectData = decrypt(directData.data || '');
@@ -96,7 +96,27 @@ hosts["membed"] = function (url, movieInfo, provider, config, callback) { return
                 if (!directFile) {
                     return [2];
                 }
-                libs.embed_callback(directFile, provider, HOST, 'Hls', callback, 1, [], [{ file: directFile, quality: 720 }]);
+                return [4, libs.request_get(directFile)];
+            case 3:
+                parseDirectFile = _b.sent();
+                matchQuality = parseDirectFile.match(/\.([0-9]+)\.m3u8/img);
+                libs.log({ matchQuality: matchQuality, parseDirectFile: parseDirectFile, directFile: directFile }, provider, "MATCH QUALITY");
+                parseDirectQuality = [];
+                for (_a = 0, matchQuality_1 = matchQuality; _a < matchQuality_1.length; _a++) {
+                    matchQualityItem = matchQuality_1[_a];
+                    quality = matchQualityItem.match(/([0-9]+)/i);
+                    quality = quality ? Number(quality[1]) : '720';
+                    parseDirectQuality.push({
+                        file: directFile.replace('.m3u8', matchQualityItem),
+                        quality: quality,
+                    });
+                }
+                parseDirectQuality = _.orderBy(parseDirectQuality, ['quality'], ['desc']);
+                libs.log({ parseDirectQuality: parseDirectQuality }, provider, 'parseDirectQuality');
+                if (!parseDirectQuality.length) {
+                    return [2];
+                }
+                libs.embed_callback(parseDirectQuality[0].file, provider, HOST, 'Hls', callback, 1, [], parseDirectQuality);
                 return [2];
         }
     });
