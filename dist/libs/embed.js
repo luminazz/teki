@@ -416,13 +416,13 @@ libs.embed_fmovies_id = function (hash, headers, embedUrl) { return __awaiter(_t
                 if (Array.isArray(hash)) {
                     return [2, hash];
                 }
-                return [4, libs.request_get("https://raw.githubusercontent.com/consumet/rapidclown/main/key.txt")];
+                return [4, libs.request_get("https://raw.githubusercontent.com/enimax-anime/key/e4/key.txt")];
             case 2:
                 secretKey = _a.sent();
                 return [3, 4];
             case 3:
                 e_1 = _a.sent();
-                console.log(e_1, { secretKey: secretKey }, 'errorDecrypt');
+                libs.log({ e: e_1, secretKey: secretKey }, 'errorDecrypt');
                 return [3, 4];
             case 4:
                 try {
@@ -438,7 +438,7 @@ libs.embed_fmovies_id = function (hash, headers, embedUrl) { return __awaiter(_t
                     return [2, JSON.parse(decryptData)];
                 }
                 catch (e) {
-                    console.log(e, { secretKey: secretKey }, 'errorDecrypt_2');
+                    libs.log({ secretKey: secretKey, e: e }, 'errorDecrypt_2');
                 }
                 return [2, ''];
         }

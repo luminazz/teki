@@ -146,7 +146,6 @@ libs.request_get = function (url, headers, isCheerio, isRecursive, retry) {
                     return [2, requestData.data];
                 case 2:
                     e_1 = _a.sent();
-                    console.log("error_request_get", url, e_1);
                     if (!isRecursive || (isRecursive && retry <= 0)) {
                         return [2, ""];
                     }
@@ -159,8 +158,9 @@ libs.request_get = function (url, headers, isCheerio, isRecursive, retry) {
         });
     });
 };
-libs.request_status_code = function (url, headers) {
+libs.request_status_code = function (url, headers, isDefaultHeader) {
     if (headers === void 0) { headers = {}; }
+    if (isDefaultHeader === void 0) { isDefaultHeader = true; }
     return __awaiter(_this, void 0, void 0, function () {
         var defaultHeaders, requestData, e_2;
         return __generator(this, function (_a) {
@@ -168,7 +168,7 @@ libs.request_status_code = function (url, headers) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     defaultHeaders = headers;
-                    if (!defaultHeaders['user-agent']) {
+                    if (!defaultHeaders['user-agent'] && isDefaultHeader) {
                         defaultHeaders['user-agent'] = libs.request_getRandomUserAgent();
                     }
                     return [4, axiosS.get(url, {
@@ -206,7 +206,6 @@ libs.request_head = function (url, headers) {
                     return [2, requestData.headers];
                 case 2:
                     e_3 = _a.sent();
-                    console.log("error_request_head", url, String(e_3));
                     return [2, ""];
                 case 3: return [2];
             }
@@ -230,13 +229,9 @@ libs.request_get_redirect_url = function (url, headers) {
                         })];
                 case 1:
                     requestData = _a.sent();
-                    console.log({
-                        request: requestData.request,
-                    }, "data_request_request_get_redirect_url", e);
                     return [2, requestData.request.responseURL];
                 case 2:
                     e_4 = _a.sent();
-                    console.log("error_request_request_get_redirect_url", e_4);
                     return [2, ""];
                 case 3: return [2];
             }
@@ -263,7 +258,6 @@ libs.request_put = function (url, headers, body) {
                     return [2, requestData.data];
                 case 2:
                     e_5 = _a.sent();
-                    console.log("error_request_put", e_5);
                     return [2, ""];
                 case 3: return [2];
             }
@@ -296,7 +290,6 @@ libs.request_post = function (url, headers, body, isCheerio, isUserAgentDefault)
                     return [2, requestData.data];
                 case 2:
                     e_6 = _a.sent();
-                    console.log("error_request_post", { url: url, headers: headers, body: body }, e_6);
                     return [2, ""];
                 case 3: return [2];
             }

@@ -61,12 +61,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (_.startsWith(parseEmbed, '/')) {
                     parseEmbed = "https:".concat(parseEmbed);
                 }
-                parseEmbed = parseEmbed.replace('https://source.vidsrc.me/source', 'https://vidsrc.stream/pro');
+                parseEmbed = parseEmbed.replace('https://rcp.vidsrc.me/rcp', 'https://v2.vidsrc.me/srcrcp');
                 libs.log({
                     parseEmbed: parseEmbed
                 }, PROVIDER, 'PARSE EMBED REPLACE');
                 return [4, libs.request_get(parseEmbed, {
-                        referer: 'https://source.vidsrc.me/'
+                        referer: 'https://v2.vidsrc.me/'
                     })];
             case 2:
                 parseHls = _a.sent();
