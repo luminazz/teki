@@ -46,9 +46,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        urlSearch = "".concat(DOMAIN, "/ffix.php?tmdb=").concat(movieInfo.tmdb_id);
+                        urlSearch = "".concat(DOMAIN, "/ffix1.php?tmdb=").concat(movieInfo.tmdb_id);
                         if (movieInfo.type == 'tv') {
-                            urlSearch = "".concat(DOMAIN, "/ffix.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
+                            urlSearch = "".concat(DOMAIN, "/ffix1.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
                         }
                         libs.log({
                             urlSearch: urlSearch
@@ -173,7 +173,6 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
             });
         }); };
-        dude();
         fflix();
         return [2];
     });
