@@ -53,7 +53,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         libs.log({
                             urlSearch: urlSearch
                         }, PROVIDER, 'URL SEARCH');
-                        return [4, libs.request_get(urlSearch, {})];
+                        return [4, libs.request_get(urlSearch, {
+                                Referer: movieInfo.type == 'tv' ? "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode) : "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id)
+                            })];
                     case 1:
                         htmlDetail = _a.sent();
                         fileDetail = htmlDetail.match(/file *\: *\"([^\"]+)/i);

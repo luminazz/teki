@@ -19,6 +19,7 @@
 "dist/hosts/rabbitstream.js",
 "dist/hosts/streamsss.js",
 "dist/hosts/membed.js",
-"dist/hosts/vidcloud9.js"
+"dist/hosts/vidcloud9.js",
+"dist/hosts/play9str_playm4u.js"
 	]
 }
