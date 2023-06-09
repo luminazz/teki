@@ -38,3 +38,7 @@ libs.url_extractRootDomain = function (url) {
     }
     return domain;
 };
+libs.url_getHttp = function (str) {
+    var match = str.match(/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])/ig);
+    return match ? match : [];
+};

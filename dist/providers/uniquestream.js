@@ -41,7 +41,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         switch (_b.label) {
             case 0:
                 PROVIDER = 'DUniqueStream';
-                DOMAIN = "https://uniquestreaming.net";
+                DOMAIN = "https://uniquestream.net";
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
                     urlSearch = "".concat(DOMAIN, "/episodes/").concat(libs.url_slug_search(movieInfo), "-season-").concat(movieInfo.season, "-episode-").concat(movieInfo.episode);
@@ -112,11 +112,14 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 parseHls = _b.sent();
                 directUrl = parseHls.match(/let *url *\= *\'([^\']+)/i);
                 directUrl = directUrl ? directUrl[1] : '';
+                directUrl = directUrl.replace("/master/", "/shared/");
                 libs.log({ directUrl: directUrl }, PROVIDER, 'DIRECT URL');
                 if (!directUrl) {
                     return [3, 8];
                 }
-                libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'hls', callback, 1, [], []);
+                libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'hls', callback, 1, [], [], {
+                    Referer: hlsUrl
+                });
                 _b.label = 8;
             case 8:
                 _a++;

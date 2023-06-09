@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, LINK_DETAIL, TV_LINK_DETAIL, _loop_1, _i, TV_LINK_DETAIL_1, linkTvItem, filmId, serverIds, apiUrlEmbed, parseEmbedServer_1, apiUrlGetSeason, parseGetSeason_1, seasonId_1, apiUrlGetEpisode, episodeId_1, parseGetEpisode_1, urlGetEmbedTv, parseEmbedTv_1, apiGetLinkEmbed, _a, serverIds_1, serverIdItem, getLinkEmbedData;
+    var PROVIDER, DOMAIN, urlSearch, parseSearch, LINK_DETAIL, TV_LINK_DETAIL, flagTv, _loop_1, _i, TV_LINK_DETAIL_1, linkTvItem, filmId, serverIds, apiUrlEmbed, parseEmbedServer_1, apiUrlGetSeason, parseGetSeason_1, seasonId_1, apiUrlGetEpisode, episodeId_1, parseGetEpisode_1, urlGetEmbedTv, parseEmbedTv_1, apiGetLinkEmbed, _a, serverIds_1, serverIdItem, getLinkEmbedData;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -71,6 +71,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                 });
                 libs.log({ TV_LINK_DETAIL: TV_LINK_DETAIL }, PROVIDER, 'TV_LINK_DETAIL');
+                flagTv = false;
                 if (!(movieInfo.type == 'tv' && TV_LINK_DETAIL.length)) return [3, 5];
                 _loop_1 = function (linkTvItem) {
                     var parseTvLinkDetail, yearTv;
@@ -90,7 +91,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                         yearTv = text.match(/Released *\: *([0-9]+)/i);
                                         yearTv = yearTv ? yearTv[1] : 0;
                                         libs.log({ yearTv: yearTv }, PROVIDER, 'YEARTV');
-                                        if (yearTv == movieInfo.year) {
+                                        if (yearTv == movieInfo.year && !flagTv) {
+                                            flagTv = true;
                                             LINK_DETAIL = linkTvItem;
                                         }
                                     }
