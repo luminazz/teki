@@ -1,0 +1,8 @@
+{
+  "update_release": {
+    "build": 4,
+    "url": "https://github.com/hdoonline/hdonline/releases/download/v2.0.15/hdo.2.0.15v.apk",
+    "contents": "There is a new update, please download to experience.",
+    "force_update": false
+  }
+}

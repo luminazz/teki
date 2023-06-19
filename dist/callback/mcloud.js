@@ -36,11 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 callbacksEmbed["mcloud"] = function (dataCallback, provider, host, callback, metadata) { return __awaiter(_this, void 0, void 0, function () {
-    var headers, subs, data, endpoint, urlEmbed, dataEmbed, rank, _i, _a, embedItem, embedData, patternQuality, directQuality, _b, patternQuality_1, patternItem, sizeQuality, urlDirect, urlDirect, e_1;
+    var headers, subs, data, endpoint, urlEmbed, dataEmbed, rank, _i, _a, embedItem, embedData, patternQuality, directQuality, _b, patternQuality_1, patternItem, sizeQuality, urlDirect, urlDirect, e_1, e_2;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
-                _c.trys.push([0, 6, , 7]);
+                _c.trys.push([0, 9, , 10]);
                 headers = {
                     'Referer': "".concat(metadata.domain, "/"),
                     'user-agent': libs.request_getRandomUserAgent()
@@ -69,26 +69,29 @@ callbacksEmbed["mcloud"] = function (dataCallback, provider, host, callback, met
                 _i = 0, _a = dataEmbed.data.media.sources;
                 _c.label = 2;
             case 2:
-                if (!(_i < _a.length)) return [3, 5];
+                if (!(_i < _a.length)) return [3, 8];
                 embedItem = _a[_i];
-                if (!embedItem.file) {
-                    return [3, 4];
-                }
-                if (!(embedItem.file.indexOf('vidstream') != -1 || embedItem.file.indexOf('mcloud.to') != -1 || embedItem.file.indexOf('vizcloud') != -1)) return [3, 4];
-                return [4, libs.request_get(embedItem.file, headers)];
+                _c.label = 3;
             case 3:
+                _c.trys.push([3, 6, , 7]);
+                if (!embedItem.file) {
+                    return [3, 7];
+                }
+                if (!(embedItem.file.indexOf('vidstream') != -1 || embedItem.file.indexOf('mcloud.to') != -1 || embedItem.file.indexOf('vizcloud') != -1)) return [3, 5];
+                return [4, libs.request_get(embedItem.file, headers)];
+            case 4:
                 embedData = _c.sent();
                 libs.log({
                     embedData: embedData
                 }, provider, 'EMBED PARSE DATA');
                 if (!embedData) {
-                    return [3, 4];
+                    return [3, 7];
                 }
                 patternQuality = embedData.match(/hls\/([0-9]+)\/[0-9]+\.m3u8/ig);
                 libs.log({ patternQuality: patternQuality, file: embedItem.file }, provider, 'PATTERN QUALITY');
                 if (!patternQuality) {
-                    libs.embed_callback(embedItem.file, provider, HOST, 'Hls', callback, ++rank, config.subs ? config.subs : []);
-                    return [3, 4];
+                    libs.embed_callback(embedItem.file, provider, host, 'Hls', callback, ++rank, config.subs ? config.subs : []);
+                    return [3, 7];
                 }
                 directQuality = [];
                 for (_b = 0, patternQuality_1 = patternQuality; _b < patternQuality_1.length; _b++) {
@@ -125,18 +128,23 @@ callbacksEmbed["mcloud"] = function (dataCallback, provider, host, callback, met
                     is_end_webview: true,
                     url_webview: metadata.url_webview || ''
                 });
-                _c.label = 4;
-            case 4:
-                _i++;
-                return [3, 2];
+                _c.label = 5;
             case 5: return [3, 7];
             case 6:
                 e_1 = _c.sent();
-                libs.log({
-                    e: e_1
-                }, provider, 'ERROR MCLOUD');
+                libs.log({ e: e_1 }, host, "ERROR LOOP");
                 return [3, 7];
-            case 7: return [2];
+            case 7:
+                _i++;
+                return [3, 2];
+            case 8: return [3, 10];
+            case 9:
+                e_2 = _c.sent();
+                libs.log({
+                    e: e_2
+                }, provider, 'ERROR MCLOUD');
+                return [3, 10];
+            case 10: return [2];
         }
     });
 }); };

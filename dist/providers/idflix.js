@@ -35,52 +35,56 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["streamhub"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, headers, parseEmbed, scriptEval, unpack, source, parseDirect, directUrl;
+source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var PROVIDER, DOMAIN, urlSearch, parseSeach, id, headers, body, urlAjaxEmbed, embedData, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                DOMAIN = 'https://streamhub.to/';
-                HOST = 'STREAMHUB';
-                headers = {
-                    'content-type': 'application/json;charset=UTF-8'
-                };
-                return [4, libs.request_get(url.trim(), {}, true)];
+                PROVIDER = 'DIdFlix';
+                DOMAIN = "https://77.105.142.75";
+                _a.label = 1;
             case 1:
-                parseEmbed = _a.sent();
-                scriptEval = '';
-                parseEmbed('script').each(function (key, item) {
-                    if (parseEmbed(item).text().indexOf('eval(') != -1) {
-                        scriptEval = parseEmbed(item).text();
-                    }
-                });
-                if (!scriptEval) {
-                    return [2];
+                _a.trys.push([1, 5, , 6]);
+                urlSearch = "";
+                if (movieInfo.type == 'movie') {
+                    urlSearch = "".concat(DOMAIN, "/movie/").concat(libs.url_slug_search(movieInfo), "-").concat(movieInfo.year);
                 }
-                unpack = libs.string_unpack(scriptEval);
-                libs.log({
-                    unpack: unpack,
-                }, provider, 'UNPACK REPLACE');
-                source = unpack.match(/src *\: *\"([^\"]+)/i);
-                source = source ? source[1] : '';
-                libs.log({
-                    unpack: unpack,
-                    source: source
-                }, provider, 'UNPACK');
-                if (!source) {
-                    return [2];
+                else {
+                    urlSearch = "".concat(DOMAIN, "/episode/").concat(libs.url_slug_search(movieInfo), "-season-").concat(movieInfo.season, "-episode-").concat(movieInfo.episode);
                 }
-                return [4, libs.request_get(source, {})];
+                libs.log({ urlSearch: urlSearch }, PROVIDER, "URL SEARCH");
+                return [4, libs.request_get(urlSearch, {}, true)];
             case 2:
-                parseDirect = _a.sent();
-                directUrl = parseDirect.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
-                directUrl = directUrl ? directUrl[0] : "";
-                libs.log({ directUrl: directUrl }, HOST, "DIRECT URl");
-                if (!directUrl) {
+                parseSeach = _a.sent();
+                id = parseSeach("#dooplay-ajax-counter").attr("data-postid");
+                libs.log({ urlSearch: urlSearch, id: id }, PROVIDER, "URL SEARCH");
+                headers = {
+                    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                    "Referer": urlSearch
+                };
+                body = qs.stringify({
+                    action: "doo_player_ajax",
+                    post: id,
+                    nume: 1,
+                    type: movieInfo.type == 'movie' ? 'movie' : 'tv'
+                });
+                urlAjaxEmbed = "".concat(DOMAIN, "/wp-admin/admin-ajax.php");
+                return [4, libs.request_post(urlAjaxEmbed, headers, body)];
+            case 3:
+                embedData = _a.sent();
+                libs.log({ embedData: embedData }, PROVIDER, "EMBED DATA");
+                if (!embedData.embed_url) {
                     return [2];
                 }
-                libs.embed_callback(directUrl, provider, HOST, 'Hls', callback);
-                return [2];
+                return [4, libs.embed_redirect(embedData.embed_url, '', movieInfo, PROVIDER, callback, undefined, [])];
+            case 4:
+                _a.sent();
+                return [3, 6];
+            case 5:
+                e_1 = _a.sent();
+                libs.log(e_1, PROVIDER, 'ERROR');
+                return [3, 6];
+            case 6: return [2, true];
         }
     });
 }); };

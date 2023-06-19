@@ -87,7 +87,7 @@ callbacksEmbed["vizcloud"] = function (dataCallback, provider, host, callback, m
                 patternQuality = embedData.match(/H[0-9]+\/v\.m3u8/ig);
                 libs.log({ patternQuality: patternQuality, file: embedItem.file }, provider, 'PATTERN QUALITY');
                 if (!patternQuality) {
-                    libs.embed_callback(embedItem.file, provider, HOST, 'Hls', callback, ++rank, config.subs ? config.subs : []);
+                    libs.embed_callback(embedItem.file, provider, host, 'Hls', callback, ++rank, config.subs ? config.subs : []);
                     return [3, 4];
                 }
                 directQuality = [];

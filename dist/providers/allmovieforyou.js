@@ -40,8 +40,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                PROVIDER = 'RALLMOVIEFORYOU';
-                DOMAIN = "https://allmoviesforyou.net";
+                PROVIDER = 'OALLMOVIEFORYOU';
+                DOMAIN = "https://allmovies.gg";
                 urlSearch = "".concat(DOMAIN, "/?s=").concat(libs.url_slug_search(movieInfo, '+'));
                 return [4, libs.request_get(urlSearch, {}, true)];
             case 1:

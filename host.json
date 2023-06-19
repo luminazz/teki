@@ -9,7 +9,6 @@
 "dist/hosts/vidstream.js",
 "dist/hosts/vizcloud2.js",
 "dist/hosts/vidembed.js",
-"dist/hosts/vizcloud.js",
 "dist/hosts/mzzcloud.js",
 "dist/hosts/streamhub.js",
 "dist/hosts/dokicloud.js",
@@ -20,6 +19,8 @@
 "dist/hosts/streamsss.js",
 "dist/hosts/membed.js",
 "dist/hosts/vidcloud9.js",
-"dist/hosts/play9str_playm4u.js"
+"dist/hosts/play9str_playm4u.js",
+"dist/hosts/jeniusplay.js",
+"dist/hosts/streamtape.js"
 	]
 }

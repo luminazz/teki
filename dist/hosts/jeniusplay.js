@@ -35,63 +35,69 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["streamtape"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, headers, htmlDetail, parseHtmlDetail, videoDataUri, dataEmbed, e_1, e_2;
+hosts["jeniusplay"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var DOMAIN, HOST, id, urlDirect, body, headers, directData, parseDirectData, directQualityData, qualityData, qualityUrl, key, quality, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                DOMAIN = 'https://streamtape.com';
-                HOST = 'Streamtape';
+                DOMAIN = 'https://jeniusplay.com';
+                HOST = 'jeniusplay';
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 7, , 8]);
+                _a.trys.push([1, 4, , 5]);
+                id = url.match(/\/video\/([A-z0-9]+)/i);
+                id = id ? id[1] : "";
+                libs.log({ id: id }, HOST, "ID");
+                if (!id) {
+                    return [2];
+                }
+                urlDirect = "".concat(DOMAIN, "/player/index.php?data=").concat(id, "&do=getVideo");
+                body = qs.stringify({
+                    hash: id,
+                    r: "https://77.105.142.75/"
+                });
                 headers = {
-                    "referer": url,
-                    "user-agent": libs.request_getRandomUserAgent(),
+                    'Content-type': "application/x-www-form-urlencoded; charset=UTF-8",
+                    Origin: DOMAIN,
+                    "X-Requested-With": "XMLHttpRequest"
                 };
-                return [4, libs.request_get(url, headers, false)];
+                return [4, libs.request_post(urlDirect, headers, body)];
             case 2:
-                htmlDetail = _a.sent();
-                parseHtmlDetail = htmlDetail.match(/document\.getElementById\(\'norobotlink\'\)\.innerHTML \= \'([^\']+)\' *\+ *\(\'([^\']+)/i);
-                if (!parseHtmlDetail) {
+                directData = _a.sent();
+                libs.log({ directData: directData, body: body, urlDirect: urlDirect }, HOST, "DIRECT DATA REQUEST");
+                if (!directData.videoSource) {
                     return [2];
                 }
-                videoDataUri = parseHtmlDetail[1] + parseHtmlDetail[2].substring(1).substring(2);
-                if (!videoDataUri) {
-                    return [2];
-                }
-                if (_.startsWith(videoDataUri, "/")) {
-                    videoDataUri = "https:".concat(videoDataUri);
-                }
-                libs.log({ videoDataUri: videoDataUri }, provider, 'videoDataUri');
-                _a.label = 3;
+                return [4, libs.request_get(directData.videoSource)];
             case 3:
-                _a.trys.push([3, 5, , 6]);
-                return [4, fetch(videoDataUri, {
-                        redirect: 'manual',
-                        method: 'HEAD',
-                        headers: {
-                            "user-agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36",
-                            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
-                        }
-                    })];
-            case 4:
-                dataEmbed = _a.sent();
-                libs.log({ redirect_url: dataEmbed.url }, provider, "DATA EMBED URL");
-                if (dataEmbed.url && dataEmbed.url.indexOf("tapecontent") != -1) {
-                    libs.embed_redirect(dataEmbed.url, 'hls', movieInfo, provider, callback, undefined, []);
+                parseDirectData = _a.sent();
+                directQualityData = parseDirectData.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
+                qualityData = parseDirectData.match(/NAME\=\"([0-9]+)/ig);
+                libs.log({ directQualityData: directQualityData, qualityData: qualityData }, HOST, "QUALITY DATA");
+                qualityUrl = [];
+                for (key in directQualityData) {
+                    quality = 720;
+                    if (qualityData[key]) {
+                        quality = qualityData[key].match(/([0-9]+)/i);
+                        quality = quality ? Number(quality[1]) : 720;
+                    }
+                    qualityUrl.push({
+                        file: directQualityData[key],
+                        quality: quality
+                    });
                 }
-                return [3, 6];
-            case 5:
+                libs.log({ qualityUrl: qualityUrl }, HOST, "QUALITY URL");
+                if (qualityUrl.length == 0) {
+                    return [2];
+                }
+                qualityUrl = _.orderBy(qualityUrl, ['quality'], ['desc']);
+                libs.embed_callback(qualityUrl[0].file, provider, HOST, 'Hls', callback, 1, [], qualityUrl);
+                return [3, 5];
+            case 4:
                 e_1 = _a.sent();
-                libs.log({ error: e_1 }, provider, "REDIRECT URL");
-                return [3, 6];
-            case 6: return [3, 8];
-            case 7:
-                e_2 = _a.sent();
-                libs.log({ e: e_2 }, HOST, "ERROR");
-                return [3, 8];
-            case 8: return [2];
+                libs.log({ e: e_1 }, HOST, "ERROR");
+                return [3, 5];
+            case 5: return [2];
         }
     });
 }); };
