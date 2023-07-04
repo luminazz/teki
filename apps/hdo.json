@@ -1,11 +1,11 @@
 {
   "notification": {
-    "url": "https://t.me/+HMlgAGWThNpkMjg1",
-    "title": "Join Us.",
-    "contents": "<p>Come and be a part of our Telegram community. You can find the latest infomation and enjoy with friends.</p>",
-    "btn_title": "OK",
+    "url": "https://hdo.app/howtotv.html",
+    "title": "Hot New",
+    "contents": "<p>Hot!!! Android TV new version has available right now.</p>",
+    "btn_title": "See more",
     "show": true,
-    "key": "NOTI_1.4"
+    "key": "NOTI_1.5"
   },
   "ads_config": {
     "init_ads": "admob"
@@ -24,8 +24,8 @@
     "isUpdate": true
   },
   "app_player_config": {
-    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.5/mediaon-nongp-1.0.5.apk",
-    "player_version_build": 5,
+    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.9/mediaon-1.0.9.apk",
+    "player_version_build": 9,
     "player_is_install_force": false,
     "force_player": false
   }

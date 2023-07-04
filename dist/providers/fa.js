@@ -310,7 +310,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 parseEpisodeData = cheerio.load(episodeRes.result);
-                dataId = parseEpisodeData(".episodes li a[data-num=\"".concat(movieInfo.episode, "\"]")).attr('data-id');
+                dataId = parseEpisodeData("ul[data-season=\"".concat(movieInfo.season, "\"] li a[data-num=\"").concat(movieInfo.episode, "\"]")).attr('data-id');
                 libs.log({ dataId: dataId }, PROVIDER, 'DATA ID');
                 if (!dataId) {
                     return [2];
