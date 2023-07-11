@@ -58,7 +58,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                             })];
                     case 1:
                         htmlDetail = _a.sent();
-                        fileDetail = htmlDetail.match(/file *\: *\"([^\"]+)/i);
+                        fileDetail = htmlDetail.match(/file *\" *\: *\"([^\"]+)/i);
                         fileDetail = fileDetail ? fileDetail[1] : '';
                         libs.log({
                             fileDetail: fileDetail
@@ -77,6 +77,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                             quality = parseItem.match(/\[ *([0-9]+) *\]/i);
                             quality = quality ? Number(quality[1]) : 720;
                             directUrl = parseItem.replace(/\[ *.+ *\]/i, '').trim();
+                            directUrl = directUrl.replace(/\\\//ig, "/");
                             directQuality.push({
                                 file: directUrl,
                                 quality: quality,

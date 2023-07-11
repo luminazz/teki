@@ -24,8 +24,8 @@
     "isUpdate": true
   },
   "app_player_config": {
-    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.9/mediaon-1.0.9.apk",
-    "player_version_build": 9,
+    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.10/mediaon-1.0.10.apk",
+    "player_version_build": 10,
     "player_is_install_force": false,
     "force_player": false
   }

@@ -36,7 +36,72 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, userAgent, LINK_DETAIL, KEY, ENCRYPT_KEY, gen, genMovie, decode, a, rc4, encode, headers, urlSearch, parseSearch, LINK_TV_DETAIL, parseTvDetail, tvId, episodeInfoUrl, episodeRes, parseEpisodeData, dataId, serverData, parseServerData_1, serverIds_3, _i, serverIds_1, idItem, embedUrl, embedData, directData, decodeUrl, parseMovieDetail, movieId, movieInfoUrl, movieInfoRes, parseMovieInfo, dataId, serverData, parseServerData_2, serverIds_4, _a, serverIds_2, idItem, embedUrl, embedData, directData, decodeUrl;
+    function hash_o_1(t) {
+        var h = 'A' + 'B' + 'C' + 'D' + 'E' + 'F' + 'G' + 'H' + 'I' + 'J' + 'K' + 'LM' + 'N' + 'O' + 'P' + 'Q' + 'RS' + 'T' + 'U' + 'V' + 'W' + 'X' + 'YZabcdefghijklmnopqrstuvwxyz0123456789+' + '/';
+        for (t = ""["concat"](t), o = -3 * -882 + -2543 + -103 * 1; o < t["length"]; o++)
+            if (-7012 * -1 + 727 + -7484 < t["charCodeAt"](o))
+                return null;
+        for (var r = "", o = 907 * -10 + -8743 + 17813; o < t["length"]; o += -853 * 1 + 46 * -21 + 911 * 2) {
+            var s = [void (829 * 1 + -7612 + -17 * -399), void (-9708 + -7 * -524 + 6040), void (-233 * -3 + 1313 + -2012), void (5849 + 4420 + -3 * 3423)];
+            s[-80 + -3612 + -1 * -3692] = t["charCodeAt"](o) >> 2, s[-1 * -9320 + -3766 * -2 + -16851] = ((1922 + -983 * -9 + 1 * -10766 & t["charCodeAt"](o)) << 1132 + -3112 * -2 + -1 * 7352), t["length"] > o + (-1187 + 3 * 2415 + 1 * -6057) && (s[4145 + 5260 + -9404] |= t["charCodeAt"](o + (-3345 * 2 + -7828 * 1 + -1 * -14519)) >> 1 * -5230 + 8700 + 1 * -3466, s[35 * -245 + -9807 + 18384] = (-3101 + 111 * -83 + -1 * -12329 & t["charCodeAt"](o + (-8910 + -9087 + 1 * 17998))) << 7318 * -1 + 954 * -1 + -42 * -197), t["length"] > (o + -6293 + -1139 + -21 * -354) && (s[5216 + -33 * -13 + -5643] |= t["charCodeAt"]((o + 6226 + 3433 * 1 + -333 * 29)) >> 1 * -46 + 137 * -71 + 9779, s[-14 * 546 + -769 * -3 + 4 * 1335] = -1 * -8545 + -1827 + -6655 & t["charCodeAt"](o + (-4 * 1237 + 5 * -3 + 4965)));
+            for (var u = 683 * 1 + 3517 * -1 + 2834; u < s["length"]; u++)
+                r += "undefined" == typeof s[u] ? "=" : function (t) {
+                    if (-701 * 5 + -5081 + -54 * -159 <= t && t < 6718 + -127 + 1 * -6527)
+                        return h[t];
+                }(s[u]);
+        }
+        return r;
+    }
+    function hash_j(t, n) {
+        for (var i, r = [], o = -15 * 422 + -415 * 4 + 7990, s = "", u = -4061 * -1 + -52 * 123 + 2335; u < -2 * 4435 + 1 * -3855 + 12981; u++)
+            r[u] = u;
+        for (u = -1137 * -1 + 3392 * -1 + -41 * -55; u < -2292 + 10 * -301 + 5558 * 1; u++)
+            o = (o + r[u] + t["charCodeAt"](u % t["length"])) % (257 * -31 + 1677 + 6546), i = r[u], r[u] = r[o], r[o] = i;
+        for (var u = 152 * -50 + -9237 + 16837, o = 8 * -919 + 31 * 227 + 315 * 1, e = -1 * 5961 + 2152 * -2 + 10265; e < n["length"]; e++)
+            i = r[u = (u + (-58 * -1 + 202 * 1 + -259)) % (-1999 + -66 * -86 + -1 * 3421)], r[u] = r[o = (o + r[u]) % (-209 + -6 * 347 + 283 * 9)], r[o] = i, s += String["fromCharCode"](n["charCodeAt"](e) ^ r[(r[u] + r[o]) % (-9810 + -2018 + 1007 * 12)]);
+        return s;
+    }
+    function hash_W(t) {
+        return (-2478 + 7692 + 474 * -11, hash_o_1)(t);
+    }
+    function hash_O(t) {
+        var e = {
+            eHngA: function (t, n) {
+                return t(n);
+            },
+            RIxcF: function (t, n) {
+                return t % n;
+            },
+            IKlJp: function (t, n) {
+                return t % n;
+            },
+            snYYK: function (t, n) {
+                return t == n;
+            },
+            bAoIb: function (t, n) {
+                return t == n;
+            },
+            wFzHj: function (t, n) {
+                return t(n);
+            }
+        };
+        return (8023 + 8 * 347 + 10799 * -1, hash_o_1)(function (t) {
+            for (var r = -9350 + -6768 + -139 * -116, o = (t = hash_W(t), ""), s = -8095 + -2839 + 10934; s < t["length"]; s++) {
+                var u = t["charCodeAt"](s);
+                -6895 + -1 * -5108 + -1 * -1787 ? u = -421 + -5813 * -1 + 674 * -8 : (s % r) == 1 * -2946 + -1302 + 7 * 607 ? u += -40 * 34 + 1179 * 1 + 186 : (s % r) == -9006 + -1 * 9701 + 18712 ? u -= -4519 + -7755 + 307 * 40 : ((s % r) == -15 * 255 + 9987 + 3 * -2054) || ((s % r) == -1 * -356 + -2473 * -1 + -2825) ? u += -6292 + 4077 + 2221 : s % r != 6772 + 31 * 140 + -11109 && s % r != -1623 * 3 + -505 * -5 + -2 * -1173 || (u -= -4177 * 1 + 199 * 3 + -717 * -5), o += String["fromCharCode"](u);
+            }
+            return o = function (t) {
+                return t["replace"](/[a-zA-Z]/g, function (t) {
+                    return String["fromCharCode"]((t <= "Z" ? 4 * 146 + 8255 + -8749 : -1 * 5159 + 9491 * -1 + -4 * -3693) >= (t = t["charCodeAt"](-68 * -3 + -5 * -568 + -4 * 761) + (-2306 + -157 * 51 + 10326)) ? t : t - (-10 * -626 + 6673 + -12907));
+                });
+            }(o = hash_W(o));
+        }(t));
+    }
+    function genMovie(t) {
+        var e = "rzyKmquwICPaYFkU";
+        return t = encodeURIComponent(""["concat"](t)), t = hash_j(e, t), t = (0, hash_o_1)(t), hash_O(t);
+    }
+    var PROVIDER, DOMAIN, userAgent, LINK_DETAIL, KEY, ENCRYPT_KEY, gen, decode, b, a, rc4, encode, headers, urlSearch, parseSearch, LINK_TV_DETAIL, parseTvDetail, tvId, episodeInfoUrl, episodeRes, parseEpisodeData, dataId, serverData, parseServerData_1, serverIds_3, _i, serverIds_1, idItem, embedUrl, embedData, directData, decodeUrl, parseMovieDetail, movieId, movieInfoUrl, movieInfoRes, parseMovieInfo, dataId, serverData, parseServerData_2, serverIds_4, _a, serverIds_2, idItem, embedUrl, embedData, directData, decodeUrl;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -44,24 +109,30 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 DOMAIN = "https://fmovies.to";
                 userAgent = {};
                 LINK_DETAIL = '';
-                KEY = 'MPPBJLgFwShfqIBx';
-                ENCRYPT_KEY = 'hlPeNwkncH0fq9so';
+                KEY = "8z5Ag5wgagfsOuhz";
+                ENCRYPT_KEY = '8z5Ag5wgagfsOuhz';
                 gen = function (title) {
                     var encode = encodeURIComponent(title);
                     var Mi = a.j(KEY, encode);
                     var wi = a.o(Mi);
                     return a.O(wi);
                 };
-                genMovie = function (title) {
-                    var encode = encodeURIComponent(title);
-                    var Mi = a.j(KEY, encode);
-                    var wi = a.o(Mi);
-                    return encodeURIComponent(a.O(wi));
-                };
                 decode = function (url) {
                     var u = a.u(url);
                     var j = a.j(ENCRYPT_KEY, u);
                     return decodeURIComponent(j);
+                };
+                b = {
+                    j: function (t, n) {
+                        var i = c;
+                        for (var r, o = [], u = -1 * -5223 + -2674 + -2549, s = "", h = 3 * -385 + 3 * 2521 + -6408; h < -3 * 2999 + 7005 + 2248; h++)
+                            o[h] = h;
+                        for (h = -710 * 8 + -718 + 6398; h < 4271 + 1475 + -5490; h++)
+                            u = (u + o[h] + t[f[i(831) + "Bn"](x6 + M9, $2)](h % t[j])) % (-1174 * -2 + -3 * 432 + -1 * 796), r = o[h], o[h] = o[u], o[u] = r;
+                        for (var h = -1393 + 8698 + -7305, u = -8992 + -7858 * 1 + -5 * -3370, e = 6283 + 2127 + -8410; e < n[j]; e++)
+                            r = o[h = (h + (-2664 + -10 * -947 + -1 * 6805)) % (5512 + 9262 * 1 + -14518)], o[h] = o[u = (u + o[h]) % (1651 + -5811 + 4 * 1104)], o[u] = r, s += p2[V3 + T5 + M9](n[x6 + M9 + $2](e) ^ o[(o[h] + o[u]) % (-2748 + 2 * -1057 + 3 * 1706)]);
+                        return s;
+                    }
                 };
                 a = {
                     Mi: function (t, n) {
@@ -301,7 +372,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!tvId) {
                     return [2];
                 }
-                episodeInfoUrl = "".concat(DOMAIN, "/ajax/episode/list/").concat(tvId, "?vrf=").concat(gen(tvId));
+                episodeInfoUrl = "".concat(DOMAIN, "/ajax/episode/list/").concat(tvId, "?vrf=").concat(genMovie(tvId));
                 return [4, libs.request_get(episodeInfoUrl, headers, false)];
             case 3:
                 episodeRes = _b.sent();
@@ -315,7 +386,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!dataId) {
                     return [2];
                 }
-                return [4, libs.request_get("".concat(DOMAIN, "/ajax/server/list/").concat(dataId, "?vrf=").concat(gen(dataId)), headers, false)];
+                return [4, libs.request_get("".concat(DOMAIN, "/ajax/server/list/").concat(dataId, "?vrf=").concat(genMovie(dataId)), headers, false)];
             case 4:
                 serverData = _b.sent();
                 if (serverData.status != 200) {
@@ -338,7 +409,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 5:
                 if (!(_i < serverIds_1.length)) return [3, 9];
                 idItem = serverIds_1[_i];
-                embedUrl = "".concat(DOMAIN, "/ajax/server/").concat(idItem, "?vrf=").concat(gen(idItem));
+                embedUrl = "".concat(DOMAIN, "/ajax/server/").concat(idItem, "?vrf=").concat(genMovie(idItem));
                 return [4, libs.request_get(embedUrl, headers, false)];
             case 6:
                 embedData = _b.sent();
