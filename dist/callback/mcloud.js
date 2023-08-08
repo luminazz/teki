@@ -55,6 +55,9 @@ callbacksEmbed["mcloud"] = function (dataCallback, provider, host, callback, met
                 if (!endpoint) {
                     return [2];
                 }
+                if (endpoint.indexOf("mediainfo") === -1) {
+                    return [2];
+                }
                 urlEmbed = "".concat(metadata.domain, "/").concat(endpoint);
                 return [4, libs.request_get(urlEmbed, {
                         Referer: metadata.url_webview,
@@ -62,11 +65,11 @@ callbacksEmbed["mcloud"] = function (dataCallback, provider, host, callback, met
             case 1:
                 dataEmbed = _c.sent();
                 libs.log({ urlEmbed: urlEmbed, dataEmbed: dataEmbed }, provider, 'DATA EMBED mcloud');
-                if (!dataEmbed || !dataEmbed.data) {
+                if (!dataEmbed || !dataEmbed.result) {
                     return [2];
                 }
                 rank = 0;
-                _i = 0, _a = dataEmbed.data.media.sources;
+                _i = 0, _a = dataEmbed.result.sources;
                 _c.label = 2;
             case 2:
                 if (!(_i < _a.length)) return [3, 8];

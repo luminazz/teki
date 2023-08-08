@@ -7,7 +7,6 @@
 		"dist/callback/mcloud.js",
 		"dist/callback/vidstream.js",
 		"dist/callback/soap2day.js",
-		"dist/callback/vizcloud.js",
 		"dist/callback/play9str_playm4u.js"
 	]
 }

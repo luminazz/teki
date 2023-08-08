@@ -60,11 +60,11 @@ callbacksEmbed["vidstream"] = function (dataCallback, provider, host, callback, 
             case 1:
                 dataEmbed = _c.sent();
                 libs.log({ urlEmbed: urlEmbed, dataEmbed: dataEmbed }, provider, 'DATA EMBED');
-                if (!dataEmbed || !dataEmbed.data) {
+                if (!dataEmbed || !dataEmbed.result) {
                     return [2];
                 }
                 rank = 0;
-                _i = 0, _a = dataEmbed.data.media.sources;
+                _i = 0, _a = dataEmbed.result.sources;
                 _c.label = 2;
             case 2:
                 if (!(_i < _a.length)) return [3, 5];

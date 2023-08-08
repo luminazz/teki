@@ -12,5 +12,6 @@
   },
   "ads_config" : {
     "show": true
-  }
+  },
+  "ads_init" : "admob"
 }

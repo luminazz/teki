@@ -38,17 +38,13 @@ var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
     function decryptGomoviesJson(str, key) {
         if (key === void 0) { key = "123"; }
-        var output = '';
-        var i = 0;
-        while (i < str.length) {
-            var j = 0;
-            while (j < key.length && i < str.length) {
-                output += String.fromCharCode(str.charCodeAt(i) ^ key.charCodeAt(j));
-                j++;
-                i++;
+        var b = "";
+        for (var i = 0; i < str.length;) {
+            for (var j = 0; (j < "124".toString().length && i < str.length); j++, i++) {
+                b += String.fromCharCode(str[i].charCodeAt(0) ^ "124".toString()[j].charCodeAt(0));
             }
         }
-        return output;
+        return b;
     }
     var PROVIDER, DOMAIN, urlSearch, LINK_DETAIL_1, parseSearch_1, LINK_TV_DETAIL, parseTv, hrefTv, parseDetail, cookieData, serverData, serverUrl, advanced, parseServer_1, iframeUrls_2, qualities, directQuality, _i, iframeUrls_1, iframeItem, parseIframe, encode, parseEncode, parseFirstEncode, _a, qualities_1, qualityItem, urlReplace, e_1;
     return __generator(this, function (_b) {
@@ -155,7 +151,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     })];
             case 11:
                 parseIframe = _b.sent();
-                encode = decryptGomoviesJson(libs.string_base64_decode(parseIframe));
+                encode = decryptGomoviesJson(libs.string_atob(parseIframe));
                 parseEncode = JSON.parse("{\"a\": ".concat(encode, "}"));
                 libs.log({ parseEncode: parseEncode }, PROVIDER, 'ENCODE');
                 parseFirstEncode = parseEncode['a'][0];

@@ -402,11 +402,12 @@ libs.embed_fmovies_id = function (hash, headers, embedUrl) { return __awaiter(_t
         }
         return getPassword(js);
     }
-    var secretKey, e_1, decryptData;
+    var secretKey, encryptedURL, encryptedURLTemp, key, _i, secretKey_1, index, i, e_1, decryptData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 secretKey = '';
+                encryptedURL = "";
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
@@ -419,6 +420,17 @@ libs.embed_fmovies_id = function (hash, headers, embedUrl) { return __awaiter(_t
                 return [4, libs.request_get("https://raw.githubusercontent.com/enimax-anime/key/e4/key.txt")];
             case 2:
                 secretKey = _a.sent();
+                encryptedURLTemp = hash.split("");
+                key = "";
+                for (_i = 0, secretKey_1 = secretKey; _i < secretKey_1.length; _i++) {
+                    index = secretKey_1[_i];
+                    for (i = index[0]; i < index[1]; i++) {
+                        key += encryptedURLTemp[i];
+                        encryptedURLTemp[i] = null;
+                    }
+                }
+                secretKey = key;
+                encryptedURL = encryptedURLTemp.filter(function (x) { return x !== null; }).join("");
                 return [3, 4];
             case 3:
                 e_1 = _a.sent();
@@ -429,8 +441,9 @@ libs.embed_fmovies_id = function (hash, headers, embedUrl) { return __awaiter(_t
                     libs.log({
                         secretKey: secretKey,
                         hash: hash,
+                        encryptedURL: encryptedURL,
                     }, 'SECRET DECRYPT DATA FMOVIES');
-                    decryptData = (crypto.AES.decrypt(hash, secretKey)).toString(crypto.enc.Utf8);
+                    decryptData = (crypto.AES.decrypt(encryptedURL, secretKey)).toString(crypto.enc.Utf8);
                     libs.log({
                         decryptData: decryptData,
                         secretKey: secretKey

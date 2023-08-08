@@ -97,11 +97,73 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             }(o = hash_W(o));
         }(t));
     }
-    function genMovie(t) {
-        var e = "rzyKmquwICPaYFkU";
-        return t = encodeURIComponent(""["concat"](t)), t = hash_j(e, t), t = (0, hash_o_1)(t), hash_O(t);
+    function C(t, n) {
+        for (var r, u = [], o = 73 * 66 + 8102 + -12920, s = "", c = 5908 + -2 * -1355 + -8618; c < 9279 * 1 + -2262 + -6761; c++)
+            u[c] = c;
+        for (c = -7180 + 4316 + -358 * -8; c < -494 + 49 * -62 + 2 * 1894; c++)
+            o = ((o + u[c]) + t["charCodeAt"](c % t["length"])) % (-10 * 484 + 3740 + 1356), r = u[c], u[c] = u[o], u[o] = r;
+        for (var c = 9583 + 7146 + -16729, o = 3939 + -74 * 111 + -75 * -57, h = 5512 + -8164 + 34 * 78; h < n["length"]; h++)
+            r = u[c = (c + (913 * 1 + -7581 + 27 * 247)) % (5 * -1082 + 6553 + -887)], u[c] = u[o = (o + u[c]) % (-4518 + -6408 + 11182)], u[o] = r, s += String["fromCharCode"](n["charCodeAt"](h) ^ u[(u[c] + u[o]) % (-17 * 283 + -8402 + -1 * -13469)]);
+        return s;
     }
-    var PROVIDER, DOMAIN, userAgent, LINK_DETAIL, KEY, ENCRYPT_KEY, gen, decode, b, a, rc4, encode, headers, urlSearch, parseSearch, LINK_TV_DETAIL, parseTvDetail, tvId, episodeInfoUrl, episodeRes, parseEpisodeData, dataId, serverData, parseServerData_1, serverIds_3, _i, serverIds_1, idItem, embedUrl, embedData, directData, decodeUrl, parseMovieDetail, movieId, movieInfoUrl, movieInfoRes, parseMovieInfo, dataId, serverData, parseServerData_2, serverIds_4, _a, serverIds_2, idItem, embedUrl, embedData, directData, decodeUrl;
+    function icode(t) {
+        var f = 'A' + 'B' + 'C' + 'D' + 'E' + 'F' + 'G' + 'H' + 'I' + 'J' + 'K' + 'LM' + 'N' + 'O' + 'P' + 'Q' + 'RS' + 'T' + 'U' + 'V' + 'W' + 'X' + 'YZabcdefghijklmnopqrstuvwxyz0123456789+' + '/';
+        for (t = ""["concat"](t), u = 247 * -8 + -3584 + 5560; u < t["length"]; u++)
+            if (-404 + 1383 * 2 + -2107 < t["charCodeAt"](u))
+                return null;
+        for (var r = "", u = 604 * -7 + 3 * 419 + 1 * 2971; u < t["length"]; u += 9605 + 681 + 1 * -10283) {
+            var o = [void (-2 * -2549 + -1307 * -1 + -6405), void (7e3 + 2098 + -9098), void (256 + -100 * 19 + 1644), void (9 * -1098 + 2545 + -253 * -29)];
+            o[-9862 + -9980 + 19842] = t["charCodeAt"](u) >> -6003 + -6290 * 1 + -5 * -2459, o[-1710 + 8833 + -3 * 2374] = (4179 * -2 + -1894 + -2051 * -5 & t["charCodeAt"](u)) << -30 * 296 + -3 * -2857 + 313, (t["length"] > (u + (-9674 + -407 * 11 + 488 * 29))) && (o[1013 + -482 + -530] |= t["charCodeAt"](u + (8733 + 964 + 8 * -1212)) >> -1 * -1436 + 1051 * 1 + -2483, o[1 * -971 + -2503 * -1 + -30 * 51] = ((-3580 + -2248 + 5843 * 1) & (t["charCodeAt"](u + (19 * -19 + 2 * -1399 + 3160)))) << 58 * 85 + 9595 + -14523), (t["length"] > (u + (-5177 + 9120 + 563 * -7))) && (o[-4398 * -2 + -275 + -8519] |= t["charCodeAt"]((u + (-1491 + 2 * -299 + -17 * -123))) >> 3692 + -7078 + 424 * 8, o[-26 * -358 + 9524 + 1 * -18829] = -2474 * -4 + -2666 + -2389 * 3 & t["charCodeAt"](u + (4188 + 5289 + -9475)));
+            for (var s = 1033 * -4 + -1232 + 5364; s < o["length"]; s++)
+                r += "undefined" == typeof o[s] ? "=" : function (t) {
+                    if (3 * -2165 + -1 * 8965 + 15460 <= t && t < 225 * -13 + -107 + 3096)
+                        return f[t];
+                }(o[s]);
+        }
+        return r;
+    }
+    function aCode(t) {
+        return ""["concat"]((1307 + 2998 + -3 * 1435, icode)(t))["replace"](/\//g, "_")["replace"](/\+/g, "-");
+    }
+    function genMovie(t) {
+        var f = "F" + "Wsfu0" + "K" + "Qd9vx" + "Y" + "G" + "N" + "B";
+        var i = {};
+        i["GnfuU"] = function (t, n) {
+            return t + n;
+        };
+        return t = encodeURIComponent(t),
+            function (t) {
+                var i = {};
+                i["nvFwT"] = function (t, n) {
+                    return t + n;
+                }, i["JfzDB"] = function (t, n) {
+                    return t - n;
+                };
+                var r = i;
+                for (var u = -5827 + 7343 + -1511, o = (t = aCode(t = function (t) {
+                    return t["replace"](/[a-zA-Z]/g, function (t) {
+                        return String["fromCharCode"]((t <= "Z" ? -3841 * 2 + -1618 * 4 + 14244 : 7183 + 1907 * -1 + 5154 * -1) >= (t = t["charCodeAt"](-8320 + -11 * -299 + 5031) + (37 * 17 + 2243 + 1 * -2859)) ? t : r["JfzDB"](t, -519 + -2172 + -19 * -143));
+                    });
+                }(t)), ""), s = -5 * -479 + -9911 * -1 + 14 * -879; s < t["length"]; s++) {
+                    var c = t["charCodeAt"](s);
+                    -108 * 49 + 8601 + 3 * -1103 ? c = -2074 + 1 * -5473 + 1 * 7547 : s % u == -359 * 25 + 2401 + -6575 * -1 || s % u == 7430 + 3057 + -10483 ? c -= 68 * 147 + 4 * -700 + -7194 : s % u == 9261 + -114 * 12 + -7890 ? c += -2928 + -295 * -17 + -694 * 3 : s % u == 3 * 553 + 254 * 13 + -4961 ? c -= -5 * -836 + -1407 + -2769 : s % u == 661 + 6370 + -7029 && (c -= -4712 * -2 + -8676 + -742), o += String["fromCharCode"](c);
+                }
+                return encodeURIComponent(o);
+            }(aCode(C(f, t)));
+    }
+    function uCode(t) {
+        var f = 'A' + 'B' + 'C' + 'D' + 'E' + 'F' + 'G' + 'H' + 'I' + 'J' + 'K' + 'LM' + 'N' + 'O' + 'P' + 'Q' + 'RS' + 'T' + 'U' + 'V' + 'W' + 'X' + 'YZabcdefghijklmnopqrstuvwxyz0123456789+' + '/';
+        if ((t = (t = (t = ""["concat"](t))["replace"](/[\t\n\f\r]/g, ""))["length"] % (-24 * -162 + 1848 + -5732 * 1) == -1 * 9859 + -2545 + 12404 ? t["replace"](/==?$/, "") : t)["length"] % (-1 * -6491 + -59 * -43 + -4512 * 2) == -15 * 531 + 9329 + -1363 || /[^+/0-9A-Za-z]/["test"](t))
+            return null;
+        for (var r, u = "", o = 6702 * -1 + -2616 * 2 + -1 * -11934, s = 1 * 2809 + -3133 * 1 + 324, c = 1336 + 1 * -6067 + 4731; c < t["length"]; c++)
+            o = (o <<= -7938 + 25 + 7919 * 1) | (r = t[c], (r = f["indexOf"](r)) < -2422 + -4900 + -3661 * -2 ? void (17 * -291 + -1 * 8031 + 6489 * 2) : r), 63 * -1 + -3562 + 3649 === (s += -1229 + -81 * -59 + -3544) && (u = (u = (u += String["fromCharCode"]((14705491 * -2 + -1 * 9895747 + 811861 * 69 & o) >> -6315 + -4789 * -1 + 3 * 514)) + String["fromCharCode"](((-1 * 56037 + -56905 + 178222) & o) >> -1 * -8355 + -1 * -549 + 8896 * -1)) + String["fromCharCode"](-1 * -6919 + -6790 + 126 & o), o = s = 1 * -2803 + 9473 + -290 * 23);
+        return 5 * -79 + 1943 * 2 + -3479 === s ? (o >>= 8512 + -1275 + -7233, u += String["fromCharCode"](o)) : -1 * -3658 + -6358 + 2718 === s && (o >>= -7130 + -6891 * -1 + 241, u = (u += String["fromCharCode"]((172 * -681 + -18854 * -5 + 88142 & o) >> -1 * -5813 + 8910 + -14715)) + String["fromCharCode"](-244 + -6703 + -7202 * -1 & o)), u;
+    }
+    function decode(t) {
+        var h = "8z5" + "Ag5wgagfs" + "Ouh" + "z";
+        return t = (907 * -5 + -448 * 12 + 9911, uCode)(""["concat"](t)["replace"](/_/g, "/")["replace"](/-/g, "+")), t = C(h, t), decodeURIComponent(t);
+    }
+    var PROVIDER, DOMAIN, userAgent, LINK_DETAIL, KEY, ENCRYPT_KEY, gen, b, a, rc4, encode, headers, urlSearch, parseSearch, LINK_TV_DETAIL, parseTvDetail, tvId, episodeInfoUrl, episodeRes, parseEpisodeData, dataId, serverData, parseServerData_1, serverIds_3, _i, serverIds_1, idItem, embedUrl, embedData, directData, decodeUrl, parseMovieDetail, movieId, movieInfoUrl, movieInfoRes, parseMovieInfo, dataId, serverData, parseServerData_2, serverIds_4, _a, serverIds_2, idItem, embedUrl, embedData, directData, decodeUrl;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -116,11 +178,6 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     var Mi = a.j(KEY, encode);
                     var wi = a.o(Mi);
                     return a.O(wi);
-                };
-                decode = function (url) {
-                    var u = a.u(url);
-                    var j = a.j(ENCRYPT_KEY, u);
-                    return decodeURIComponent(j);
                 };
                 b = {
                     j: function (t, n) {
