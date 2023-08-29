@@ -37,16 +37,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
     function decryptGomoviesJson(str, key) {
-        if (key === void 0) { key = "123"; }
+        if (key === void 0) { key = 111; }
         var b = "";
         for (var i = 0; i < str.length;) {
-            for (var j = 0; (j < "124".toString().length && i < str.length); j++, i++) {
-                b += String.fromCharCode(str[i].charCodeAt(0) ^ "124".toString()[j].charCodeAt(0));
+            for (var j = 0; (j < key.toString().length && i < str.length); j++, i++) {
+                b += String.fromCharCode(str[i].charCodeAt(0) ^ key.toString()[j].charCodeAt(0));
             }
         }
         return b;
     }
-    var PROVIDER, DOMAIN, urlSearch, LINK_DETAIL_1, parseSearch_1, LINK_TV_DETAIL, parseTv, hrefTv, parseDetail, cookieData, serverData, serverUrl, advanced, parseServer_1, iframeUrls_2, qualities, directQuality, _i, iframeUrls_1, iframeItem, parseIframe, encode, parseEncode, parseFirstEncode, _a, qualities_1, qualityItem, urlReplace, e_1;
+    var PROVIDER, DOMAIN, urlSearch, LINK_DETAIL_1, parseSearch_1, LINK_TV_DETAIL, parseTv, hrefTv, parseDetail, cookieData, serverData, serverUrl, cookieStr, index, parseServer_1, iframeUrls_2, qualities, directQuality, _i, iframeUrls_1, iframeItem, parseIframe, encode, parseEncode, parseFirstEncode, _a, qualities_1, qualityItem, urlReplace, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -123,9 +123,13 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 serverUrl = "".concat(DOMAIN).concat(serverData);
-                advanced = cookieData['advanced-frontendgomovies3']['value'] || '';
+                cookieStr = "";
+                for (index in cookieData) {
+                    cookieStr += "".concat(index, "=").concat(cookieData[index]['value']);
+                }
+                libs.log({ cookieStr: cookieStr }, PROVIDER, 'COOKIESTR');
                 return [4, libs.request_get(serverUrl, {
-                        cookie: "advanced-frontendgomovies3=".concat(advanced),
+                        cookie: cookieStr,
                         referer: LINK_DETAIL_1,
                         'X-Requested-With': 'XMLHttpRequest'
                     }, true)];
@@ -137,6 +141,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     var iframeUrl = "".concat(LINK_DETAIL_1, "?server=").concat(server, "&_=").concat(Date.now());
                     iframeUrls_2.push(iframeUrl);
                 });
+                libs.log({ iframeUrls: iframeUrls_2 }, PROVIDER, "iframeUrls");
                 qualities = [2160, 1440, 1080, 720, 480, 360];
                 directQuality = [];
                 _i = 0, iframeUrls_1 = iframeUrls_2;
@@ -145,13 +150,14 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!(_i < iframeUrls_1.length)) return [3, 13];
                 iframeItem = iframeUrls_1[_i];
                 return [4, libs.request_get(iframeItem, {
-                        cookie: "advanced-frontendgomovies3=".concat(advanced),
+                        cookie: cookieStr,
                         referer: LINK_DETAIL_1,
                         'X-Requested-With': 'XMLHttpRequest'
                     })];
             case 11:
                 parseIframe = _b.sent();
                 encode = decryptGomoviesJson(libs.string_atob(parseIframe));
+                libs.log({ encode: encode }, PROVIDER, "decryptGomoviesJson");
                 parseEncode = JSON.parse("{\"a\": ".concat(encode, "}"));
                 libs.log({ parseEncode: parseEncode }, PROVIDER, 'ENCODE');
                 parseFirstEncode = parseEncode['a'][0];

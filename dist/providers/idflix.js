@@ -36,12 +36,45 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSeach, id, headers, body, urlAjaxEmbed, embedData, e_1;
+    var CryptoJSAesJson, PROVIDER, DOMAIN, urlSearch, parseSeach, id, headers, body, urlAjaxEmbed, embedData, decode, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                CryptoJSAesJson = {
+                    'encrypt': function (value, password) {
+                        return cryptoS.AES.encrypt(JSON.stringify(value), password, {
+                            format: CryptoJSAesJson
+                        }).toString();
+                    },
+                    'decrypt': function (jsonStr, password) {
+                        return JSON.parse(cryptoS.AES.decrypt(jsonStr, password, {
+                            format: CryptoJSAesJson
+                        }).toString(cryptoS.enc.Utf8));
+                    },
+                    'stringify': function (cipherParams) {
+                        var j = {
+                            ct: cipherParams.ciphertext.toString(cryptoS.enc.Base64)
+                        };
+                        if (cipherParams.iv)
+                            j.iv = cipherParams.iv.toString();
+                        if (cipherParams.salt)
+                            j.s = cipherParams.salt.toString();
+                        return JSON.stringify(j).replace(/\s/g, '');
+                    },
+                    'parse': function (jsonStr) {
+                        var j = JSON.parse(jsonStr);
+                        var cipherParams = cryptoS.lib.CipherParams.create({
+                            ciphertext: cryptoS.enc.Base64.parse(j.ct)
+                        });
+                        if (j.iv)
+                            cipherParams.iv = cryptoS.enc.Hex.parse(j.iv);
+                        if (j.s)
+                            cipherParams.salt = cryptoS.enc.Hex.parse(j.s);
+                        return cipherParams;
+                    }
+                };
                 PROVIDER = 'DIdFlix';
-                DOMAIN = "https://77.105.142.75";
+                DOMAIN = "https://tv.idlixplus.net/";
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 5, , 6]);
@@ -76,7 +109,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!embedData.embed_url) {
                     return [2];
                 }
-                return [4, libs.embed_redirect(embedData.embed_url, '', movieInfo, PROVIDER, callback, undefined, [])];
+                decode = CryptoJSAesJson.decrypt(embedData.embed_url, embedData.key);
+                libs.log({ decode: decode }, PROVIDER, 'decode');
+                if (!decode) {
+                    return [2];
+                }
+                return [4, libs.embed_redirect(decode, '', movieInfo, PROVIDER, callback, undefined, [])];
             case 4:
                 _a.sent();
                 return [3, 6];

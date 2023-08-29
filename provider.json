@@ -1,5 +1,7 @@
 {
-	"providers": [				
+	"providers": [
+		"dist/providers/flixhq.js",
+		"dist/providers/filmxy.js",
 		"dist/providers/fmovies.js",
 		"dist/providers/fa.js",
 		"dist/providers/gomovies.js",
@@ -14,9 +16,8 @@
 		"dist/providers/st.js",
 		"dist/providers/cineb.js",
 		"dist/providers/vumoo.js",
+		"dist/providers/m4ufree.js",
 		"dist/providers/vidsrc.js",
-		"dist/providers/hdmoviebox.js",
-		"dist/providers/xmovies.js",
-		"dist/providers/m4ufree.js"
+		"dist/providers/blackvid.js"
 	]
 }

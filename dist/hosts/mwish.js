@@ -35,42 +35,43 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["movembed"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var userAgent, decrypt, encrypt, DOMAIN, HOST, newUrl, parseEmbed;
+hosts["mwish"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var userAgent, DOMAIN, HOST, parseEmbed, evalData, unpack, source;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 userAgent = libs.request_getRandomUserAgent();
-                decrypt = function (str) {
-                    var _0x48af28 = '9225679083961858';
-                    var _0x4405f4 = '25742532592138496744665879883281';
-                    var _0x549f1f = cryptoS['enc']['Utf8']['stringify'](cryptoS['AES']['decrypt'](str, cryptoS['enc']['Utf8']['parse'](_0x4405f4), {
-                        'iv': cryptoS['enc']['Utf8']['parse'](_0x48af28)
-                    }));
-                    return _0x549f1f;
-                };
-                encrypt = function (str) {
-                    var _0x48af28 = '9225679083961858';
-                    var _0x4405f4 = '25742532592138496744665879883281';
-                    return cryptoS['AES']['encrypt'](str, cryptoS['enc']['Utf8']['parse'](_0x4405f4), {
-                        'iv': cryptoS['enc']['Utf8']['parse'](_0x48af28)
-                    })['toString']();
-                };
-                DOMAIN = 'https://movembed.cc';
-                HOST = 'MEMBED';
-                newUrl = url.replace('membed.net', 'membed1.net');
-                newUrl = url.replace('http:', 'https:');
-                return [4, libs.request_get(newUrl, {}, true)];
+                DOMAIN = 'https://mwish.pro';
+                HOST = 'MWISH';
+                return [4, libs.request_get(url, {}, true)];
             case 1:
                 parseEmbed = _a.sent();
-                libs.log({ length: parseEmbed(".list-server-items li").length }, HOST, "EMBED LENGTH");
-                parseEmbed(".list-server-items li").each(function (key, item) {
-                    var iframeUrl = parseEmbed(item).attr("data-video");
-                    libs.log({ iframeUrl: iframeUrl }, HOST, "IFRAME URL");
-                    if (iframeUrl) {
-                        libs.embed_redirect(iframeUrl, '', movieInfo, provider, callback, '');
+                libs.log({ length: parseEmbed("script").length }, HOST, "EMBED LENGTH");
+                evalData = "";
+                parseEmbed("script").each(function (key, item) {
+                    var scriptData = parseEmbed(item).text();
+                    if (scriptData && scriptData.indexOf("eval(") != -1) {
+                        evalData = scriptData;
                     }
                 });
+                libs.log({ evalData: evalData }, HOST, "EVAL DATA");
+                if (!evalData) {
+                    return [2];
+                }
+                unpack = libs.string_unpack(evalData);
+                libs.log({
+                    unpack: unpack,
+                }, HOST, 'UNPACK REPLACE');
+                source = unpack.match(/file *\: *\"([^\"]+)/i);
+                source = source ? source[1] : '';
+                libs.log({
+                    unpack: unpack,
+                    source: source
+                }, HOST, 'UNPACK');
+                if (!source) {
+                    return [2];
+                }
+                libs.embed_callback(source, provider, HOST, 'Hls', callback);
                 return [2];
         }
     });

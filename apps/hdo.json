@@ -11,8 +11,8 @@
     "init_ads": "admob"
   },
   "tmdb_apikey": {
-    "ios_key": "3f6036e41fc244bd77f0e28bc5f2904d",
-    "android_key": "3f6036e41fc244bd77f0e28bc5f2904d"
+    "ios_key": "8d6d91941230817f7807d643736e8a49",
+    "android_key": "8d6d91941230817f7807d643736e8a49"
   },
   "update_release": {
     "version": "3.4",
@@ -24,8 +24,8 @@
     "isUpdate": true
   },
   "app_player_config": {
-    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.10/mediaon-1.0.10.apk",
-    "player_version_build": 10,
+    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.13/mediaon-1.0.13.apk",
+    "player_version_build": 13,
     "player_is_install_force": false,
     "force_player": false
   }

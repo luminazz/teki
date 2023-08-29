@@ -36,13 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, headers, urlSearch, resultSearch, MEDIA_ID, EPISODE_ID, _i, _a, searchItem, id, image, title, type, url, year, filmType, urlInfo, resultInfo, listEpisodeData, _b, listEpisodeData_1, episodeItem, urlWatch, resultWatch, listDirectData, tracks, directQuality, _c, listDirectData_1, directItem, quality, url, _d, _e, trackItem;
+    var PROVIDER, DOMAIN, headers, urlSearch, resultSearch, MEDIA_ID, EPISODE_ID, _i, _a, searchItem, id, image, title, type, url, year, filmType, urlInfo, resultInfo, listEpisodeData, _b, listEpisodeData_1, episodeItem, urlWatch, resultWatch, listDirectData, tracks, directQuality, _c, listDirectData_1, directItem, quality, url, _d, _e, trackItem;
     return __generator(this, function (_f) {
         switch (_f.label) {
             case 0:
                 PROVIDER = 'LFLIXHQ';
+                DOMAIN = "https://pleasedontspam.justchill.tv";
                 headers = {};
-                urlSearch = "https://api.consumet.org/movies/flixhq/".concat(libs.url_slug_search(movieInfo, '+'));
+                urlSearch = "".concat(DOMAIN, "/movies/flixhq/").concat(libs.url_slug_search(movieInfo, '+'));
                 return [4, libs.request_get(urlSearch, headers)];
             case 1:
                 resultSearch = _f.sent();
@@ -78,11 +79,11 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!MEDIA_ID) {
                     return [2];
                 }
-                urlInfo = "https://api.consumet.org/movies/flixhq/info?id=".concat(MEDIA_ID);
+                urlInfo = "".concat(DOMAIN, "/movies/flixhq/info?id=").concat(MEDIA_ID);
                 return [4, libs.request_get(urlInfo, headers)];
             case 2:
                 resultInfo = _f.sent();
-                libs.log({ resultInfo: resultInfo }, PROVIDER, 'RESULT_INFO');
+                libs.log({ resultInfo: resultInfo, urlInfo: urlInfo }, PROVIDER, 'RESULT_INFO');
                 listEpisodeData = resultInfo.episodes || [];
                 if (!listEpisodeData.length) {
                     return [2];
@@ -101,7 +102,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!EPISODE_ID) {
                     return [2];
                 }
-                urlWatch = "https://api.consumet.org/movies/flixhq/watch?episodeId=".concat(EPISODE_ID, "&mediaId=").concat(MEDIA_ID);
+                urlWatch = "".concat(DOMAIN, "/movies/flixhq/watch?episodeId=").concat(EPISODE_ID, "&mediaId=").concat(MEDIA_ID);
                 return [4, libs.request_get(urlWatch, headers)];
             case 3:
                 resultWatch = _f.sent();
@@ -131,6 +132,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         quality: quality
                     });
                 }
+                libs.log({ directQuality: directQuality, listDirectData: listDirectData }, PROVIDER, 'listDirectData');
                 for (_d = 0, _e = resultWatch.subtitles; _d < _e.length; _d++) {
                     trackItem = _e[_d];
                     tracks.push({

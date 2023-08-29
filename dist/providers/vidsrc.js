@@ -36,12 +36,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, parseEmbed, parseHls, hlsData, hls1, hls2, _i, hlsData_1, hlsItem;
+    function deobfstr(_0x1dbe96, _0x1ddb3a) {
+        _0x1ddb3a = _0x1ddb3a['toString']();
+        var _0x4c518c = '';
+        for (var _0x2f1b4f = 0x0; _0x2f1b4f < _0x1dbe96['length']; _0x2f1b4f += 0x2) {
+            var _0xee7ec2 = _0x1dbe96['substr'](_0x2f1b4f, 0x2);
+            _0x4c518c += String['fromCharCode'](parseInt(_0xee7ec2, 0x10) ^ _0x1ddb3a['charCodeAt'](_0x2f1b4f / 0x2 % _0x1ddb3a['length']));
+        }
+        return _0x4c518c;
+    }
+    var PROVIDER, DOMAIN, userAgent, urlSearch, parseSearch, parseEmbed, parseHls, id, hash, refererDirect, fetchHeader, streamUrl, parseStream, hls, setPass, parseSetPass, domainEmbed, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                _a.trys.push([0, 6, , 7]);
                 PROVIDER = 'RVIDSRC';
                 DOMAIN = "https://v2.vidsrc.me";
+                userAgent = libs.request_getRandomUserAgent();
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
                     urlSearch = "".concat(DOMAIN, "/embed/").concat(movieInfo.imdb_id, "/").concat(movieInfo.season, "-").concat(movieInfo.episode);
@@ -50,7 +61,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     urlSearch = "".concat(DOMAIN, "/embed/").concat(movieInfo.imdb_id);
                 }
                 libs.log({ urlSearch: urlSearch }, PROVIDER, 'URL SEARCH');
-                return [4, libs.request_get(urlSearch, {}, true)];
+                return [4, libs.request_get(urlSearch, {
+                        'user-agent': userAgent,
+                    }, true)];
             case 1:
                 parseSearch = _a.sent();
                 parseEmbed = parseSearch('#player_iframe').attr('src');
@@ -61,41 +74,97 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (_.startsWith(parseEmbed, '/')) {
                     parseEmbed = "https:".concat(parseEmbed);
                 }
-                parseEmbed = parseEmbed.replace('https://rcp.vidsrc.me/rcp', 'https://v2.vidsrc.me/srcrcp');
                 libs.log({
                     parseEmbed: parseEmbed
                 }, PROVIDER, 'PARSE EMBED REPLACE');
                 return [4, libs.request_get(parseEmbed, {
-                        referer: 'https://v2.vidsrc.me/'
+                        referer: urlSearch
                     })];
             case 2:
                 parseHls = _a.sent();
-                hlsData = [];
-                hls1 = parseHls.match(/hls\.loadSource\( *\"([^\"]+)/i);
-                if (hls1) {
-                    hlsData.push(hls1 ? hls1[1] : '');
+                id = parseHls.match(/data\-i\=\"([^\"]+)/i);
+                id = id ? id[1] : '';
+                hash = parseHls.match(/data\-h\=\"([^\"]+)/i);
+                hash = hash ? hash[1] : '';
+                libs.log({ hash: hash, id: id }, PROVIDER, 'HLS');
+                if (!id || !hash) {
+                    return [2];
                 }
-                hls2 = parseHls.match(/video\.setAttribute\(\"src\" *\, *\"([^\"]+)/i);
-                if (hls2) {
-                    hlsData.push(hls2 ? hls2[1] : '');
+                refererDirect = deobfstr(hash, id);
+                libs.log({ refererDirect: refererDirect }, PROVIDER, 'refererDirect');
+                if (!refererDirect) {
+                    return [2];
                 }
-                libs.log({ hlsData: hlsData }, PROVIDER, 'HLS DIRECT LINK');
-                _i = 0, hlsData_1 = hlsData;
-                _a.label = 3;
-            case 3:
-                if (!(_i < hlsData_1.length)) return [3, 6];
-                hlsItem = hlsData_1[_i];
-                return [4, libs.embed_callback(hlsItem, PROVIDER, PROVIDER, 'HLS', callback, 1, [], [{ file: hlsItem, quality: 1080 }], {
-                        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36',
-                        referer: 'https://vidsrc.stream/',
+                if (_.startsWith(refererDirect, '/')) {
+                    refererDirect = 'https:' + refererDirect;
+                }
+                return [4, fetch(refererDirect, {
+                        headers: {
+                            Referer: parseEmbed,
+                            'user-agent': userAgent,
+                        },
+                        redirect: 'manual',
+                        method: 'HEAD'
                     })];
+            case 3:
+                fetchHeader = _a.sent();
+                libs.log({ fetchHeader: fetchHeader }, PROVIDER, 'fetchHeader');
+                streamUrl = fetchHeader.url;
+                libs.log({ streamUrl: streamUrl }, PROVIDER, 'STREAM URL');
+                if (!streamUrl) {
+                    return [2];
+                }
+                return [4, libs.request_get(streamUrl, {
+                        Referer: refererDirect,
+                        'user-agent': userAgent,
+                        Host: 'vidsrc.stream',
+                        'Connection': 'keep-alive',
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                        'Sec-Fetch-Site': 'cross-site',
+                        'Sec-Fetch-Mode': 'navigate',
+                        'Sec-Fetch-Dest': 'iframe',
+                        'Sec-Fetch-User': '?1',
+                        'sec-ch-ua': '"Not/A)Brand";v="99", "Google Chrome";v="115", "Chromium";v="115"',
+                        'Accept-Language': 'en-US,en;q=0.9,vi-VN;q=0.8,vi;q=0.7'
+                    }, false)];
             case 4:
-                _a.sent();
-                _a.label = 5;
+                parseStream = _a.sent();
+                hls = parseStream.match(/var *hls_url *\= *\"([^\"]+)/i);
+                hls = hls ? hls[1] : '';
+                setPass = parseStream.match(/(tm[0-9]+p.vidsrc.stream\/set_pass.php\?[A-z0-9\=]+)/i);
+                setPass = setPass ? setPass[1] : '';
+                libs.log({ hls: hls, streamUrl: streamUrl, setPass: setPass }, PROVIDER, "HLS");
+                if (!hls) {
+                    return [2];
+                }
+                setPass = "https://".concat(setPass);
+                return [4, libs.request_get(setPass, {
+                        Referer: streamUrl
+                    })];
             case 5:
-                _i++;
-                return [3, 3];
-            case 6: return [2, true];
+                parseSetPass = _a.sent();
+                domainEmbed = libs.url_extractHostname(hls);
+                libs.log({ domainEmbed: domainEmbed, parseSetPass: parseSetPass }, PROVIDER, "DOMAIN EMBED");
+                libs.embed_callback(hls, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: hls, quality: 1080 }], {
+                    Referer: streamUrl,
+                    'User-Agent': userAgent,
+                    Host: domainEmbed,
+                    Connection: 'keep-alive',
+                    'sec-ch-ua': '"Not/A)Brand";v="99", "Google Chrome";v="115", "Chromium";v="115"',
+                    DNT: '1',
+                    'sec-ch-ua-mobile': '?0',
+                    'sec-ch-ua-platform': '"macOS"',
+                    Accept: '*/*',
+                    'Sec-Fetch-Site': 'cross-site',
+                    'Sec-Fetch-Mode': 'cors',
+                    'Sec-Fetch-Dest': 'empty',
+                    'Accept-Language': 'en-US,en;q=0.9,vi-VN;q=0.8,vi;q=0.7'
+                });
+                return [2, true];
+            case 6:
+                e_1 = _a.sent();
+                return [3, 7];
+            case 7: return [2];
         }
     });
 }); };

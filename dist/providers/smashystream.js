@@ -36,147 +36,82 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, fflix, dude;
+    var PROVIDER, DOMAIN, fflix, urlSearch, parseSearch;
     var _this = this;
     return __generator(this, function (_a) {
-        PROVIDER = 'TSmashyStream';
-        DOMAIN = "https://embed.smashystream.com";
-        fflix = function () { return __awaiter(_this, void 0, void 0, function () {
-            var urlSearch, htmlDetail, fileDetail, parseDetail, directQuality, _i, parseDetail_1, parseItem, quality, directUrl;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        urlSearch = "".concat(DOMAIN, "/ffix1.php?tmdb=").concat(movieInfo.tmdb_id);
-                        if (movieInfo.type == 'tv') {
-                            urlSearch = "".concat(DOMAIN, "/ffix1.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
+        switch (_a.label) {
+            case 0:
+                PROVIDER = 'TSmashyStream';
+                DOMAIN = "https://embed.smashystream.com";
+                fflix = function (urlSearch) { return __awaiter(_this, void 0, void 0, function () {
+                    var htmlDetail, fileDetail, parseDetail, directQuality, _i, parseDetail_1, parseItem, quality, directUrl;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                libs.log({
+                                    urlSearch: urlSearch
+                                }, PROVIDER, 'URL SEARCH');
+                                return [4, libs.request_get(urlSearch, {
+                                        Referer: movieInfo.type == 'tv' ? "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode) : "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id)
+                                    })];
+                            case 1:
+                                htmlDetail = _a.sent();
+                                fileDetail = htmlDetail.match(/file *\" *\: *\"([^\"]+)/i);
+                                fileDetail = fileDetail ? fileDetail[1] : '';
+                                libs.log({
+                                    fileDetail: fileDetail
+                                }, PROVIDER, 'FILE DETAIL');
+                                if (!fileDetail) {
+                                    return [2];
+                                }
+                                parseDetail = fileDetail.split(',');
+                                directQuality = [];
+                                libs.log({ parseDetail: parseDetail }, PROVIDER, 'PARSE DETAIL');
+                                for (_i = 0, parseDetail_1 = parseDetail; _i < parseDetail_1.length; _i++) {
+                                    parseItem = parseDetail_1[_i];
+                                    if (!parseItem) {
+                                        continue;
+                                    }
+                                    quality = parseItem.match(/\[ *([0-9]+) *\]/i);
+                                    quality = quality ? Number(quality[1]) : 720;
+                                    directUrl = parseItem.replace(/\[ *.+ *\]/i, '').trim();
+                                    directUrl = directUrl.replace(/\\\//ig, "/");
+                                    directQuality.push({
+                                        file: directUrl,
+                                        quality: quality,
+                                    });
+                                }
+                                libs.log({
+                                    directQuality: directQuality
+                                }, PROVIDER, 'DIRECT QUALITY');
+                                if (!directQuality.length) {
+                                    return [2];
+                                }
+                                directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
+                                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], directQuality);
+                                return [2];
                         }
-                        libs.log({
-                            urlSearch: urlSearch
-                        }, PROVIDER, 'URL SEARCH');
-                        return [4, libs.request_get(urlSearch, {
-                                Referer: movieInfo.type == 'tv' ? "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode) : "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id)
-                            })];
-                    case 1:
-                        htmlDetail = _a.sent();
-                        fileDetail = htmlDetail.match(/file *\" *\: *\"([^\"]+)/i);
-                        fileDetail = fileDetail ? fileDetail[1] : '';
-                        libs.log({
-                            fileDetail: fileDetail
-                        }, PROVIDER, 'FILE DETAIL');
-                        if (!fileDetail) {
-                            return [2];
-                        }
-                        parseDetail = fileDetail.split(',');
-                        directQuality = [];
-                        libs.log({ parseDetail: parseDetail }, PROVIDER, 'PARSE DETAIL');
-                        for (_i = 0, parseDetail_1 = parseDetail; _i < parseDetail_1.length; _i++) {
-                            parseItem = parseDetail_1[_i];
-                            if (!parseItem) {
-                                continue;
-                            }
-                            quality = parseItem.match(/\[ *([0-9]+) *\]/i);
-                            quality = quality ? Number(quality[1]) : 720;
-                            directUrl = parseItem.replace(/\[ *.+ *\]/i, '').trim();
-                            directUrl = directUrl.replace(/\\\//ig, "/");
-                            directQuality.push({
-                                file: directUrl,
-                                quality: quality,
-                            });
-                        }
-                        libs.log({
-                            directQuality: directQuality
-                        }, PROVIDER, 'DIRECT QUALITY');
-                        if (!directQuality.length) {
-                            return [2];
-                        }
-                        directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
-                        libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], directQuality);
-                        return [2];
+                    });
+                }); };
+                urlSearch = "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id);
+                if (movieInfo.type == 'tv') {
+                    urlSearch = "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
                 }
-            });
-        }); };
-        dude = function () { return __awaiter(_this, void 0, void 0, function () {
-            var urlSearch, htmlDetail, fileDetail, parseDetail, _i, parseDetail_2, item, directQuality, directUrl, parseDirectUrl, directQualityRegex, _a, directQualityRegex_1, directQualityItem, quality, e_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        urlSearch = "";
-                        if (movieInfo.type == 'tv') {
-                            urlSearch = "".concat(DOMAIN, "/dude_tv.php?imdb=").concat(movieInfo.imdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
-                        }
-                        if (!urlSearch) {
-                            return [2];
-                        }
-                        libs.log({
-                            urlSearch: urlSearch
-                        }, PROVIDER, 'URL SEARCH');
-                        return [4, libs.request_get(urlSearch, {})];
-                    case 1:
-                        htmlDetail = _b.sent();
-                        fileDetail = htmlDetail.match(/file *\: *\[([^\]]+)/i);
-                        fileDetail = fileDetail ? fileDetail[1] : '';
-                        libs.log({
-                            fileDetail: fileDetail
-                        }, PROVIDER, 'FILE DETAIL');
-                        if (!fileDetail) {
-                            return [2];
-                        }
-                        fileDetail = "{\"a\": [".concat(fileDetail, "]}");
-                        parseDetail = JSON.parse(fileDetail);
-                        parseDetail = parseDetail['a'];
-                        libs.log({ parseDetail: parseDetail }, PROVIDER, 'PARSE DETAIL');
-                        if (!parseDetail) {
-                            return [2];
-                        }
-                        _i = 0, parseDetail_2 = parseDetail;
-                        _b.label = 2;
-                    case 2:
-                        if (!(_i < parseDetail_2.length)) return [3, 7];
-                        item = parseDetail_2[_i];
-                        _b.label = 3;
-                    case 3:
-                        _b.trys.push([3, 5, , 6]);
-                        directQuality = [];
-                        directUrl = item.file;
-                        if (!directUrl) {
-                            return [3, 6];
-                        }
-                        if (directUrl.indexOf('https://') === -1) {
-                            return [3, 6];
-                        }
-                        return [4, libs.request_get(directUrl, {})];
-                    case 4:
-                        parseDirectUrl = _b.sent();
-                        directQualityRegex = parseDirectUrl.match(/\/[0-9]+\/index\.m3u8/ig);
-                        libs.log({ directQualityRegex: directQualityRegex }, PROVIDER, 'DIRECT QUALITY REGEX');
-                        for (_a = 0, directQualityRegex_1 = directQualityRegex; _a < directQualityRegex_1.length; _a++) {
-                            directQualityItem = directQualityRegex_1[_a];
-                            quality = directQualityItem.match(/\/([0-9]+)\//i);
-                            quality = quality ? Number(quality[1]) : 720;
-                            libs.log({ quality: quality, directQualityItem: directQualityItem }, PROVIDER, 'DIRECT QUALITY ITEM');
-                            directQuality.push({
-                                file: directUrl.replace('/index.m3u8', directQualityItem),
-                                quality: quality,
-                            });
-                        }
-                        if (!directQuality.length) {
-                            return [3, 6];
-                        }
-                        directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
-                        libs.log({ directQuality: directQuality }, PROVIDER, 'directQuality');
-                        libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], directQuality);
-                        return [3, 6];
-                    case 5:
-                        e_1 = _b.sent();
-                        return [3, 6];
-                    case 6:
-                        _i++;
-                        return [3, 2];
-                    case 7: return [2];
-                }
-            });
-        }); };
-        fflix();
-        return [2];
+                return [4, libs.request_get(urlSearch, {}, true)];
+            case 1:
+                parseSearch = _a.sent();
+                libs.log({ length: parseSearch('.server').length }, PROVIDER, "SEARCH LENGTH");
+                parseSearch('.server').each(function (key, item) {
+                    var text = parseSearch(item).text();
+                    var href = parseSearch(item).attr('data-id');
+                    var parsetxt = text.trim().split(" ");
+                    var lastTxt = parsetxt[parsetxt.length - 1];
+                    libs.log({ text: text, href: href, parsetxt: parsetxt, lastTxt: lastTxt }, PROVIDER, "INFO");
+                    if (lastTxt.toLowerCase() == 'f') {
+                        fflix(href);
+                    }
+                });
+                return [2];
+        }
     });
 }); };

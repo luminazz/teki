@@ -41,13 +41,13 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         switch (_a.label) {
             case 0:
                 PROVIDER = 'IEmbedSmashy';
-                DOMAIN = "https://series9.la";
+                DOMAIN = "https://series9.sh";
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
                     urlSearch = "".concat(DOMAIN, "/film/").concat(libs.url_slug_search(movieInfo), "-season-").concat(movieInfo.season, "/watching.html?ep=").concat(movieInfo.episode);
                 }
                 else {
-                    urlSearch = "".concat(DOMAIN, "/film/").concat(libs.url_slug_search(movieInfo), "/watching.html");
+                    urlSearch = "".concat(DOMAIN, "/film/").concat(libs.url_slug_search(movieInfo), "-").concat(movieInfo.year, "/watching.html");
                 }
                 libs.log({ urlSearch: urlSearch }, PROVIDER, 'URL SEARCH');
                 return [4, libs.request_get(urlSearch, {}, true)];
