@@ -18,6 +18,8 @@
 		"dist/providers/vumoo.js",
 		"dist/providers/m4ufree.js",
 		"dist/providers/vidsrc.js",
-		"dist/providers/blackvid.js"
+		"dist/providers/blackvid.js",
+		"dist/providers/jump1.js",
+		"dist/providers/primewire.js"
 	]
 }
