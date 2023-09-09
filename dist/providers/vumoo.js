@@ -40,6 +40,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                if (movieInfo.platform == 'android') {
+                    return [2];
+                }
                 PROVIDER = 'VUMOO';
                 DOMAIN = "https://embed.meomeo.pw";
                 urlSearch = '';

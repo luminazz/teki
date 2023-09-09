@@ -46,37 +46,41 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         }
         return b;
     }
-    var PROVIDER, DOMAIN, urlSearch, LINK_DETAIL_1, parseSearch_1, LINK_TV_DETAIL, parseTv, hrefTv, htmlDetail, sKey, serverEndpoint, cookieDetail, urlServer, cookieDatas, item, parseCookieData, headers, htmlServer, parseServer_1, servers_2, evalData, evalData, unpacker, dKey_1, directQuality, qualities, _i, servers_1, item, urlGetIframe, dataIframe, encode, parseEncode, parseFirstEncode, _a, qualities_1, qualityItem, urlReplace, e_1;
+    var PROVIDER, DOMAIN, urlSearch, parseSearch_1, LINK_DETAIL_1, LINK_TV_DETAIL_1, parseTvDetail_1, htmlDetail, sKey, serverEndpoint, cookieDetail, urlServer, cookieDatas, item, parseCookieData, headers, htmlServer, parseServer_1, servers_2, evalData, evalData, unpacker, dKey_1, directQuality, qualities, _i, servers_1, item, urlGetIframe, dataIframe, encode, parseEncode, parseFirstEncode, _a, qualities_1, qualityItem, urlReplace, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                PROVIDER = 'EGoMovies';
-                DOMAIN = "https://gomovies-online.com";
-                urlSearch = "".concat(DOMAIN, "/search/").concat(libs.url_slug_search(movieInfo, '%20'));
+                PROVIDER = 'Primewire';
+                DOMAIN = "https://real-primewire.club";
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 13, , 14]);
-                LINK_DETAIL_1 = '';
+                urlSearch = '';
+                if (movieInfo.type == 'movie') {
+                    urlSearch = "".concat(DOMAIN, "/search/").concat(libs.url_slug_search(movieInfo, '+'), "/movies");
+                }
+                else {
+                    urlSearch = "".concat(DOMAIN, "/search/").concat(libs.url_slug_search(movieInfo, '+'), "+season+").concat(movieInfo.season, "/series");
+                }
                 return [4, libs.request_get(urlSearch, {}, true)];
             case 2:
                 parseSearch_1 = _b.sent();
-                libs.log({ length: parseSearch_1('div._gory div.g_yFsxmKnYLvpKDTrdbizeYMWy').length }, PROVIDER, 'SEARCH LENGTH');
-                parseSearch_1('div._gory div.g_yFsxmKnYLvpKDTrdbizeYMWy').each(function (key, item) {
+                LINK_DETAIL_1 = '';
+                libs.log({ length: parseSearch_1('.RvnMfoxhgm').length }, PROVIDER, 'SEARCH LENGTH');
+                parseSearch_1('.RvnMfoxhgm').each(function (key, item) {
                     var title = parseSearch_1(item).attr('data-filmname');
                     var year = parseSearch_1(item).attr('data-year');
-                    var herf = parseSearch_1(item).find('a').attr('href');
-                    if (title) {
-                        var season = title.match(/season *([0-9]+)/i);
-                        season = season ? Number(season[1]) : 0;
-                        title = title.replace(/\- *season *.*/i, '').trim();
-                        libs.log({ title: title, year: year, herf: herf, season: season }, PROVIDER, 'SEARCH INFO');
-                        if (libs.string_matching_title(movieInfo, title) && !LINK_DETAIL_1) {
-                            if (movieInfo.type == 'movie' && !season && movieInfo.year == year) {
-                                LINK_DETAIL_1 = "".concat(DOMAIN).concat(herf);
-                            }
-                            if (movieInfo.type == 'tv' && season && season === movieInfo.season) {
-                                LINK_DETAIL_1 = "".concat(DOMAIN).concat(herf);
-                            }
+                    var season = title.match(/\- *season *([0-9]+)/i);
+                    season = season ? season[1] : 0;
+                    title = title.replace(/\- *season.*/i, '').trim();
+                    var href = parseSearch_1(item).find('a').attr('href');
+                    libs.log({ title: title, year: year, season: season, href: href, LINK_DETAIL: LINK_DETAIL_1, match: libs.string_matching_title(movieInfo, title) });
+                    if (href && !LINK_DETAIL_1 && libs.string_matching_title(movieInfo, title) && year == movieInfo.year) {
+                        if (movieInfo.type == 'movie') {
+                            LINK_DETAIL_1 = href;
+                        }
+                        else if (movieInfo.type == 'tv' && movieInfo.season == season) {
+                            LINK_DETAIL_1 = href;
                         }
                     }
                 });
@@ -84,26 +88,29 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!LINK_DETAIL_1) {
                     return [2];
                 }
-                LINK_TV_DETAIL = '';
+                LINK_DETAIL_1 = "".concat(DOMAIN).concat(LINK_DETAIL_1);
                 if (!(movieInfo.type == 'tv')) return [3, 4];
+                LINK_TV_DETAIL_1 = "";
                 return [4, libs.request_get(LINK_DETAIL_1, {}, true)];
             case 3:
-                parseTv = _b.sent();
-                hrefTv = parseTv("div#g_MXOzFGouZrOAUioXjpddqkZK a:nth-child(".concat(movieInfo.episode, ")")).attr('href');
-                libs.log({ hrefTv: hrefTv }, PROVIDER, 'HREF TV');
-                if (hrefTv) {
-                    LINK_TV_DETAIL = "".concat(DOMAIN).concat(hrefTv);
-                }
-                _b.label = 4;
-            case 4:
-                libs.log({ LINK_TV_DETAIL: LINK_TV_DETAIL }, PROVIDER, 'LINK DETAIL TV');
-                if (movieInfo.type == 'tv' && !LINK_TV_DETAIL) {
+                parseTvDetail_1 = _b.sent();
+                libs.log({ length: parseTvDetail_1('.KsOSQEEnbs a').length }, PROVIDER, 'EPISODE LENGTH');
+                parseTvDetail_1('.KsOSQEEnbs a').each(function (key, item) {
+                    var episodeTitle = parseTvDetail_1(item).find('span').text();
+                    var episode = episodeTitle.match(/episode *([0-9]+)/i);
+                    episode = episode ? Number(episode[1]) : 0;
+                    var href = parseTvDetail_1(item).attr('href');
+                    libs.log({ href: href, episodeTitle: episodeTitle }, PROVIDER, 'EPISODE');
+                    if (episode == movieInfo.episode && href) {
+                        LINK_TV_DETAIL_1 = "".concat(DOMAIN).concat(href);
+                    }
+                });
+                if (!LINK_TV_DETAIL_1) {
                     return [2];
                 }
-                if (movieInfo.type == 'tv' && LINK_TV_DETAIL) {
-                    LINK_DETAIL_1 = LINK_TV_DETAIL;
-                }
-                return [4, libs.cookies_clearAll()];
+                LINK_DETAIL_1 = LINK_TV_DETAIL_1;
+                _b.label = 4;
+            case 4: return [4, libs.cookies_clearAll()];
             case 5:
                 _b.sent();
                 return [4, libs.request_get(LINK_DETAIL_1, {})];
@@ -149,8 +156,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!dKey_1) {
                     return [2];
                 }
-                libs.log({ length: parseServer_1('.g_UavKPbNLcryInFccDwClQrzR').length }, PROVIDER, 'SERVER LENGTH');
-                parseServer_1('.g_UavKPbNLcryInFccDwClQrzR').each(function (key, item) {
+                libs.log({ length: parseServer_1('.JCsLCBlQBF').length }, PROVIDER, 'SERVER LENGTH');
+                parseServer_1('.JCsLCBlQBF').each(function (key, item) {
                     var serverName = parseServer_1(item).attr('data-value');
                     if (serverName) {
                         servers_2.push(serverName);
@@ -205,9 +212,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 return [3, 14];
             case 13:
                 e_1 = _b.sent();
-                libs.log({ e: e_1 }, PROVIDER, 'ERROR');
+                libs.log(e_1, PROVIDER, 'ERROR');
                 return [3, 14];
-            case 14: return [2];
+            case 14: return [2, true];
         }
     });
 }); };

@@ -16,7 +16,7 @@
   },
   "update_release": {
     "version": "3.4",
-    "url": "https://github.com/hdoonline/hdonline/releases/download/v2.0.15/hdo.2.0.15v.apk",
+    "url": "https://github.com/hdoonline/hdonline/releases/download/v2.0.18/hdo-2.0.18.apk",
     "contents1": "Remove ads in detail when use external player.",
     "contents2": "Improvement and stability.",
     "contents3": "Update more source.",
@@ -24,7 +24,7 @@
     "isUpdate": true
   },
   "app_player_config": {
-    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.13/mediaon-1.0.13.apk",
+    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.14/mediaon-1.0.14.apk",
     "player_version_build": 13,
     "player_is_install_force": false,
     "force_player": false

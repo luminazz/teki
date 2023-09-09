@@ -36,25 +36,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var CryptoJSAesJson, PROVIDER, DOMAIN, urlSearch, parseSeach, id, headers, body, urlAjaxEmbed, embedData, decode, e_1;
+    var CryptoJSAesJson, PROVIDER, DOMAIN, urlSearch, parseSeach, id, headers, body, urlAjaxEmbed, embedData, decode, test, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 CryptoJSAesJson = {
                     'encrypt': function (value, password) {
-                        return cryptoS.AES.encrypt(JSON.stringify(value), password, {
-                            format: CryptoJSAesJson
-                        }).toString();
+                        return cryptoS.AES.encrypt(JSON.stringify(value), password, { format: CryptoJSAesJson }).toString();
                     },
                     'decrypt': function (jsonStr, password) {
-                        return JSON.parse(cryptoS.AES.decrypt(jsonStr, password, {
-                            format: CryptoJSAesJson
-                        }).toString(cryptoS.enc.Utf8));
+                        var parseStr = JSON.parse(jsonStr);
+                        var m = parseStr.m;
+                        var newPass = "";
+                        var r = password.split("\\x");
+                        for (var _i = 0, _a = libs.string_atob(m.split("").reduce(function (t, e) { return e + t; }, "")).split("|"); _i < _a.length; _i++) {
+                            var s = _a[_i];
+                            newPass += "\\x" + r[parseInt(s) + 1];
+                        }
+                        libs.log({ newPass: newPass }, 'IDFLIX', 'NEWPASS');
+                        return JSON.parse(cryptoS.AES.decrypt(jsonStr, newPass, { format: CryptoJSAesJson }).toString(cryptoS.enc.Utf8));
                     },
                     'stringify': function (cipherParams) {
-                        var j = {
-                            ct: cipherParams.ciphertext.toString(cryptoS.enc.Base64)
-                        };
+                        var j = { ct: cipherParams.ciphertext.toString(cryptoS.enc.Base64) };
                         if (cipherParams.iv)
                             j.iv = cipherParams.iv.toString();
                         if (cipherParams.salt)
@@ -63,9 +66,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     },
                     'parse': function (jsonStr) {
                         var j = JSON.parse(jsonStr);
-                        var cipherParams = cryptoS.lib.CipherParams.create({
-                            ciphertext: cryptoS.enc.Base64.parse(j.ct)
-                        });
+                        var cipherParams = cryptoS.lib.CipherParams.create({ ciphertext: cryptoS.enc.Base64.parse(j.ct) });
                         if (j.iv)
                             cipherParams.iv = cryptoS.enc.Hex.parse(j.iv);
                         if (j.s)
@@ -105,12 +106,13 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 return [4, libs.request_post(urlAjaxEmbed, headers, body)];
             case 3:
                 embedData = _a.sent();
-                libs.log({ embedData: embedData }, PROVIDER, "EMBED DATA");
+                libs.log({ embedData: embedData, embedUrl: embedData.embed_url, key: embedData.key }, PROVIDER, "EMBED DATA");
                 if (!embedData.embed_url) {
                     return [2];
                 }
                 decode = CryptoJSAesJson.decrypt(embedData.embed_url, embedData.key);
-                libs.log({ decode: decode }, PROVIDER, 'decode');
+                test = CryptoJSAesJson.decrypt('{"ct":"MoPfYyX4nzXH0JBT\\/W+BhTJ00a4BOwDm9OhU2ZTG282kFT8POtYvMPqHfLaLa8n24msyxmpzGx5I9M9un2q9MI4akw5iyAbtUnFwNAxesKc=","iv":"4154ab88e7ac123b529cc709ecd5e72a","s":"e67d038358bc2890","m":"wMywXOywHNzwHNyw3M0wHNxwHMzwHOzwXM8ZDfwwXMzwXMywHOywnNywXOxw3MzwHMxwHM0wHO8JTM8BjM8VTM8lDf4EDf2EDf1MDfyMDfzEDfxQDfyIDf1wnM8JDN8VjM8ZzM8RDfzw3Nzw3N8FTM8djM8lzM8dTM"}', '\\x57\\x69\\x79\\x49\\x30\\x59\\x52\\x4f\\x4d\\x4d\\x63\\x30\\x35\\x78\\x49\\x54\\x4d\\x4d\\x78\\x4d\\x55\\x78\\x54\\x3d\\x59\\x32\\x44\\x63\\x49\\x59\\x7a\\x4e\\x4d\\x30\\x54\\x57\\x59\\x57\\x4e\\x6a\\x54\\x4d\\x59\\x31');
+                libs.log({ decode: decode, test: test }, PROVIDER, 'decode');
                 if (!decode) {
                     return [2];
                 }

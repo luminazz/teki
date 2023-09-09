@@ -11,6 +11,7 @@
     "isUpdate": false
   },
   "ads_config" : {
+    "show_start": true,
     "show": true
   },
   "ads_init" : "admob"
