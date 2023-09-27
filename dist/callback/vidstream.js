@@ -56,7 +56,7 @@ callbacksEmbed["vidstream"] = function (dataCallback, provider, host, callback, 
                     return [2];
                 }
                 urlEmbed = "https://vidstream.pro/".concat(endpoint);
-                return [4, libs.request_get(urlEmbed)];
+                return [4, libs.request_get(urlEmbed, headers)];
             case 1:
                 dataEmbed = _c.sent();
                 libs.log({ urlEmbed: urlEmbed, dataEmbed: dataEmbed }, provider, 'DATA EMBED');
@@ -72,7 +72,7 @@ callbacksEmbed["vidstream"] = function (dataCallback, provider, host, callback, 
                 if (!embedItem.file) {
                     return [3, 4];
                 }
-                if (!(embedItem.file.indexOf('vidstream') != -1 || embedItem.file.indexOf('mcloud.to') != -1 || embedItem.file.indexOf('vizcloud') != -1)) return [3, 4];
+                if (!(embedItem.file.indexOf('vidstream') != -1 || embedItem.file.indexOf('vidrock') != -1 || embedItem.file.indexOf('mcloud.to') != -1 || embedItem.file.indexOf('vizcloud') != -1)) return [3, 4];
                 return [4, libs.request_get(embedItem.file, headers)];
             case 3:
                 embedData = _c.sent();
@@ -84,7 +84,7 @@ callbacksEmbed["vidstream"] = function (dataCallback, provider, host, callback, 
                 }
                 patternQuality = embedData.match(/H([0-9]+)\/v\.m3u8/ig);
                 libs.log({ patternQuality: patternQuality, file: embedItem.file }, provider, 'PATTERN QUALITY VIDCLOUD');
-                if (!patternQuality || embedItem.file.indexOf('list.m3u8') == -1) {
+                if (!patternQuality) {
                     libs.embed_callback(embedItem.file, provider, host, 'Hls', callback, ++rank, subs, [], {}, {
                         is_end_webview: true,
                         url_webview: metadata.url_webview || ''

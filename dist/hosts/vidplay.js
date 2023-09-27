@@ -35,14 +35,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["vizcloud"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+hosts["vidplay"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
     var userAgent, DOMAIN, HOST, subParse, subs, headers;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 userAgent = libs.request_getRandomUserAgent();
-                DOMAIN = 'https://vizcloud.co';
-                HOST = 'Vizcloud';
+                DOMAIN = ' vidplay.site';
+                HOST = 'Vidstream';
                 subParse = url.match(/\?sub\.info\=([^\&]+)/i);
                 subParse = subParse ? decodeURIComponent(subParse[1]) : '';
                 libs.log({ subParse: subParse }, HOST, 'SUBPARSE');
@@ -67,7 +67,6 @@ hosts["vizcloud"] = function (url, movieInfo, provider, config, callback) { retu
                         metadata: {
                             subs: subs,
                             url_webview: url,
-                            domain: DOMAIN
                         },
                         callback: callback,
                         beforeLoadScript: "var open = XMLHttpRequest.prototype.open;\n            XMLHttpRequest.prototype.open = function() {\n                window.ReactNativeWebView.postMessage(JSON.stringify({arguments}));\n                open.apply(this, arguments);\n            };"

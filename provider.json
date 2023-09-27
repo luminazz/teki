@@ -1,5 +1,7 @@
 {
 	"providers": [
+		"dist/providers/dbgo.js",
+		"dist/providers/2now.js",
 		"dist/providers/flixhq.js",
 		"dist/providers/filmxy.js",
 		"dist/providers/fmovies.js",
@@ -20,6 +22,8 @@
 		"dist/providers/vidsrc.js",
 		"dist/providers/blackvid.js",
 		"dist/providers/jump1.js",
-		"dist/providers/primewire.js"
+		"dist/providers/primewire.js",
+		"dist/providers/vidsrcto.js",
+		"dist/providers/moviesapi.js"
 	]
 }

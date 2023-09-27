@@ -46,8 +46,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-libs.embed_redirect = function (embed, quality, movieInfo, provider, callback, host, subs, options) {
+libs.embed_redirect = function (embed, quality, movieInfo, provider, callback, host, subs, options, headers) {
     if (options === void 0) { options = {}; }
+    if (headers === void 0) { headers = {}; }
     return __awaiter(_this, void 0, void 0, function () {
         var hostname, headersData, contentLength;
         return __generator(this, function (_a) {
@@ -59,14 +60,14 @@ libs.embed_redirect = function (embed, quality, movieInfo, provider, callback, h
                     hostname = libs.url_get_host(embed);
                     libs.log({ hostname: hostname, embed: embed }, provider, 'EMBED HOST');
                     if (embed.indexOf('.m3u8') != -1 || embed.indexOf('.hls') != -1) {
-                        libs.embed_callback(embed, provider, host ? host : hostname.toUpperCase(), 'Hls', callback);
+                        libs.embed_callback(embed, provider, host ? host : hostname.toUpperCase(), 'Hls', callback, 1, subs, [], headers);
                         return [2];
                     }
                     if (!hostname) {
                         return [2];
                     }
                     if (quality) {
-                        libs.embed_callback(embed, provider, host ? host : hostname.toUpperCase(), '', callback);
+                        libs.embed_callback(embed, provider, host ? host : hostname.toUpperCase(), '', callback, 1, subs, [], headers);
                         return [2];
                     }
                     if (hosts && hosts[hostname]) {
@@ -76,12 +77,13 @@ libs.embed_redirect = function (embed, quality, movieInfo, provider, callback, h
                         }, callback);
                         return [2];
                     }
-                    return [4, libs.request_head(embed, {})];
+                    return [4, libs.request_head(embed, headers)];
                 case 1:
                     headersData = _a.sent();
                     contentLength = headersData['content-length'];
+                    libs.log({ contentLength: contentLength }, 'CONTENT_LENGTH');
                     if (contentLength > 100000000) {
-                        libs.embed_callback(embed, provider, host ? host : hostname.toUpperCase(), '', callback);
+                        libs.embed_callback(embed, provider, host ? host : hostname.toUpperCase(), '', callback, 1, subs, [], headers);
                     }
                     return [2];
             }

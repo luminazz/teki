@@ -168,7 +168,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         switch (_b.label) {
             case 0:
                 PROVIDER = 'AMOVIESTREAM_2';
-                DOMAIN = "https://fmovies.to";
+                DOMAIN = "https://fmoviesz.to";
                 userAgent = {};
                 LINK_DETAIL = '';
                 KEY = "8z5Ag5wgagfsOuhz";

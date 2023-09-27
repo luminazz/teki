@@ -207,7 +207,7 @@ libs.string_base64_decode = function (str) {
     return textString;
 };
 libs.string_base64_encode = function (str) {
-    var wordArray = CryptoJS.enc.Utf8.parse(str);
-    var base64 = CryptoJS.enc.Base64.stringify(wordArray);
+    var wordArray = cryptoS.enc.Utf8.parse(str);
+    var base64 = cryptoS.enc.Base64.stringify(wordArray);
     return base64;
 };

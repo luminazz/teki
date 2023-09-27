@@ -40,13 +40,13 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         key = dKey_1;
         var b = "";
         for (var i = 0; i < str.length;) {
-            for (var j = 0; (j < "111".toString().length && i < str.length); j++, i++) {
-                b += String.fromCharCode(str[i].charCodeAt(0) ^ "111".toString()[j].charCodeAt(0));
+            for (var j = 0; (j < eKey_1.toString().length && i < str.length); j++, i++) {
+                b += String.fromCharCode(str[i].charCodeAt(0) ^ eKey_1.toString()[j].charCodeAt(0));
             }
         }
         return b;
     }
-    var PROVIDER, DOMAIN, urlSearch, parseSearch_1, LINK_DETAIL_1, LINK_TV_DETAIL_1, parseTvDetail_1, htmlDetail, sKey, serverEndpoint, cookieDetail, urlServer, cookieDatas, item, parseCookieData, headers, htmlServer, parseServer_1, servers_2, evalData, evalData, unpacker, dKey_1, directQuality, qualities, _i, servers_1, item, urlGetIframe, dataIframe, encode, parseEncode, parseFirstEncode, _a, qualities_1, qualityItem, urlReplace, e_1;
+    var PROVIDER, DOMAIN, urlSearch, parseSearch_1, LINK_DETAIL_1, LINK_TV_DETAIL_1, parseTvDetail_1, htmlDetail, sKey, serverEndpoint, cookieDetail, urlServer, cookieDatas, item, parseCookieData, headers, htmlServer, parseServer_1, servers_2, evalData, evalData, unpacker, dKey_1, eKey_1, directQuality, qualities, _i, servers_1, item, urlGetIframe, dataIframe, encode, parseEncode, parseFirstEncode, _a, qualities_1, qualityItem, urlReplace, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -152,8 +152,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 unpacker = libs.string_unpacker_v2(evalData);
                 dKey_1 = unpacker.match(/\( *key *\=([A-z0-9]+)/i);
                 dKey_1 = dKey_1 ? dKey_1[1] : '';
-                libs.log({ dKey: dKey_1 }, PROVIDER, 'DKEY');
-                if (!dKey_1) {
+                eKey_1 = unpacker.match(/j *\< *\"([^\"]+)/i);
+                eKey_1 = eKey_1 ? eKey_1[1] : "";
+                libs.log({ dKey: dKey_1, eKey: eKey_1 }, PROVIDER, 'DKEY');
+                if (!dKey_1 || !eKey_1) {
                     return [2];
                 }
                 libs.log({ length: parseServer_1('.JCsLCBlQBF').length }, PROVIDER, 'SERVER LENGTH');
