@@ -98,10 +98,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 6:
                 parseSearch_1 = _a.sent();
                 libs.log({
-                    length: parseSearch_1('.row.border .item').length
+                    length: parseSearch_1('.row .item').length
                 }, PROVIDER, 'SEARCH LENGTH');
                 LINK_DETAIL_1 = '';
-                parseSearch_1('.row.border .item').each(function (key, item) {
+                parseSearch_1('.row .item').each(function (key, item) {
                     var tipTitle = parseSearch_1(item).find('.tiptitle').text();
                     var year = tipTitle.match(/\(([0-9]+)/i);
                     year = year ? year[1] : 0;

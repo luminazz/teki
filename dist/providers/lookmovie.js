@@ -36,114 +36,99 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, HOST, DOMAIN, PROXY, userAgent, LINK_DETAIL, urlSearchMovie, urlSearchTvshow, parseSearch, parseDetailMovie, linkRedirect, parseDetailTv_1, scriptTv_1, tvInfo, _i, _a, seasonItem;
+    var PROVIDER, HOST, DOMAIN, userAgent, LINK_DETAIL, id, urlSearch, parseSearch, hash, expires, idFilm, movieID, seasonID, seasonData, directUrl, parseDirect, directQuality, item, quality, tracks, _i, _a, item, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 PROVIDER = 'LOOKMOVIE';
                 HOST = 'LookMovie';
-                DOMAIN = "https://lookmovie2.to";
-                PROXY = "https://cors-anywhere.herokuapp.com/";
+                DOMAIN = "https://lookmovie.foundation";
                 userAgent = libs.request_getRandomUserAgent();
                 LINK_DETAIL = '';
-                urlSearchMovie = "".concat(DOMAIN, "/movies/search/?q=").concat(libs.url_slug_search(movieInfo, '%20'));
-                urlSearchTvshow = "".concat(DOMAIN, "/shows/search/?q=").concat(libs.url_slug_search(movieInfo, '%20'));
-                parseSearch = null;
-                if (!(movieInfo.type == 'movie')) return [3, 2];
-                return [4, libs.request_get(urlSearchMovie, {}, true)];
+                _b.label = 1;
             case 1:
-                parseSearch = _b.sent();
-                return [3, 4];
-            case 2: return [4, libs.request_get(urlSearchTvshow, {}, true)];
-            case 3:
-                parseSearch = _b.sent();
-                _b.label = 4;
-            case 4:
-                libs.log({ length: parseSearch('.movie-item-style-2').length }, PROVIDER, 'SEARCH TOTAL');
-                parseSearch('.movie-item-style-2').each(function (key, item) {
-                    var title = parseSearch(item).find('.mv-item-infor a').text();
-                    var href = parseSearch(item).find('.mv-item-infor a').attr('href');
-                    var year = parseSearch(item).find('.year').text();
-                    if (libs.string_matching_title(movieInfo, title) && !LINK_DETAIL) {
-                        if (movieInfo.type == 'movie' && year == movieInfo.year) {
-                            LINK_DETAIL = href;
-                        }
-                        else if (movieInfo.type == 'tv') {
-                            LINK_DETAIL = href;
-                        }
-                    }
-                });
-                libs.log(LINK_DETAIL, PROVIDER, 'LINK DETAIL');
-                if (!LINK_DETAIL) {
-                    return [2];
+                _b.trys.push([1, 4, , 5]);
+                id = movieInfo.imdb_id.replace('tt', '');
+                urlSearch = "".concat(DOMAIN, "/movies/play/").concat(id, "-").concat(libs.url_slug_search(movieInfo, '-'), "-").concat(movieInfo.year);
+                if (movieInfo.type == 'tv') {
+                    urlSearch = "".concat(DOMAIN, "/shows/play/").concat(id, "-").concat(libs.url_slug_search(movieInfo, '-'), "-").concat(movieInfo.year);
                 }
-                LINK_DETAIL = "".concat(DOMAIN).concat(LINK_DETAIL);
-                return [4, libs.request_get(LINK_DETAIL, {}, true)];
-            case 5:
-                parseDetailMovie = _b.sent();
-                linkRedirect = parseDetailMovie('.view-movie .container .round-button').attr('href');
-                if (!linkRedirect) {
-                    return [2];
+                libs.log({ urlSearch: urlSearch }, PROVIDER, 'URL SEARCH');
+                return [4, libs.request_get(urlSearch, {})];
+            case 2:
+                parseSearch = _b.sent();
+                libs.log({ parseSearch: parseSearch }, PROVIDER, 'PARSE SEARCH');
+                hash = parseSearch.match(/hash *\: *\'([^\']+)/i);
+                hash = hash ? hash[1] : '';
+                if (!hash) {
+                    hash = parseSearch.match(/hash *\: *\"([^\"]+)/i);
+                    hash = hash ? hash[1] : '';
                 }
+                expires = parseSearch.match(/expires *\: *([0-9]+)/i);
+                expires = expires ? expires[1] : 0;
+                idFilm = '';
                 if (movieInfo.type == 'movie') {
-                    LINK_DETAIL = linkRedirect;
+                    movieID = parseSearch.match(/id_movie:\s*(\d+)/i);
+                    idFilm = movieID ? movieID[1] : '';
                 }
-                if (!(movieInfo.type == 'tv')) return [3, 7];
-                return [4, libs.request_get(linkRedirect, {}, true)];
-            case 6:
-                parseDetailTv_1 = _b.sent();
-                scriptTv_1 = '';
-                parseDetailTv_1('script').each(function (key, item) {
-                    var scriptData = parseDetailTv_1(item).text();
-                    if (scriptData && scriptData.indexOf("window['show_storage']") != -1) {
-                        scriptTv_1 = scriptData;
+                else {
+                    seasonID = parseSearch.match(/window\.seasons *\= *\'([^\']+)/i);
+                    seasonID = seasonID ? seasonID[1] : '';
+                    if (!seasonID) {
+                        return [2];
                     }
-                });
-                libs.log(scriptTv_1, PROVIDER, 'SCRIPT TV');
-                if (!scriptTv_1) {
+                    seasonID = seasonID.replace(/\\*/ig, '');
+                    seasonData = JSON.parse(seasonID);
+                    idFilm = seasonData[movieInfo.season]['episodes'][movieInfo.episode]['id_episode'];
+                }
+                libs.log({ hash: hash, expires: expires }, PROVIDER, 'HASH EXPIRES');
+                if (!hash || !expires || !idFilm) {
                     return [2];
                 }
-                tvInfo = {};
-                scriptTv_1 = scriptTv_1.replace("window['show_storage']", "tvInfo");
-                libs.log(scriptTv_1, PROVIDER, 'REPLACE SCRIPT TV');
-                eval(scriptTv_1);
-                libs.log(tvInfo, PROVIDER, 'TV INFO');
-                if (!tvInfo.seasons) {
+                directUrl = '';
+                if (movieInfo.type == 'movie') {
+                    directUrl = "".concat(DOMAIN, "/api/v1/security/movie-access?id_movie=").concat(idFilm, "&hash=").concat(hash, "&expires=").concat(expires);
+                }
+                else {
+                    directUrl = "".concat(DOMAIN, "/api/v1/security/episode-access?id_episode=").concat(idFilm, "&hash=").concat(hash, "&expires=").concat(expires);
+                }
+                libs.log({ directUrl: directUrl }, PROVIDER, 'DIRECT URL');
+                return [4, libs.request_get(directUrl, {
+                        Referer: urlSearch,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    })];
+            case 3:
+                parseDirect = _b.sent();
+                libs.log({ parseDirect: parseDirect }, PROVIDER, 'PARSE DIRECT');
+                directQuality = [];
+                for (item in parseDirect.streams) {
+                    quality = Number(item.replace('p', ''));
+                    directQuality.push({
+                        quality: quality,
+                        file: parseDirect.streams[item]
+                    });
+                }
+                tracks = [];
+                for (_i = 0, _a = parseDirect.subtitles; _i < _a.length; _i++) {
+                    item = _a[_i];
+                    tracks.push({
+                        file: "".concat(DOMAIN).concat(item.file),
+                        kind: 'captions',
+                        label: item.language
+                    });
+                }
+                libs.log({ directQuality: directQuality, tracks: tracks }, PROVIDER, 'TRACSKS DIRECT');
+                if (!directQuality.length) {
                     return [2];
                 }
-                for (_i = 0, _a = tvInfo.seasons; _i < _a.length; _i++) {
-                    seasonItem = _a[_i];
-                    if (seasonItem.season == movieInfo.season && seasonItem.episode == movieInfo.episode) {
-                        LINK_DETAIL = linkRedirect + "#S".concat(movieInfo.season, "-E").concat(movieInfo.episode, "-").concat(seasonItem.id_episode);
-                        break;
-                    }
-                }
-                _b.label = 7;
-            case 7:
-                libs.log({
-                    LINK_DETAIL: LINK_DETAIL,
-                    linkRedirect: linkRedirect
-                }, PROVIDER, 'URL LINK DETAIL');
-                callback({
-                    callback: {
-                        provider: PROVIDER,
-                        host: HOST,
-                        url: LINK_DETAIL,
-                        headers: {
-                            'user-agent': userAgent
-                        },
-                        callback: callback,
-                        script: "window.alert=window.confirm=window.prompt=function(n){};",
-                        beforeLoadScript: "window.alert=window.confirm=window.prompt=function(n){};\n            var open = XMLHttpRequest.prototype.open;\n            XMLHttpRequest.prototype.open = function() {\n                this.addEventListener(\"load\", function() {\n                    var message = {\"status\" : this.status, \"responseURL\" : this.responseURL, \"responseText\": this.responseText, \"response\": this.response}\n                    \n                    window.ReactNativeWebView.postMessage(JSON.stringify(message));\n                });\n                open.apply(this, arguments);\n            };",
-                        metadata: {
-                            PROVIDER: PROVIDER,
-                            DOMAIN: DOMAIN,
-                            movieInfo: movieInfo,
-                            userAgent: userAgent,
-                        }
-                    }
-                });
-                return [2, true];
+                directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
+                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, directQuality);
+                return [3, 5];
+            case 4:
+                e_1 = _b.sent();
+                libs.log({ e: e_1 }, PROVIDER, 'ERROR');
+                return [3, 5];
+            case 5: return [2];
         }
     });
 }); };

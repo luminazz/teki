@@ -62,7 +62,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         libs.log({ trashString: trashString }, 'trashString');
         return Base64.decode(trashString.toString('utf-8'));
     }
-    var PROVIDER, DOMAIN, Base64, urlSearch, parseSearch, iframeUrl, parseIframe_1, SCRIPT_DETAIL_1, parseToken, voidbootUrl, parseVoid_1, parseSource, parseSub, decryptData, splitDirect, directQuality, _i, splitDirect_1, parseDirectItem, quality, urlDirect, e_1;
+    var PROVIDER, DOMAIN, Base64, urlSearch, parseSearch, iframeUrl, parseIframe_1, SCRIPT_DETAIL_1, parseToken, voidbootUrl, parseVoid_1, parseSource, parseSub, decryptData, splitDirect, directQuality, userAgent, _i, splitDirect_1, parseDirectItem, quality, urlDirect, fetchHeader, er_1, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -114,7 +114,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 };
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 7, , 8]);
+                _a.trys.push([1, 13, , 14]);
                 urlSearch = '';
                 if (movieInfo.type == 'movie') {
                     urlSearch = "".concat(DOMAIN, "/imdb.php?id=").concat(movieInfo.imdb_id);
@@ -183,22 +183,48 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ decryptData: decryptData }, PROVIDER, 'DECRYPT DATA');
                 splitDirect = decryptData.split(',');
                 directQuality = [];
-                for (_i = 0, splitDirect_1 = splitDirect; _i < splitDirect_1.length; _i++) {
-                    parseDirectItem = splitDirect_1[_i];
-                    quality = parseDirectItem.match(/^\[([0-9]+)p/i);
-                    quality = quality ? quality[1] : '720';
-                    urlDirect = parseDirectItem.replace(/^\[[^\]]+\]/i, '');
-                    urlDirect = urlDirect.split(' or ');
-                    urlDirect = urlDirect[0].trim();
-                    libs.log({
-                        urlDirect: urlDirect,
-                        quality: quality
-                    }, PROVIDER, 'urlDirect');
-                    directQuality.push({
-                        file: urlDirect,
-                        quality: Number(quality),
-                    });
+                userAgent = libs.request_getRandomUserAgent();
+                _i = 0, splitDirect_1 = splitDirect;
+                _a.label = 7;
+            case 7:
+                if (!(_i < splitDirect_1.length)) return [3, 12];
+                parseDirectItem = splitDirect_1[_i];
+                _a.label = 8;
+            case 8:
+                _a.trys.push([8, 10, , 11]);
+                quality = parseDirectItem.match(/^\[([0-9]+)p/i);
+                quality = quality ? quality[1] : '720';
+                urlDirect = parseDirectItem.replace(/^\[[^\]]+\]/i, '');
+                urlDirect = urlDirect.split(' or ');
+                urlDirect = urlDirect[0].trim();
+                return [4, fetch(urlDirect, {
+                        headers: {
+                            'user-agent': userAgent,
+                        },
+                        redirect: 'manual',
+                    })];
+            case 9:
+                fetchHeader = _a.sent();
+                if (fetchHeader.status == 404) {
+                    return [3, 11];
                 }
+                libs.log({
+                    urlDirect: urlDirect,
+                    quality: quality,
+                    fetchHeader: fetchHeader
+                }, PROVIDER, 'urlDirect');
+                directQuality.push({
+                    file: fetchHeader.url,
+                    quality: Number(quality),
+                });
+                return [3, 11];
+            case 10:
+                er_1 = _a.sent();
+                return [3, 11];
+            case 11:
+                _i++;
+                return [3, 7];
+            case 12:
                 libs.log({ directQuality: directQuality }, PROVIDER, 'DIRECT QUALITY');
                 if (!directQuality.length) {
                     return [2];
@@ -206,12 +232,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
                 libs.log({ directQuality: directQuality }, PROVIDER, 'DIRECT QUALITY');
                 libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], directQuality);
-                return [3, 8];
-            case 7:
+                return [3, 14];
+            case 13:
                 e_1 = _a.sent();
                 libs.log({ e: e_1 }, PROVIDER, 'ERROR');
-                return [3, 8];
-            case 8: return [2, true];
+                return [3, 14];
+            case 14: return [2, true];
         }
     });
 }); };
