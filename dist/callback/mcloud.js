@@ -80,7 +80,7 @@ callbacksEmbed["mcloud"] = function (dataCallback, provider, host, callback, met
                 if (!embedItem.file) {
                     return [3, 7];
                 }
-                if (!(embedItem.file.indexOf('vidstream') != -1 || embedItem.file.indexOf('mcloud.to') != -1 || embedItem.file.indexOf('vizcloud') != -1)) return [3, 5];
+                if (!(embedItem.file.indexOf('vidstream') != -1 || embedItem.file.indexOf('mcloud') != -1 || embedItem.file.indexOf('vizcloud') != -1)) return [3, 5];
                 return [4, libs.request_get(embedItem.file, headers)];
             case 4:
                 embedData = _c.sent();

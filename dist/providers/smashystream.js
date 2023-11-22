@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, fflix, urlSearch, parseSearch;
+    var PROVIDER, DOMAIN, fflix, video1, urlSearch, parseSearch;
     var _this = this;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -52,7 +52,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                     urlSearch: urlSearch
                                 }, PROVIDER, 'URL SEARCH');
                                 return [4, libs.request_get(urlSearch, {
-                                        Referer: movieInfo.type == 'tv' ? "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode) : "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id)
+                                        Referer: movieInfo.type == 'tv' ? "".concat(DOMAIN, "/video1.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode) : "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id)
                                     })];
                             case 1:
                                 htmlDetail = _a.sent();
@@ -93,6 +93,65 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         }
                     });
                 }); };
+                video1 = function (urlSearch) { return __awaiter(_this, void 0, void 0, function () {
+                    var parseDetail, _i, _a, file, directSizes, patternSize, directQuality, _b, patternSize_1, patternItem, sizeQuality;
+                    return __generator(this, function (_c) {
+                        switch (_c.label) {
+                            case 0:
+                                libs.log({
+                                    urlSearch: urlSearch
+                                }, PROVIDER, 'URL SEARCH');
+                                return [4, libs.request_get(urlSearch, {
+                                        Referer: movieInfo.type == 'tv' ? "".concat(DOMAIN, "/video1.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode) : "".concat(DOMAIN, "/video1.php?tmdb=").concat(movieInfo.tmdb_id)
+                                    })];
+                            case 1:
+                                parseDetail = _c.sent();
+                                libs.log({ parseDetail: parseDetail }, PROVIDER, 'PARSE DETAIL VIDEO 1');
+                                if (!parseDetail.sourceUrls) {
+                                    return [2];
+                                }
+                                _i = 0, _a = parseDetail.sourceUrls;
+                                _c.label = 2;
+                            case 2:
+                                if (!(_i < _a.length)) return [3, 5];
+                                file = _a[_i];
+                                if (file.indexOf('playlist.m3u8') == -1) {
+                                    return [3, 4];
+                                }
+                                return [4, libs.request_get(file, {})];
+                            case 3:
+                                directSizes = _c.sent();
+                                patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
+                                libs.log({ patternSize: patternSize }, PROVIDER, 'PATTERN SIZE');
+                                if (!patternSize) {
+                                    libs.embed_callback(file, PROVIDER, PROVIDER, 'hls', callback, 1, []);
+                                    return [3, 4];
+                                }
+                                directQuality = [];
+                                libs.log({ patternSize: patternSize }, PROVIDER, 'PATTERN SIZE');
+                                for (_b = 0, patternSize_1 = patternSize; _b < patternSize_1.length; _b++) {
+                                    patternItem = patternSize_1[_b];
+                                    sizeQuality = patternItem.match(/\/([0-9]+)\//i);
+                                    sizeQuality = sizeQuality ? Number(sizeQuality[1]) : 720;
+                                    directQuality.push({
+                                        file: patternItem,
+                                        quality: sizeQuality
+                                    });
+                                }
+                                if (!directQuality.length) {
+                                    return [3, 4];
+                                }
+                                directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
+                                libs.log({ directQuality: directQuality }, PROVIDER, 'DIRECT QUALITY');
+                                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], directQuality);
+                                _c.label = 4;
+                            case 4:
+                                _i++;
+                                return [3, 2];
+                            case 5: return [2];
+                        }
+                    });
+                }); };
                 urlSearch = "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id);
                 if (movieInfo.type == 'tv') {
                     urlSearch = "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
@@ -103,12 +162,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ length: parseSearch('.server').length }, PROVIDER, "SEARCH LENGTH");
                 parseSearch('.server').each(function (key, item) {
                     var text = parseSearch(item).text();
-                    var href = parseSearch(item).attr('data-id');
+                    var href = parseSearch(item).attr('data-url');
                     var parsetxt = text.trim().split(" ");
                     var lastTxt = parsetxt[parsetxt.length - 1];
                     libs.log({ text: text, href: href, parsetxt: parsetxt, lastTxt: lastTxt }, PROVIDER, "INFO");
                     if (lastTxt.toLowerCase() == 'f') {
-                        fflix(href);
+                        video1(href);
                     }
                 });
                 return [2];

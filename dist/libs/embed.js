@@ -404,7 +404,7 @@ libs.embed_fmovies_id = function (hash, headers, embedUrl) { return __awaiter(_t
         }
         return getPassword(js);
     }
-    var secretKey, encryptedURL, encryptedURLTemp, key, _i, secretKey_1, index, i, e_1, decryptData;
+    var secretKey, encryptedURL, encryptedURLTemp, key, currentIndex, _i, secretKey_1, index, start, end, i, e_1, decryptData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -419,20 +419,24 @@ libs.embed_fmovies_id = function (hash, headers, embedUrl) { return __awaiter(_t
                 if (Array.isArray(hash)) {
                     return [2, hash];
                 }
-                return [4, libs.request_get("https://raw.githubusercontent.com/enimax-anime/key/e4/key.txt")];
+                return [4, libs.request_get("https://raw.githubusercontent.com/theonlymo/keys/e4/key")];
             case 2:
                 secretKey = _a.sent();
                 encryptedURLTemp = hash.split("");
                 key = "";
+                currentIndex = 0;
                 for (_i = 0, secretKey_1 = secretKey; _i < secretKey_1.length; _i++) {
                     index = secretKey_1[_i];
-                    for (i = index[0]; i < index[1]; i++) {
-                        key += encryptedURLTemp[i];
-                        encryptedURLTemp[i] = null;
+                    start = index[0] + currentIndex;
+                    end = start + index[1];
+                    for (i = start; i < end; i++) {
+                        key += hash[i];
+                        encryptedURLTemp[i] = '';
                     }
+                    currentIndex += index[1];
                 }
                 secretKey = key;
-                encryptedURL = encryptedURLTemp.filter(function (x) { return x !== null; }).join("");
+                encryptedURL = encryptedURLTemp.join('');
                 return [3, 4];
             case 3:
                 e_1 = _a.sent();

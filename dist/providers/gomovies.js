@@ -51,7 +51,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         switch (_b.label) {
             case 0:
                 PROVIDER = 'EGoMovies';
-                DOMAIN = "https://gomovies-online.cam";
+                DOMAIN = "https://new-movies123.link";
                 urlSearch = "".concat(DOMAIN, "/search/").concat(libs.url_slug_search(movieInfo, '%20'));
                 _b.label = 1;
             case 1:
@@ -60,8 +60,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 return [4, libs.request_get(urlSearch, {}, true)];
             case 2:
                 parseSearch_1 = _b.sent();
-                libs.log({ length: parseSearch_1('div._sHEtclpQfvc div._smQamBQsETb').length }, PROVIDER, 'SEARCH LENGTH');
-                parseSearch_1('div._sHEtclpQfvc div._smQamBQsETb').each(function (key, item) {
+                libs.log({ length: parseSearch_1('div.mouCgDQMxDwt').length }, PROVIDER, 'SEARCH LENGTH');
+                parseSearch_1('div.mouCgDQMxDwt').each(function (key, item) {
                     var title = parseSearch_1(item).attr('data-filmname');
                     var year = parseSearch_1(item).attr('data-year');
                     var herf = parseSearch_1(item).find('a').attr('href');
@@ -89,7 +89,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 return [4, libs.request_get(LINK_DETAIL_1, {}, true)];
             case 3:
                 parseTv = _b.sent();
-                hrefTv = parseTv("div._smGdwUYyTtP a:nth-child(".concat(movieInfo.episode, ")")).attr('href');
+                hrefTv = parseTv("a.moSxCSIJWWnO:contains(Episode ".concat(movieInfo.episode >= 10 ? movieInfo.episode : "0".concat(movieInfo.episode), ")")).attr('href');
                 libs.log({ hrefTv: hrefTv }, PROVIDER, 'HREF TV');
                 if (hrefTv) {
                     LINK_TV_DETAIL = "".concat(DOMAIN).concat(hrefTv);
@@ -151,8 +151,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!dKey_1 || !eKey_1) {
                     return [2];
                 }
-                libs.log({ length: parseServer_1('._sagnziBWakb').length }, PROVIDER, 'SERVER LENGTH');
-                parseServer_1('._sagnziBWakb').each(function (key, item) {
+                libs.log({ length: parseServer_1('.moJHhOFdHVVk').length }, PROVIDER, 'SERVER LENGTH');
+                parseServer_1('.moJHhOFdHVVk').each(function (key, item) {
                     var serverName = parseServer_1(item).attr('data-value');
                     if (serverName) {
                         servers_2.push(serverName);

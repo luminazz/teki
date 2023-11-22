@@ -35,45 +35,45 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["mcloud"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var userAgent, DOMAIN, HOST, subParse, subs, headers;
+source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var PROVIDER, DOMAIN, urlSearch, htmlSearch, directUrl, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                userAgent = libs.request_getRandomUserAgent();
-                DOMAIN = 'https://mcloud.bz';
-                HOST = 'MCloud';
-                subParse = url.match(/\?sub\.info\=([^\&]+)/i);
-                subParse = subParse ? decodeURIComponent(subParse[1]) : '';
-                libs.log({ subParse: subParse }, HOST, 'SUBPARSE');
-                subs = [];
-                if (!subParse) return [3, 2];
-                return [4, libs.request_get(subParse)];
+                PROVIDER = 'Remotestream';
+                DOMAIN = "https://remotestream.cc";
+                _a.label = 1;
             case 1:
-                subs = _a.sent();
-                libs.log({ subs: subs }, HOST, 'SUBTITLE');
-                _a.label = 2;
+                _a.trys.push([1, 3, , 4]);
+                urlSearch = "".concat(DOMAIN, "/e/?tmdb=").concat(movieInfo.tmdb_id);
+                if (movieInfo.type == 'tv') {
+                    urlSearch = "".concat(DOMAIN, "/e/?tmdb=").concat(movieInfo.tmdb_id, "&s=").concat(movieInfo.season, "&e=").concat(movieInfo.episode);
+                }
+                urlSearch = urlSearch + "&apikey=whXgvN4kVyoubGwqXpw26Oy3PVryl8dm";
+                libs.log({ urlSearch: urlSearch }, PROVIDER, 'URL SEARCH');
+                return [4, libs.request_get(urlSearch, {
+                        referer: "https://watcha.movie/"
+                    })];
             case 2:
-                headers = {
-                    'Referer': "https://fmoviesz.to/",
-                    'user-agent': libs.request_getRandomUserAgent()
-                };
-                callback({
-                    callback: {
-                        provider: provider,
-                        host: HOST,
-                        url: url,
-                        headers: headers,
-                        metadata: {
-                            subs: subs,
-                            url_webview: url,
-                            domain: DOMAIN
-                        },
-                        callback: callback,
-                        beforeLoadScript: "var open = XMLHttpRequest.prototype.open;\n            XMLHttpRequest.prototype.open = function() {\n                window.ReactNativeWebView.postMessage(JSON.stringify({arguments}));\n                open.apply(this, arguments);\n            };"
-                    }
+                htmlSearch = _a.sent();
+                directUrl = htmlSearch.match(/\"file\" *\: *\"([^\"]+)/i);
+                directUrl = directUrl ? directUrl[1] : "";
+                libs.log({ directUrl: directUrl }, PROVIDER, 'DIRECT URL');
+                if (!directUrl) {
+                    return [2];
+                }
+                if (directUrl.indexOf('.m3u8') == -1) {
+                    return [2];
+                }
+                libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: directUrl, quality: 1080 }], {
+                    Referer: "".concat(DOMAIN, "/")
                 });
-                return [2];
+                return [3, 4];
+            case 3:
+                e_1 = _a.sent();
+                libs.log({ e: e_1 }, PROVIDER, 'ERROR');
+                return [3, 4];
+            case 4: return [2];
         }
     });
 }); };

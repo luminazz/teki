@@ -86,6 +86,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ urlSearch: urlSearch }, PROVIDER, "URL SEARCH");
                 return [4, libs.request_get(urlSearch, {
                         Referer: "https://pressplay.top/",
+                        "user-ugent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+                        "Sec-Fetch-Dest": "empty",
+                        "Sec-Fetch-Mode": "cors",
+                        "Sec-Fetch-Site": "cross-site"
                     }, true)];
             case 2:
                 parseSeach = _a.sent();
@@ -95,7 +99,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 return [4, libs.request_get(iframeUrl, {
-                        Referer: urlSearch
+                        Referer: "https://moviesapi.club/",
+                        Origin: "https://w1.moviesapi.club",
+                        "user-ugent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+                        "Sec-Fetch-Dest": "empty",
+                        "Sec-Fetch-Mode": "cors",
+                        "Sec-Fetch-Site": "cross-site"
                     })];
             case 3:
                 parseDetail = _a.sent();
@@ -135,11 +144,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 return [4, libs.request_get(hlsUrl, {
-                        Referer: "https://w1.moviesapi.club/",
                         Origin: "https://w1.moviesapi.club",
-                        "user-ugent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
-                        "Accept": "*/*",
-                        "Connection": "keep-alive",
+                        "user-ugent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
                         "Sec-Fetch-Dest": "empty",
                         "Sec-Fetch-Mode": "cors",
                         "Sec-Fetch-Site": "cross-site"
@@ -169,9 +175,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], directQuality, {
                     Referer: "https://w1.moviesapi.club/",
                     Origin: "https://w1.moviesapi.club",
-                    "user-ugent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
-                    "Accept": "*/*",
-                    "Connection": "keep-alive",
+                    "user-ugent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
                     "Sec-Fetch-Dest": "empty",
                     "Sec-Fetch-Mode": "cors",
                     "Sec-Fetch-Site": "cross-site"
