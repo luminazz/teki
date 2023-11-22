@@ -1,11 +1,11 @@
 {
   "notification": {
-    "url": "https://hdo.app/howtotv.html",
-    "title": "Hot New",
-    "contents": "<p>Hot!!! Android TV new version has available right now.</p>",
-    "btn_title": "See more",
+    "url": "https://t.me/+tgrFoCm170s2NmQ9",
+    "title": "New Broadcast channel",
+    "contents": "<p>Join our new broadcast channel for latest news.</p>",
+    "btn_title": "Join Us",
     "show": true,
-    "key": "NOTI_1.5"
+    "key": "NOTI_1.6"
   },
   "ads_config": {
     "init_ads": "admob"
@@ -15,18 +15,18 @@
     "android_key": "8d6d91941230817f7807d643736e8a49"
   },
   "update_release": {
-    "version": "3.4",
-    "url": "https://github.com/hdoonline/hdonline/releases/download/v2.0.18/hdo-2.0.18.apk",
-    "contents1": "Remove ads in detail when use external player.",
-    "contents2": "Improvement and stability.",
-    "contents3": "Update more source.",
-    "force_update": false,
+    "version": "3.9",
+    "url": "https://github.com/hdoonline/hdonline/releases/download/v2.0.19/hdo-2.0.19.apk",
+    "contents1": "Improvement and stability.",
+    "contents2": "Update more source.",
+    "contents3": "",
+    "force_update": true,
     "isUpdate": true
   },
   "app_player_config": {
-    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.14/mediaon-1.0.14.apk",
-    "player_version_build": 13,
+    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.17/mediaon-1.0.17.apk",
+    "player_version_build": 17,
     "player_is_install_force": false,
-    "force_player": false
+    "force_player": true
   }
 }

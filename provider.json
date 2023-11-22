@@ -1,5 +1,7 @@
 {
 	"providers": [	
+		
+		"dist/providers/remotestream.js",
 		"dist/providers/susflix.js",
 		"dist/providers/lookmovie.js",
 		"dist/providers/dbgo.js",
@@ -16,6 +18,7 @@
 		"dist/providers/m4ufree.js",
 		"dist/providers/vidsrcto.js",
 		"dist/providers/moviesapi.js",
-		"dist/providers/gomovies.js"
+		"dist/providers/gomovies.js",
+		"dist/providers/streamflix.js"
 	]
 }
