@@ -1,24 +1,22 @@
 {
 	"providers": [	
-		
+		"dist/providers/gomovies.js",
+		"dist/providers/idflix.js",
+		"dist/providers/vidsrc.js",
+		"dist/providers/febbox.js",
+		"dist/providers/emovies.js",
+		"dist/providers/streamflix.js",
+		"dist/providers/fmovies.js",
+		"dist/providers/goku.js",
 		"dist/providers/remotestream.js",
-		"dist/providers/susflix.js",
-		"dist/providers/lookmovie.js",
 		"dist/providers/dbgo.js",
 		"dist/providers/2now.js",
-		"dist/providers/fmovies.js",
 		"dist/providers/fa.js",
-		"dist/providers/idflix.js",
 		"dist/providers/smashystream.js",
 		"dist/providers/rezka.js",
-		"dist/providers/series9.js",
 		"dist/providers/st.js",
-		"dist/providers/cineb.js",
 		"dist/providers/vumoo.js",
 		"dist/providers/m4ufree.js",
-		"dist/providers/vidsrcto.js",
-		"dist/providers/moviesapi.js",
-		"dist/providers/gomovies.js",
-		"dist/providers/streamflix.js"
+		"dist/providers/moviesapi.js"
 	]
 }
