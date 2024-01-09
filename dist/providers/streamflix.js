@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, urlSearch, parseSearch, DETAIL_HREF, _i, _a, item, _b, _c, b, _d, b_1, s, svideo, season, episode, parseDetail, parseQuality, directQuality, _e, parseQuality_1, item, quality, direct, e_1;
+    var PROVIDER, DOMAIN, headers, urlSearch, parseSearch, DETAIL_HREF, _i, _a, item, _b, _c, b, _d, b_1, s, svideo, season, episode, domainHref, parseDetail, parseQuality, directQuality, _e, parseQuality_1, item, quality, direct, e_1;
     return __generator(this, function (_f) {
         switch (_f.label) {
             case 0:
@@ -44,7 +44,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 DOMAIN = "https://streamflix.website";
                 _f.label = 1;
             case 1:
-                _f.trys.push([1, 4, , 5]);
+                _f.trys.push([1, 5, , 6]);
                 headers = {
                     "Authorization": "Bearer 44d784c55e9a1e3dbb586f24b18b1cbcd1521673bd6178ef385890d2f989681fe22d05e291e2e0f03fce99cbc50cd520219e52cc6e30c944a559daf53a129af18349ec98f6a0e4e66b8d370a354f4f7fbd49df0ab806d533a3db71eecc7f75131a59ce8cffc5e0cc38e8af5919c23c0d904fbe31995308f065f0ff9cd1eda488",
                 };
@@ -92,10 +92,17 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (DETAIL_HREF.indexOf('.mkv') != -1) {
                     return [2];
                 }
-                DETAIL_HREF = "https://watchfree.blob.core.windows.net/watchfree" + DETAIL_HREF.replace(/ /g, '%20');
-                libs.log({ DETAIL_HREF: DETAIL_HREF }, PROVIDER, 'DETAIL HREF');
-                return [4, libs.request_get(DETAIL_HREF, {}, false)];
+                return [4, libs.request_get("https://raw.githubusercontent.com/hexated/cloudstream-resources/main/sfmovies_server", {}, false)];
             case 3:
+                domainHref = _f.sent();
+                domainHref = domainHref.replace("\n", "");
+                if (!domainHref) {
+                    return [2];
+                }
+                DETAIL_HREF = domainHref + DETAIL_HREF.replace(/ /g, '%20');
+                libs.log({ DETAIL_HREF: DETAIL_HREF, domainHref: domainHref }, PROVIDER, 'DETAIL HREF');
+                return [4, libs.request_get(DETAIL_HREF, {}, false)];
+            case 4:
                 parseDetail = _f.sent();
                 parseQuality = parseDetail.match(/video[0-9]+\/main\.m3u8/ig);
                 libs.log({ parseQuality: parseQuality }, PROVIDER, 'PARSE QUALITY');
@@ -116,12 +123,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
                 libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], directQuality);
-                return [3, 5];
-            case 4:
+                return [3, 6];
+            case 5:
                 e_1 = _f.sent();
                 libs.log({ e: e_1 }, PROVIDER, 'ERROR');
-                return [3, 5];
-            case 5: return [2];
+                return [3, 6];
+            case 6: return [2];
         }
     });
 }); };

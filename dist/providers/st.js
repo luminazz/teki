@@ -106,14 +106,14 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                 libs.log({
                                     data: data
                                 }, PROVIDER, 'DATA QUERY API');
-                                return [4, libs.request_post('https://showbox.shegu.net/api/api_client/index/', headers_1, data)];
+                                return [4, libs.request_post('https://mbpapi.shegu.net/api/api_client/index/', headers_1, data)];
                             case 1:
                                 parseData = _a.sent();
                                 return [2, parseData];
                         }
                     });
                 }); };
-                searchQuery = "{\"childmode\":\"1\",\"app_version\":\"11.5\",\"appid\":\"".concat(appId, "\",\"module\":\"Search3\",\"channel\":\"Website\",\"page\":\"1\",\"lang\":\"en\",\"type\":\"all\",\"keyword\":\"").concat(movieInfo.title, "\",\"pagelimit\":\"20\",\"expired_date\":\"").concat(getExpiryDate(), "\",\"platform\":\"android\"}");
+                searchQuery = "{\"childmode\":\"1\",\"app_version\":\"11.5\",\"appid\":\"".concat(appId, "\",\"module\":\"Search4\",\"channel\":\"Website\",\"page\":\"1\",\"lang\":\"en\",\"type\":\"all\",\"keyword\":\"").concat(movieInfo.title, "\",\"pagelimit\":\"20\",\"expired_date\":\"").concat(getExpiryDate(), "\",\"platform\":\"android\"}");
                 return [4, queryAPI(searchQuery)];
             case 2:
                 resultSearch = _c.sent();
@@ -124,7 +124,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 ID = '';
-                for (_i = 0, _a = resultSearch.data; _i < _a.length; _i++) {
+                for (_i = 0, _a = resultSearch.data.list; _i < _a.length; _i++) {
                     searchItem = _a[_i];
                     title = searchItem.title;
                     year = searchItem.year;
