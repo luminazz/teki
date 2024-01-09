@@ -444,6 +444,9 @@ libs.embed_fmovies_id = function (hash, headers, embedUrl) { return __awaiter(_t
                 return [3, 4];
             case 4:
                 try {
+                    if (!encryptedURL) {
+                        return [2, ''];
+                    }
                     libs.log({
                         secretKey: secretKey,
                         hash: hash,
