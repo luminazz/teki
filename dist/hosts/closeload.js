@@ -35,38 +35,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-callbacksEmbed["playm4u"] = function (dataCallback, provider, host, callback, metadata) { return __awaiter(_this, void 0, void 0, function () {
-    var headers, data, parseResponseText, directUrl;
+hosts["closeload"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var DOMAIN, HOST, parseDetail_1, script_1, unpacker, varName, pattern, regex, match, atobM, e_1;
     return __generator(this, function (_a) {
-        try {
-            headers = {
-                'user-agent': libs.request_getRandomUserAgent()
-            };
-            libs.log({ dataCallback: dataCallback, metadata: metadata }, provider, 'DATA CALLBACK');
-            if (!dataCallback) {
-                return [2];
-            }
-            data = JSON.parse(dataCallback);
-            libs.log({ data: data }, provider, 'parseResponseText');
-            parseResponseText = JSON.parse(data.responseText);
-            libs.log({ parseResponseText: parseResponseText }, provider, 'parseResponseText');
-            if (parseResponseText.type != 'url-m3u8') {
-                return [2];
-            }
-            directUrl = parseResponseText.data;
-            if (!directUrl) {
-                return [2];
-            }
-            libs.embed_callback(directUrl, provider, provider, 'Hls', callback, 1, [], [{ file: directUrl, quality: 1080 }], {}, {
-                is_end_webview: true,
-                url_webview: metadata.url_webview || ''
-            });
+        switch (_a.label) {
+            case 0:
+                DOMAIN = 'https://closeload.top';
+                HOST = 'closeload';
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4, libs.request_get(url, {
+                        Referer: "https://ridomovies.tv/"
+                    }, true)];
+            case 2:
+                parseDetail_1 = _a.sent();
+                script_1 = "";
+                parseDetail_1("script").each(function (key, item) {
+                    var text = parseDetail_1(item).text();
+                    if (text.indexOf("eval(") != -1) {
+                        script_1 = text;
+                    }
+                });
+                libs.log({ script: script_1 }, provider, 'SCRIPT');
+                if (!script_1) {
+                    return [2];
+                }
+                unpacker = libs.string_unpacker_v2(script_1);
+                libs.log({ unpacker: unpacker }, provider, 'Unpacker');
+                varName = unpacker.match(/src\:atob\(([^\)]+)/i);
+                varName = varName ? varName[1] : '';
+                libs.log({ varName: varName }, provider, 'VarName');
+                if (!varName) {
+                    return [2];
+                }
+                pattern = "".concat(varName, "=\"([^\"]+)");
+                regex = new RegExp(pattern, "i");
+                match = regex.exec(unpacker);
+                match = match ? match[1] : "";
+                if (!match) {
+                    return [2];
+                }
+                libs.log({ match: match }, provider, 'Match');
+                atobM = libs.string_atob(match);
+                libs.log({ atobM: atobM }, provider, 'ATOB');
+                libs.embed_callback(atobM, provider, HOST, 'Hls', callback, 1, [], [{ file: atobM, quality: 1080 }], {
+                    Referer: url,
+                });
+                return [3, 4];
+            case 3:
+                e_1 = _a.sent();
+                libs.log({ e: e_1 }, HOST, "ERROR");
+                return [3, 4];
+            case 4: return [2];
         }
-        catch (e) {
-            libs.log({
-                e: e
-            }, provider, 'ERROR Play9M4u');
-        }
-        return [2];
     });
 }); };
