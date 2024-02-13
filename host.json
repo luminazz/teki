@@ -22,6 +22,7 @@
 	"dist/hosts/jeniusplay.js",
 	"dist/hosts/streamtape.js",
 	"dist/hosts/mwish.js",
-	"dist/hosts/vidstream.js"
+	"dist/hosts/vidstream.js",
+	"dist/hosts/closeload.js"
 	]
 }
