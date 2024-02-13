@@ -115,8 +115,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!parseFile) {
                     return [2];
                 }
-                parseFile = parseFile.replace("#2", '');
-                parseFile = parseFile.replace(/(\/\/\S+?=)/g, "");
+                parseFile = parseFile.replace("#9", '');
+                parseFile = parseFile.replace(/\/@#@\S+?=?=/g, "").replace(/\/\//g, '/');
+                libs.log({ parseFile: parseFile }, PROVIDER, 'PARSE FILE REPLACE');
                 parseFile = libs.string_base64_decode(parseFile);
                 libs.log({ parseFile: parseFile, userAgent: userAgent }, PROVIDER, 'PARSE FILE REPLACE');
                 libs.embed_callback(parseFile, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: parseFile, quality: 1080 }], {
