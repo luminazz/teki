@@ -59,6 +59,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 id_1 = "";
                 if (movieInfo.type == "movie") {
                     m = parseSearch_1("select#selectServer option[sv=oserver]").attr("value");
+                    libs.log({ m: m }, PROVIDER, "M");
                     i = m.match(/id=(.*)/i);
                     id_1 = i ? i[1] : "";
                 }

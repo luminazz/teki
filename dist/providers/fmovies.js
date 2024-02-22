@@ -204,6 +204,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 12:
                 if (!(_a < serverIds_1.length)) return [3, 16];
                 serverIdItem = serverIds_1[_a];
+                libs.log({ serverIdItem: serverIdItem }, PROVIDER, "SERVER ID ITEM");
                 return [4, libs.request_get(apiGetLinkEmbed + serverIdItem, {})];
             case 13:
                 getLinkEmbedData = _b.sent();

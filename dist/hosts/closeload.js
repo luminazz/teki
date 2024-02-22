@@ -81,6 +81,8 @@ hosts["closeload"] = function (url, movieInfo, provider, config, callback) { ret
                 libs.log({ atobM: atobM }, provider, 'ATOB');
                 libs.embed_callback(atobM, provider, HOST, 'Hls', callback, 1, [], [{ file: atobM, quality: 1080 }], {
                     Referer: url,
+                }, {
+                    type: "m3u8",
                 });
                 return [3, 4];
             case 3:

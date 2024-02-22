@@ -36,10 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, fflix, video1, urlSearch, parseSearch;
+    var PROVIDER, DOMAIN, fflix, video1, urlSearch, parseSearch, _i, _a, item, parsetxt, lastTxt, href;
     var _this = this;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
                 PROVIDER = 'TSmashyStream';
                 DOMAIN = "https://embed.smashystream.com";
@@ -152,24 +152,23 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         }
                     });
                 }); };
-                urlSearch = "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id);
+                urlSearch = "".concat(DOMAIN, "/data.php?tmdb=").concat(movieInfo.tmdb_id);
                 if (movieInfo.type == 'tv') {
-                    urlSearch = "".concat(DOMAIN, "/playere.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
+                    urlSearch = "".concat(DOMAIN, "/data.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
                 }
-                return [4, libs.request_get(urlSearch, {}, true)];
+                return [4, libs.request_get(urlSearch, {})];
             case 1:
-                parseSearch = _a.sent();
-                libs.log({ length: parseSearch('.server').length }, PROVIDER, "SEARCH LENGTH");
-                parseSearch('.server').each(function (key, item) {
-                    var text = parseSearch(item).text();
-                    var href = parseSearch(item).attr('data-url');
-                    var parsetxt = text.trim().split(" ");
-                    var lastTxt = parsetxt[parsetxt.length - 1];
-                    libs.log({ text: text, href: href, parsetxt: parsetxt, lastTxt: lastTxt }, PROVIDER, "INFO");
+                parseSearch = _b.sent();
+                for (_i = 0, _a = parseSearch.url_array; _i < _a.length; _i++) {
+                    item = _a[_i];
+                    parsetxt = item.name.trim().split(" ");
+                    lastTxt = parsetxt[parsetxt.length - 1];
+                    href = item.url;
+                    libs.log({ item: item, href: href, parsetxt: parsetxt, lastTxt: lastTxt }, PROVIDER, "INFO");
                     if (lastTxt.toLowerCase() == 'f') {
                         video1(href);
                     }
-                });
+                }
                 return [2];
         }
     });

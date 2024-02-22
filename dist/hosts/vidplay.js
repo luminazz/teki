@@ -41,8 +41,8 @@ hosts["vidplay"] = function (url, movieInfo, provider, config, callback) { retur
         switch (_a.label) {
             case 0:
                 userAgent = libs.request_getRandomUserAgent();
-                DOMAIN = ' vidplay.site';
-                HOST = 'Vidstream';
+                DOMAIN = 'https://vidplay.online';
+                HOST = 'Vidplay';
                 subParse = url.match(/\?sub\.info\=([^\&]+)/i);
                 subParse = subParse ? decodeURIComponent(subParse[1]) : '';
                 libs.log({ subParse: subParse }, HOST, 'SUBPARSE');
@@ -67,6 +67,7 @@ hosts["vidplay"] = function (url, movieInfo, provider, config, callback) { retur
                         metadata: {
                             subs: subs,
                             url_webview: url,
+                            domain: DOMAIN
                         },
                         callback: callback,
                         beforeLoadScript: "var open = XMLHttpRequest.prototype.open;\n            XMLHttpRequest.prototype.open = function() {\n                window.ReactNativeWebView.postMessage(JSON.stringify({arguments}));\n                open.apply(this, arguments);\n            };"

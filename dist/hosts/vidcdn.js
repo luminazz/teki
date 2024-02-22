@@ -35,37 +35,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-callbacksEmbed["amoviestream_2"] = function (dataCallback, provider, host, callback, metadata) { return __awaiter(_this, void 0, void 0, function () {
-    var data, parse, embed;
+hosts["furher"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var DOMAIN, HOST, headers, parseEmbed_1, scriptEval_1, unpack, fileHls, parseHls, qualityMatch, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                data = JSON.parse(dataCallback);
-                if (!data.html) {
-                    return [2];
-                }
-                parse = cheerio.load(data.html);
-                embed = '';
-                parse('iframe').each(function (key, item) {
-                    var urlEmbed = parse(item).attr('src');
-                    libs.log({ urlEmbed: urlEmbed }, provider, 'URL EMBED');
-                    if (urlEmbed && urlEmbed.indexOf('mcloud') != -1) {
-                        embed = urlEmbed;
-                    }
-                    else if (urlEmbed && urlEmbed.indexOf('vidstream') != -1) {
-                        embed = urlEmbed;
-                    }
-                    else if (urlEmbed && urlEmbed.indexOf('vizcloud2') != -1) {
-                        embed = urlEmbed;
+                DOMAIN = 'https://furher.in';
+                HOST = 'furher';
+                headers = {
+                    'content-type': 'application/json;charset=UTF-8',
+                    'Referer': config.options.link_detail,
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 4, , 5]);
+                return [4, libs.request_get(url, headers, true)];
+            case 2:
+                parseEmbed_1 = _a.sent();
+                scriptEval_1 = '';
+                parseEmbed_1('script').each(function (key, item) {
+                    if (parseEmbed_1(item).text().indexOf('eval(') != -1) {
+                        scriptEval_1 = parseEmbed_1(item).text();
                     }
                 });
-                if (!embed) return [3, 2];
-                libs.log({ embed: embed }, provider, 'URL EMBED');
-                return [4, libs.embed_redirect(embed, '', metadata.movieInfo, provider, callback, undefined, metadata.tracks ? metadata.tracks : [])];
-            case 1:
-                _a.sent();
-                _a.label = 2;
-            case 2: return [2];
+                if (!scriptEval_1) {
+                    return [2];
+                }
+                unpack = libs.string_unpack(scriptEval_1);
+                libs.log({ unpack: unpack }, HOST, 'UNPACK');
+                fileHls = unpack.match(/file *\: *\"([^\"]+)/i);
+                fileHls = fileHls ? fileHls[1] : '';
+                if (!fileHls) {
+                    return [2];
+                }
+                libs.log({ fileHls: fileHls }, HOST, 'FILE HLS');
+                return [4, libs.request_get(fileHls, {})];
+            case 3:
+                parseHls = _a.sent();
+                qualityMatch = parseHls.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i);
+                qualityMatch = qualityMatch ? qualityMatch[0] : '';
+                if (!qualityMatch) {
+                    return [2];
+                }
+                libs.log({ qualityMatch: qualityMatch }, HOST, 'QUALITY MATCH');
+                libs.embed_callback(qualityMatch, provider, HOST, 'Hls', callback, 1, [], [{ file: qualityMatch, quality: 1080 }], {
+                    Referer: DOMAIN,
+                    "User-Agent": "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
+                }, config.options ? config.options : {});
+                return [3, 5];
+            case 4:
+                e_1 = _a.sent();
+                libs.log({ e: e_1 }, HOST, 'ERROR');
+                return [3, 5];
+            case 5: return [2];
         }
     });
 }); };
