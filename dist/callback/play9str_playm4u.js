@@ -57,7 +57,9 @@ callbacksEmbed["playm4u"] = function (dataCallback, provider, host, callback, me
             if (!directUrl) {
                 return [2];
             }
-            libs.embed_callback(directUrl, provider, provider, 'Hls', callback, 1, [], [{ file: directUrl, quality: 1080 }], {}, {
+            libs.embed_callback(directUrl, provider, provider, 'Hls', callback, 1, [], [{ file: directUrl, quality: 1080 }], {
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+            }, {
                 is_end_webview: true,
                 url_webview: metadata.url_webview || ''
             });

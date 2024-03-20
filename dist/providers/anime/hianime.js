@@ -35,33 +35,26 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["rabbitstream"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, headers;
+source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var PROVIDER, DOMAIN, urlSearch, parseSearch, e_1;
     return __generator(this, function (_a) {
-        libs.log({ provider: provider }, provider, 'PROVIDER');
-        DOMAIN = 'https://rabbitstream.net';
-        HOST = 'Rabbitstream';
-        headers = {
-            'referer': 'https://fmovies.ps',
-            'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
-        };
-        libs.log({ url: url }, provider, 'URL');
-        callback({
-            callback: {
-                provider: provider,
-                host: HOST,
-                url: url,
-                headers: headers,
-                callback: callback,
-                metadata: {
-                    url_webview: url,
-                    domain: DOMAIN,
-                    s: 0,
-                },
-                beforeLoadScript: "\n        \n            var open = XMLHttpRequest.prototype.open;\n            XMLHttpRequest.prototype.open = function() {\n                CryptoJS.AES.decrypt = (hash, key) => {\n                    window.ReactNativeWebView.postMessage(JSON.stringify({hash, key}));\n                }\n                open.apply(this, arguments);\n            }; \n            ",
-                metadata: {},
-            }
-        });
-        return [2];
+        switch (_a.label) {
+            case 0:
+                PROVIDER = 'HiAnime - Anime';
+                DOMAIN = "https://hianime.to";
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                urlSearch = "".concat(DOMAIN, "/search.html?keyword=").concat(libs.url_slug_search(movieInfo, "%20"));
+                return [4, libs.request_get(urlSearch, {}, true)];
+            case 2:
+                parseSearch = _a.sent();
+                return [3, 4];
+            case 3:
+                e_1 = _a.sent();
+                libs.log({ e: e_1 }, PROVIDER, 'ERROR');
+                return [3, 4];
+            case 4: return [2, true];
+        }
     });
 }); };

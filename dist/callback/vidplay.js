@@ -92,7 +92,7 @@ callbacksEmbed["vidplay"] = function (dataCallback, provider, host, callback, me
                 patternQuality = embedData.match(/hls\/([0-9]+)\/[0-9]+\.m3u8/ig);
                 libs.log({ patternQuality: patternQuality, file: embedItem.file }, provider, 'PATTERN QUALITY');
                 if (!patternQuality) {
-                    libs.embed_callback(embedItem.file, provider, host, 'Hls', callback, ++rank, []);
+                    libs.embed_callback(embedItem.file, provider, host, 'Hls', callback, ++rank, [], [{ file: embedItem.file, quality: 1080 }]);
                     return [3, 6];
                 }
                 directQuality = [];

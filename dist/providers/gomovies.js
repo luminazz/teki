@@ -168,11 +168,19 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 unpacker = libs.string_unpacker_v2(evalData);
-                dKey = unpacker.match(/\(string\,key\=([A-z0-9]+)/i);
+                dKey = unpacker.match(/\(response *\, *\"*([A-z0-9]+)/i);
                 dKey = dKey ? dKey[1] : '';
                 libs.log({ unpacker: unpacker }, PROVIDER, 'unpacker');
                 if (!dKey) {
-                    dKey = unpacker.match(/\( *key *\=([A-z0-9]+)/i);
+                    dKey = unpacker.match(/j *\< *\" *([A-z0-9]+)/i);
+                    dKey = dKey ? dKey[1] : '';
+                    libs.log({ dKey: dKey }, PROVIDER, 'D KEY');
+                    if (!dKey) {
+                        return [2];
+                    }
+                }
+                if (!dKey) {
+                    dKey = unpacker.match(/string *\, *key *\=\"*([A-z0-9]+)/i);
                     dKey = dKey ? dKey[1] : '';
                     libs.log({ dKey: dKey }, PROVIDER, 'D KEY');
                     if (!dKey) {
@@ -183,7 +191,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!dKey) {
                     return [2];
                 }
-                qualities = [2160, 1440, 1080, 720, 480, 360];
+                qualities = [360];
                 _i = 0, servers_1 = servers_2;
                 _b.label = 9;
             case 9:

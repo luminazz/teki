@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 callbacksEmbed["rabbitstream"] = function (dataCallback, provider, host, callback, metadata) { return __awaiter(_this, void 0, void 0, function () {
-    var data, source3, tracks, rank, _i, source3_1, item, directSizes, patternSize, directQuality, firstFile, _a, patternSize_1, patternItem, sizeQuality;
+    var data, decryptData, source3, tracks, rank, _i, source3_1, item, directSizes, patternSize, directQuality, firstFile, _a, patternSize_1, patternItem, sizeQuality, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -44,29 +44,40 @@ callbacksEmbed["rabbitstream"] = function (dataCallback, provider, host, callbac
                 if (!dataCallback) {
                     return [2];
                 }
+                metadata.s += 1;
+                libs.log({
+                    s: metadata.s,
+                }, provider, 'metadataS');
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 6, , 7]);
                 data = JSON.parse(dataCallback);
                 libs.log({
                     data: data
                 }, provider, 'PARSE GET SOURCE');
-                source3 = data['sources'] || [];
-                tracks = data['tracks'] || [];
+                decryptData = (crypto.AES.decrypt(data.hash, data.key)).toString(crypto.enc.Utf8);
+                libs.log({
+                    decryptData: decryptData
+                }, provider, 'decryptData');
+                source3 = JSON.parse(decryptData);
+                tracks = [];
                 libs.log({ source3: source3, tracks: tracks }, provider, 'SOURCES');
                 rank = 0;
                 _i = 0, source3_1 = source3;
-                _b.label = 1;
-            case 1:
-                if (!(_i < source3_1.length)) return [3, 4];
+                _b.label = 2;
+            case 2:
+                if (!(_i < source3_1.length)) return [3, 5];
                 item = source3_1[_i];
                 if (!item.file) {
-                    return [3, 3];
+                    return [3, 4];
                 }
                 return [4, libs.request_get(item.file, {})];
-            case 2:
+            case 3:
                 directSizes = _b.sent();
                 patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
                 if (!patternSize) {
                     libs.embed_callback(item.file, provider, host, item.type, callback, ++rank, tracks);
-                    return [3, 3];
+                    return [3, 4];
                 }
                 directQuality = [];
                 libs.log({ patternSize: patternSize }, provider, 'PATTERN SIZE');
@@ -88,11 +99,18 @@ callbacksEmbed["rabbitstream"] = function (dataCallback, provider, host, callbac
                     is_end_webview: true,
                     url_webview: metadata.url_webview || ''
                 });
-                _b.label = 3;
-            case 3:
+                _b.label = 4;
+            case 4:
                 _i++;
-                return [3, 1];
-            case 4: return [2];
+                return [3, 2];
+            case 5: return [3, 7];
+            case 6:
+                e_1 = _b.sent();
+                libs.log({
+                    e: e_1
+                }, provider, 'ERROR');
+                return [3, 7];
+            case 7: return [2];
         }
     });
 }); };

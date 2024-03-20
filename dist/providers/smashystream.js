@@ -36,7 +36,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, fflix, video1, urlSearch, parseSearch, _i, _a, item, parsetxt, lastTxt, href;
+    function b1(str) {
+        return libs.string_btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function toSolidBytes(match, p1) {
+            return String.fromCharCode("0x" + p1);
+        }));
+    }
+    function b2(str) {
+        return decodeURIComponent(libs.string_atob(str).split("").map(function (c) {
+            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(""));
+    }
+    var PROVIDER, DOMAIN, fflix, e, video1, urlSearch, parseSearch, _i, _a, item, parsetxt, lastTxt, href;
     var _this = this;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -93,8 +103,26 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         }
                     });
                 }); };
+                e = function (x) {
+                    var a = x.substr(2);
+                    var v = {
+                        "bk0": "SFL\/dU7B\/Dlx", "bk1": "0ca\/BVoI\/NS9", "bk2": "box\/2SI\/ZSFc", "bk3": "Hbt\/WFjB\/7GW", "bk4": "xNv\/T08\/z7F3"
+                    };
+                    for (var i = 4; i > -1; i--) {
+                        if (v["bk" + i] != "") {
+                            a = a.replace("//" + b1(v["bk" + i]), "");
+                        }
+                    }
+                    try {
+                        return b2(a);
+                    }
+                    catch (e) {
+                        libs.log({ e: e }, PROVIDER, 'ERROR');
+                    }
+                    return "";
+                };
                 video1 = function (urlSearch) { return __awaiter(_this, void 0, void 0, function () {
-                    var parseDetail, _i, _a, file, directSizes, patternSize, directQuality, _b, patternSize_1, patternItem, sizeQuality;
+                    var parseDetail, _i, _a, file, decodeFile, directSizes, patternSize, directQuality, _b, patternSize_1, patternItem, sizeQuality;
                     return __generator(this, function (_c) {
                         switch (_c.label) {
                             case 0:
@@ -102,7 +130,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                     urlSearch: urlSearch
                                 }, PROVIDER, 'URL SEARCH');
                                 return [4, libs.request_get(urlSearch, {
-                                        Referer: movieInfo.type == 'tv' ? "".concat(DOMAIN, "/video1.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode) : "".concat(DOMAIN, "/video1.php?tmdb=").concat(movieInfo.tmdb_id)
+                                        Referer: "https://player.smashy.stream/"
                                     })];
                             case 1:
                                 parseDetail = _c.sent();
@@ -115,16 +143,21 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                             case 2:
                                 if (!(_i < _a.length)) return [3, 5];
                                 file = _a[_i];
-                                if (file.indexOf('playlist.m3u8') == -1) {
+                                decodeFile = e(file);
+                                libs.log({ decodeFile: decodeFile }, PROVIDER, 'DECODE FILE');
+                                if (!decodeFile) {
                                     return [3, 4];
                                 }
-                                return [4, libs.request_get(file, {})];
+                                if (decodeFile.indexOf('.m3u8') == -1) {
+                                    return [3, 4];
+                                }
+                                return [4, libs.request_get(decodeFile, {})];
                             case 3:
                                 directSizes = _c.sent();
                                 patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
                                 libs.log({ patternSize: patternSize }, PROVIDER, 'PATTERN SIZE');
                                 if (!patternSize) {
-                                    libs.embed_callback(file, PROVIDER, PROVIDER, 'hls', callback, 1, []);
+                                    libs.embed_callback(decodeFile, PROVIDER, PROVIDER, 'hls', callback, 1, []);
                                     return [3, 4];
                                 }
                                 directQuality = [];
@@ -165,7 +198,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     lastTxt = parsetxt[parsetxt.length - 1];
                     href = item.url;
                     libs.log({ item: item, href: href, parsetxt: parsetxt, lastTxt: lastTxt }, PROVIDER, "INFO");
-                    if (lastTxt.toLowerCase() == 'f') {
+                    if (lastTxt.toLowerCase() == 'fmd' || lastTxt.toLowerCase() == 'o' || lastTxt.toLowerCase() == 'f') {
                         video1(href);
                     }
                 }

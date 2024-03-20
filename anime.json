@@ -1,0 +1,5 @@
+{
+	"providers": [		
+		"dist/providers/anime/gogoanime.js"
+	]
+}

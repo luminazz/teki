@@ -404,7 +404,7 @@ libs.embed_fmovies_id = function (hash, headers, embedUrl) { return __awaiter(_t
         }
         return getPassword(js);
     }
-    var secretKey, encryptedURL, encryptedURLTemp, e_1, decryptData;
+    var secretKey, encryptedURL, e_1, words, textString, decryptData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -422,11 +422,8 @@ libs.embed_fmovies_id = function (hash, headers, embedUrl) { return __awaiter(_t
                 return [4, libs.request_get("https://keys4.fun")];
             case 2:
                 secretKey = _a.sent();
-                secretKey = secretKey.rabbitstream.keys;
+                secretKey = secretKey.rabbitstream.keys.key;
                 libs.log({ secretKey: secretKey }, 'KEY EMBED FMOVIES');
-                encryptedURLTemp = hash.split("");
-                secretKey = libs.string_btoa(String.fromCharCode.apply(null, Array.from(new Uint8Array(secretKey))));
-                encryptedURL = encryptedURLTemp.join('');
                 return [3, 4];
             case 3:
                 e_1 = _a.sent();
@@ -434,15 +431,17 @@ libs.embed_fmovies_id = function (hash, headers, embedUrl) { return __awaiter(_t
                 return [3, 4];
             case 4:
                 try {
-                    if (!encryptedURL) {
+                    if (!hash) {
                         return [2, ''];
                     }
                     libs.log({
                         secretKey: secretKey,
                         hash: hash,
-                        encryptedURL: encryptedURL,
+                        hash: hash,
                     }, 'SECRET DECRYPT DATA FMOVIES');
-                    decryptData = (crypto.AES.decrypt(encryptedURL, secretKey)).toString(crypto.enc.Utf8);
+                    words = cryptoS.enc.Base64.parse(hash);
+                    textString = cryptoS.enc.Utf8.stringify(words);
+                    decryptData = (cryptoS.AES.decrypt(textString, secretKey)).toString(cryptoS.enc.Utf8);
                     libs.log({
                         decryptData: decryptData,
                         secretKey: secretKey

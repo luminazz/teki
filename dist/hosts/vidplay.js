@@ -36,16 +36,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 hosts["vidplay"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var userAgent, DOMAIN, HOST, subParse, subs, headers;
+    var DOMAIN, HOST, subParse, t, subs, headers;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                userAgent = libs.request_getRandomUserAgent();
                 DOMAIN = 'https://vidplay.online';
                 HOST = 'Vidplay';
-                subParse = url.match(/\?sub\.info\=([^\&]+)/i);
+                subParse = url.match(/\&sub\.info\=([^\&]+)/i);
                 subParse = subParse ? decodeURIComponent(subParse[1]) : '';
-                libs.log({ subParse: subParse }, HOST, 'SUBPARSE');
+                t = url.match(/\?t\=([^\&]+)/i);
+                t = t ? t[1] : '';
+                libs.log({ subParse: subParse, t: t }, HOST, 'SUBPARSE');
                 subs = [];
                 if (!subParse) return [3, 2];
                 return [4, libs.request_get(subParse)];
@@ -55,7 +56,7 @@ hosts["vidplay"] = function (url, movieInfo, provider, config, callback) { retur
                 _a.label = 2;
             case 2:
                 headers = {
-                    'Referer': "https://fmoviesz.to/",
+                    'Referer': url,
                     'user-agent': libs.request_getRandomUserAgent()
                 };
                 callback({
