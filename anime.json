@@ -1,5 +1,7 @@
 {
 	"providers": [		
-		"dist/providers/anime/gogoanime.js"
+		"dist/providers/anime/gogoanime.js",
+		"dist/providers/anime/hianime.js",
+		"dist/providers/anime/9anime.js"
 	]
 }

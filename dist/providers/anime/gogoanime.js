@@ -57,7 +57,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     var year = parseSearch_1(item).find(".released").text();
                     year = year.match(/([0-9]+)/i);
                     year = year ? year[1] : 0;
-                    libs.log({ title: title, href: href, year: year, match_title: libs.string_matching_title(movieInfo, title), match_year: year == movieInfo.year }, PROVIDER, "SEARCH INFO");
+                    libs.log({ title: title, href: href, year: year, match_title: libs.string_matching_title(movieInfo, title, false), match_year: year == movieInfo.year }, PROVIDER, "SEARCH INFO");
                     if (title && href && !LINK_DETAIL_1) {
                         if (libs.string_matching_title(movieInfo, title) && year == movieInfo.year) {
                             LINK_DETAIL_1 = href;

@@ -40,8 +40,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                PROVIDER = 'HiAnime - Anime';
-                DOMAIN = "https://hianime.to";
+                PROVIDER = '9Anime - Anime';
+                DOMAIN = "https://9animetv.to";
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 10, , 11]);
@@ -52,8 +52,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 LINK_DETAIL_1 = "";
                 parseSearch_1(".flw-item").each(function (key, item) {
                     var title = parseSearch_1(item).find(".film-name").text();
-                    var type = parseSearch_1(item).find('.fd-infor .fdi-item').text();
                     var href = parseSearch_1(item).find(".film-poster a.film-poster-ahref").attr("href");
+                    libs.log({ title: title, href: href, matching: libs.string_matching_title(movieInfo, title, false) }, PROVIDER, "LINK_DETAIL INFO");
                     if (title && href && libs.string_matching_title(movieInfo, title, false) && !LINK_DETAIL_1) {
                         LINK_DETAIL_1 = href;
                     }
@@ -77,16 +77,18 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!detailID) {
                     return [2];
                 }
-                urlEpisode = "".concat(DOMAIN, "/ajax/v2/episode/list/").concat(detailID);
+                urlEpisode = "".concat(DOMAIN, "/ajax/episode/list/").concat(detailID);
                 return [4, libs.request_get(urlEpisode, {})];
             case 3:
                 dataDetail = _a.sent();
                 parseDetail_1 = cheerio.load(dataDetail.html);
+                libs.log({ detailID: detailID, html: dataDetail.html }, PROVIDER, "urlEpisode, dataDetail");
                 episodeID_1 = "";
-                parseDetail_1('.ssl-item').each(function (key, item) {
+                parseDetail_1('.ep-item').each(function (key, item) {
                     var dataId = parseDetail_1(item).attr("data-id");
                     var episode = parseDetail_1(item).attr('data-number');
-                    if (episode == movieInfo.episode) {
+                    libs.log({ dataId: dataId, episode: episode }, PROVIDER, "dataId, episode");
+                    if (episode == movieInfo.episode && !episodeID_1) {
                         episodeID_1 = dataId;
                     }
                 });
@@ -94,7 +96,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!episodeID_1) {
                     return [2];
                 }
-                episodeServer = "".concat(DOMAIN, "/ajax/v2/episode/servers?episodeId=").concat(episodeID_1);
+                episodeServer = "".concat(DOMAIN, "/ajax/episode/servers?episodeId=").concat(episodeID_1);
                 serverIDs_2 = [];
                 return [4, libs.request_get(episodeServer, {})];
             case 4:
@@ -115,7 +117,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 5:
                 if (!(_i < serverIDs_1.length)) return [3, 9];
                 serverID = serverIDs_1[_i];
-                urlServer = "".concat(DOMAIN, "/ajax/v2/episode/sources?id=").concat(serverID);
+                urlServer = "".concat(DOMAIN, "/ajax/episode/sources?id=").concat(serverID);
                 return [4, libs.request_get(urlServer, {})];
             case 6:
                 dataServer = _a.sent();
