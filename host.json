@@ -24,6 +24,7 @@
 	"dist/hosts/vidstream.js",
 	"dist/hosts/closeload.js",
 	"dist/hosts/vidplay.js",
-	"dist/hosts/vidcdn.js"
+	"dist/hosts/vidcdn.js",
+	"dist/hosts/fstream365.js"
 	]
 }

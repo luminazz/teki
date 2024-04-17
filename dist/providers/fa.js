@@ -142,7 +142,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                     libs.log({ title: title, year: year, href: href, type: type }, PROVIDER, 'MOVIE INFO');
                     if (title && href && !LINK_DETAIL && type) {
-                        if (libs.string_matching_title(movieInfo, title, false)) {
+                        if (libs.string_matching_title(movieInfo, title.trim(), false)) {
                             if (movieInfo.type == 'tv' && type.toLowerCase() == 'tv' && movieInfo.year == year) {
                                 LINK_DETAIL = "".concat(DOMAIN).concat(href);
                             }

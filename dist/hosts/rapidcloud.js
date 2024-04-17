@@ -150,7 +150,8 @@ hosts["rapid-cloud"] = function (url, movieInfo, provider, config, callback) { r
                 decryptData = (cryptoS.AES.decrypt(secret[1], secret[0])).toString(cryptoS.enc.Utf8);
                 libs.log({
                     decryptData: decryptData,
-                    secret: secret
+                    secret: secret,
+                    type: config.options.type,
                 }, HOST, 'EMBED DECRYPT DATA');
                 source3 = JSON.parse(decryptData);
                 rank = 0;
@@ -169,7 +170,9 @@ hosts["rapid-cloud"] = function (url, movieInfo, provider, config, callback) { r
                 patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
                 libs.log({ patternSize: patternSize }, provider, 'PATTERN SIZE');
                 if (!patternSize) {
-                    libs.embed_callback(item.file, provider, HOST, item.type, callback, ++rank, tracks, [{ file: item.file, quality: 1080 }]);
+                    libs.embed_callback(item.file, provider, HOST, item.type, callback, ++rank, tracks, [{ file: item.file, quality: 1080, type: config.options.type || "" }], {}, {
+                        type: config.options.type || ""
+                    });
                     return [3, 7];
                 }
                 directQuality = [];
@@ -184,11 +187,14 @@ hosts["rapid-cloud"] = function (url, movieInfo, provider, config, callback) { r
                     }
                     directQuality.push({
                         file: patternItem,
-                        quality: sizeQuality
+                        quality: sizeQuality,
+                        type: config.options.type,
                     });
                 }
                 libs.log({ directQuality: directQuality }, provider, 'DIRECT QUALITY');
-                libs.embed_callback(firstFile, provider, HOST, 'Hls', callback, ++rank, tracks, directQuality);
+                libs.embed_callback(firstFile, provider, HOST, 'Hls', callback, ++rank, tracks, directQuality, {}, {
+                    type: config.options.type || ""
+                });
                 _b.label = 7;
             case 7:
                 _i++;

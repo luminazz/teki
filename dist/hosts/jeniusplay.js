@@ -54,12 +54,12 @@ hosts["jeniusplay"] = function (url, movieInfo, provider, config, callback) { re
                 urlDirect = "".concat(DOMAIN, "/player/index.php?data=").concat(id, "&do=getVideo");
                 body = qs.stringify({
                     hash: id,
-                    r: "https://tv1.idlixofficials.com"
+                    r: "https://tv1.idlixofficial.co/"
                 });
                 headers = {
                     'Content-type': "application/x-www-form-urlencoded; charset=UTF-8",
                     Origin: DOMAIN,
-                    "Referer": "https://tv1.idlixofficials.com/",
+                    "Referer": "https://tv1.idlixofficial.co/",
                     "X-Requested-With": "XMLHttpRequest",
                 };
                 return [4, libs.request_post(urlDirect, headers, body)];

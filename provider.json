@@ -1,5 +1,7 @@
 {
 	"providers": [	
+		"dist/providers/uniquestream.js",
+		"dist/providers/ymovies.js",
 		"dist/providers/zoechip.js",
 		"dist/providers/emovies.js",
 		"dist/providers/ridomovie.js",

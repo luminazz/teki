@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch_1, LINK_DETAIL_1, parseDetail, id, urlEpisode, parseEpisode, HREF_EPISODE, parseDetailEpisode_1, embeds_2, _i, embeds_1, item, e_1;
+    var PROVIDER, DOMAIN, urlSearch, parseSearch_1, LINK_DETAIL_1, TYPE_1, parseDetail, id, urlEpisode, parseEpisode, HREF_EPISODE, parseDetailEpisode_1, embeds_2, _i, embeds_1, item, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -50,6 +50,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 2:
                 parseSearch_1 = _a.sent();
                 LINK_DETAIL_1 = "";
+                TYPE_1 = "SUB";
                 libs.log({ urlSearch: urlSearch }, PROVIDER, "URL SEARCH");
                 parseSearch_1(".last_episodes .items li").each(function (key, item) {
                     var title = parseSearch_1(item).find(".name a").text();
@@ -57,9 +58,23 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     var year = parseSearch_1(item).find(".released").text();
                     year = year.match(/([0-9]+)/i);
                     year = year ? year[1] : 0;
-                    libs.log({ title: title, href: href, year: year, match_title: libs.string_matching_title(movieInfo, title, false), match_year: year == movieInfo.year }, PROVIDER, "SEARCH INFO");
+                    var parseTitle = title.match(/\(([A-z0-9]+)/g);
+                    title = title.replace(/\([A-z0-9]+\)/ig, "").trim();
+                    var matchMovie = false;
+                    if (title.toLowerCase().indexOf("season") != -1) {
+                        matchMovie = libs.string_matching_title(movieInfo, title, true, "");
+                    }
+                    if (parseTitle) {
+                        for (var _i = 0, parseTitle_1 = parseTitle; _i < parseTitle_1.length; _i++) {
+                            var item_1 = parseTitle_1[_i];
+                            if (item_1.toLowerCase().indexOf("dub") != -1) {
+                                TYPE_1 = "DUB";
+                            }
+                        }
+                    }
+                    libs.log({ title: title, href: href, year: year, match_title: libs.string_matching_title(movieInfo, title, false, ""), match_year: year == movieInfo.year, parseTitle: parseTitle }, PROVIDER, "SEARCH INFO");
                     if (title && href && !LINK_DETAIL_1) {
-                        if (libs.string_matching_title(movieInfo, title) && year == movieInfo.year) {
+                        if ((libs.string_matching_title(movieInfo, title, false, "") || matchMovie) && year == movieInfo.year) {
                             LINK_DETAIL_1 = href;
                         }
                     }
@@ -112,7 +127,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 6:
                 if (!(_i < embeds_1.length)) return [3, 9];
                 item = embeds_1[_i];
-                return [4, libs.embed_redirect(item, '', movieInfo, PROVIDER, callback, '')];
+                return [4, libs.embed_redirect(item, '', movieInfo, PROVIDER, callback, '', [], {
+                        type: TYPE_1
+                    })];
             case 7:
                 _a.sent();
                 _a.label = 8;

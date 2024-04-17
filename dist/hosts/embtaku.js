@@ -101,6 +101,7 @@ hosts["embtaku"] = function (url, movieInfo, provider, config, callback) { retur
                     fileQuality.push({
                         file: directUrl,
                         quality: size,
+                        type: config.options.type || "",
                     });
                 }
                 libs.log({ fileQuality: fileQuality }, HOST, "FILE QUALITY");
@@ -108,7 +109,9 @@ hosts["embtaku"] = function (url, movieInfo, provider, config, callback) { retur
                     return [3, 6];
                 }
                 fileQuality = _.orderBy(fileQuality, ['quality'], ['desc']);
-                libs.embed_callback(fileQuality[0].file, provider, HOST, 'Hls', callback, 0, [], fileQuality);
+                libs.embed_callback(fileQuality[0].file, provider, HOST, 'Hls', callback, 0, [], fileQuality, {}, {
+                    type: config.options.type || ""
+                });
                 _c.label = 6;
             case 6:
                 _i++;

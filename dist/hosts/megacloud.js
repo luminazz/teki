@@ -164,7 +164,9 @@ hosts["megacloud"] = function (url, movieInfo, provider, config, callback) { ret
                 patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
                 libs.log({ patternSize: patternSize }, provider, 'PATTERN SIZE');
                 if (!patternSize) {
-                    libs.embed_callback(item.file, provider, HOST, item.type, callback, ++rank, tracks, [{ file: item.file, quality: 1080 }]);
+                    libs.embed_callback(item.file, provider, HOST, item.type, callback, ++rank, tracks, [{ file: item.file, quality: 1080, type: config.options.type || "" }], {}, {
+                        type: config.options.type || ""
+                    });
                     return [3, 6];
                 }
                 directQuality = [];
@@ -179,11 +181,14 @@ hosts["megacloud"] = function (url, movieInfo, provider, config, callback) { ret
                     }
                     directQuality.push({
                         file: patternItem,
-                        quality: sizeQuality
+                        quality: sizeQuality,
+                        type: config.options.type || "",
                     });
                 }
                 libs.log({ directQuality: directQuality }, provider, 'DIRECT QUALITY');
-                libs.embed_callback(firstFile, provider, HOST, 'Hls', callback, ++rank, tracks, directQuality);
+                libs.embed_callback(firstFile, provider, HOST, 'Hls', callback, ++rank, tracks, directQuality, {}, {
+                    type: config.options.type || ""
+                });
                 _b.label = 6;
             case 6:
                 _i++;

@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, sourceData, iframeUrl, _i, sourceData_1, sourceItem, urlAjax, body, headers, resultAjax, embedUrl, _a, iframeUrl_1, iframeItem, hlsUrl, parseHls, directUrl;
+    var PROVIDER, DOMAIN, urlSearch, parseSearch, sourceData, iframeUrl, _i, sourceData_1, sourceItem, urlAjax, body, headers, resultAjax, embedUrl, parseEmbedUrl, _a, iframeUrl_1, iframeItem, hlsUrl, parseHls, directUrl;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -71,11 +71,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!(_i < sourceData_1.length)) return [3, 5];
                 sourceItem = sourceData_1[_i];
                 urlAjax = "".concat(DOMAIN, "/wp-admin/admin-ajax.php");
-                body = "action=doo_player_ajax&post=".concat(sourceItem.id, "&nume=").concat(sourceItem.nume, "&type=").concat(movieInfo.type);
+                body = "action=zeta_player_ajax&post=".concat(sourceItem.id, "&nume=").concat(sourceItem.nume, "&type=").concat(movieInfo.type == 'movie' ? 'mv' : 'tv');
                 headers = {
                     'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
                     referer: DOMAIN,
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
                 };
                 libs.log({ urlAjax: urlAjax, body: body, headers: headers }, PROVIDER, 'AJAX INFO');
                 return [4, libs.request_post(urlAjax, headers, body)];
@@ -86,7 +87,16 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!embedUrl) {
                     return [3, 4];
                 }
-                iframeUrl.push(embedUrl);
+                parseEmbedUrl = embedUrl.match(/src\=\"([^\"]+)/i);
+                parseEmbedUrl = parseEmbedUrl ? parseEmbedUrl[1] : "";
+                libs.log({ parseEmbedUrl: parseEmbedUrl }, PROVIDER, 'PARSE EMBED URL');
+                if (!parseEmbedUrl) {
+                    return [3, 4];
+                }
+                if (_.startsWith(parseEmbedUrl, '/')) {
+                    parseEmbedUrl = "https:".concat(parseEmbedUrl);
+                }
+                iframeUrl.push(parseEmbedUrl);
                 _b.label = 4;
             case 4:
                 _i++;
