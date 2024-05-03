@@ -114,7 +114,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!hashData) {
                     return [2];
                 }
-                return [4, libs.request_get("https://raw.githubusercontent.com/Sofie99/Resources/main/chillix_key.json")];
+                return [4, libs.request_get("https://raw.githubusercontent.com/lulunnqqq/mvapi/key/key")];
             case 4:
                 sKey = _a.sent();
                 libs.log({ sKey: sKey }, PROVIDER, 'SKEY1');
@@ -160,7 +160,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], directQuality, {
                     Referer: "https://w1.moviesapi.club/",
                     Origin: "https://w1.moviesapi.club",
-                    "user-ugent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+                    "Accept": "*/*",
                     "Sec-Fetch-Dest": "empty",
                     "Sec-Fetch-Mode": "cors",
                     "Sec-Fetch-Site": "cross-site"

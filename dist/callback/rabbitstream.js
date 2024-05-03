@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 callbacksEmbed["rabbitstream"] = function (dataCallback, provider, host, callback, metadata) { return __awaiter(_this, void 0, void 0, function () {
-    var data, decryptData, source3, tracks, rank, _i, source3_1, item, directSizes, patternSize, directQuality, firstFile, _a, patternSize_1, patternItem, sizeQuality, e_1;
+    var data, decryptData, source3, tracks, rank, _i, source3_1, item, itemFile, directSizes, patternSize, directQuality, firstFile, _a, patternSize_1, patternItem, sizeQuality, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -71,12 +71,17 @@ callbacksEmbed["rabbitstream"] = function (dataCallback, provider, host, callbac
                 if (!item.file) {
                     return [3, 4];
                 }
-                return [4, libs.request_get(item.file, {})];
+                itemFile = item.file;
+                libs.log({ file: itemFile }, provider, 'FILE ITEM');
+                return [4, libs.request_get(itemFile, {})];
             case 3:
                 directSizes = _b.sent();
+                if (!directSizes) {
+                    return [2];
+                }
                 patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
                 if (!patternSize) {
-                    libs.embed_callback(item.file, provider, host, item.type, callback, ++rank, tracks);
+                    libs.embed_callback(itemFile, provider, host, item.type, callback, ++rank, tracks);
                     return [3, 4];
                 }
                 directQuality = [];

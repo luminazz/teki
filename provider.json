@@ -1,5 +1,8 @@
 {
 	"providers": [	
+		"dist/providers/fmovies.js",
+		"dist/providers/vidsrcpro.js",
+		"dist/providers/nites.js",
 		"dist/providers/uniquestream.js",
 		"dist/providers/ymovies.js",
 		"dist/providers/zoechip.js",
@@ -10,12 +13,9 @@
 		"dist/providers/2now.js",
 		"dist/providers/gomovies.js",
 		"dist/providers/vidsrc.js",
-		"dist/providers/fmovies.js",
 		"dist/providers/2now.js",
 		"dist/providers/fa.js",
 		"dist/providers/smashystream.js",
-		"dist/providers/st.js",
-		"dist/providers/vumoo.js",
 		"dist/providers/moviesapi.js"
 	]
 }

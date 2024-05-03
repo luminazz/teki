@@ -127,7 +127,6 @@ hosts["fstream365"] = function (url, movieInfo, provider, config, callback) { re
                 };
                 headers_1 = {
                     "Referer": "https://ymovies.vip/",
-                    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
                 };
                 return [4, libs.request_get(url, headers_1, true)];
             case 2:
@@ -156,6 +155,9 @@ hosts["fstream365"] = function (url, movieInfo, provider, config, callback) { re
                 for (_i = 0, _a = parseDirect.sources; _i < _a.length; _i++) {
                     item = _a[_i];
                     if (!item.file) {
+                        continue;
+                    }
+                    if (item.file.indexOf("vs025831") != -1) {
                         continue;
                     }
                     libs.embed_callback(item.file, provider, HOST, 'Hls', callback, 1, item.tracks, [{ file: item.file, quality: 1080 }], headers_1);

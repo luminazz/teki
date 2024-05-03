@@ -133,7 +133,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ apiUrlEmbed: apiUrlEmbed, length: parseEmbedServer_1('.link-item').length }, PROVIDER, "LENGTH LINK ITEM");
                 parseEmbedServer_1('.link-item').each(function (key, item) {
                     var serverId = parseEmbedServer_1(item).attr('data-linkid');
-                    if (serverId) {
+                    var serverName = parseEmbedServer_1(item).find('span').text();
+                    if (serverId && serverName.toLowerCase() == "upcloud") {
                         serverIds.push(serverId);
                     }
                 });
@@ -191,7 +192,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ urlGetEmbedTv: urlGetEmbedTv, length: parseEmbedTv_1('.link-item').length }, PROVIDER, 'EMBED INFO');
                 parseEmbedTv_1('.link-item').each(function (key, item) {
                     var serverId = parseEmbedTv_1(item).attr('data-id');
-                    if (serverId) {
+                    var serverName = parseEmbedTv_1(item).find('span').text();
+                    if (serverId && serverName.toLowerCase() == "upcloud") {
                         serverIds.push(serverId);
                     }
                 });

@@ -40,7 +40,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                PROVIDER = 'ZoeChip';
+                PROVIDER = 'JZoeChip';
                 DOMAIN = "https://zoechip.org";
                 _a.label = 1;
             case 1:
