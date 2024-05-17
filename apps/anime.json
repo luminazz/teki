@@ -1,0 +1,23 @@
+{
+  "update_release": {
+    "build": 2,
+    "url": "https://github.com/hdoonline/hdotv/releases/download/v1.1.4/hdotv-1.1.4.apk",
+    "contents": "There is a new update, please download to experience.",
+    "force_update": false
+  },
+  "app_player_config": {
+    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.18/mediaon-1.0.18.apk",
+    "player_version_build": 18,
+    "player_is_install_force": false,
+    "force_player": true
+  },
+  "switch_player_config": {
+    "package_name": "com.drama.simpleplayer",
+    "activity_name": "com.drama.simpleplayer.PlayerActivity",
+    "apk_url": "https://github.com/hdoonline/dramaplayer/releases/download/v1.0.5/dramaplayer-1.0.5.apk",
+    "store_url": "https://play.google.com/store/apps/details?id=com.drama.simpleplayer",
+    "version_build": 1,
+    "force_player": true,
+    "app_name": "Drama Player"
+  }
+}
