@@ -121,15 +121,11 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                     return "";
                 };
-                video1 = function (hash) { return __awaiter(_this, void 0, void 0, function () {
-                    var urlSearch, parseDetail, subs, parseTitles, _i, parseTitles_1, subItem, lang, parseSub, _a, _b, file, decodeFile, directSizes, patternSize, directQuality, _c, patternSize_1, patternItem, sizeQuality;
+                video1 = function (urlSearch) { return __awaiter(_this, void 0, void 0, function () {
+                    var parseDetail, subs, parseTitles, _i, parseTitles_1, subItem, lang, parseSub, _a, _b, file, decodeFile, directSizes, patternSize, directQuality, _c, patternSize_1, patternItem, sizeQuality;
                     return __generator(this, function (_d) {
                         switch (_d.label) {
                             case 0:
-                                urlSearch = "https://embed.smashystream.com/getplayer.php?player=".concat(hash, "&tmdb=").concat(movieInfo.tmdb_id);
-                                if (movieInfo.type == 'tv') {
-                                    urlSearch = "https://embed.smashystream.com/getplayer.php?player=".concat(hash, "&tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
-                                }
                                 libs.log({
                                     urlSearch: urlSearch
                                 }, PROVIDER, 'URL SEARCH');
@@ -210,9 +206,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         }
                     });
                 }); };
-                urlSearch = "".concat(DOMAIN, "/data.php?tmdb=").concat(movieInfo.tmdb_id);
+                urlSearch = "".concat(DOMAIN, "/dataa.php?tmdb=").concat(movieInfo.tmdb_id);
                 if (movieInfo.type == 'tv') {
-                    urlSearch = "".concat(DOMAIN, "/data.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
+                    urlSearch = "".concat(DOMAIN, "/dataa.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
                 }
                 libs.log({ urlSearch: urlSearch }, PROVIDER, "URL SEARCH");
                 return [4, libs.request_get(urlSearch, {})];
@@ -224,8 +220,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     lastTxt = parsetxt[parsetxt.length - 1];
                     href = item.url;
                     libs.log({ item: item, href: href, parsetxt: parsetxt, lastTxt: lastTxt }, PROVIDER, "INFO");
-                    if (lastTxt.toLowerCase() == 'fmd' || lastTxt.toLowerCase() == 'o' || lastTxt.toLowerCase() == 'f') {
-                        video1(lastTxt.toLowerCase());
+                    if (lastTxt.toLowerCase() == 'fmd' || lastTxt.toLowerCase() == 'o' || lastTxt.toLowerCase() == 'f' || lastTxt.toLowerCase() == 'm') {
+                        video1(item.url);
                     }
                 }
                 return [2];

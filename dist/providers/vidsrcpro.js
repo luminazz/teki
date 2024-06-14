@@ -107,7 +107,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ tracks: tracks }, PROVIDER, 'TRACKS');
                 q = dataDirect.source.match(/\?base\=([A-z0-9.]+)/i);
                 q = q ? q[1] : "";
-                endpoint = dataDirect.source.match(/proxy\/viper([A-z0-9_/.]+\.m3u8)/i);
+                endpoint = dataDirect.source.match(/proxy\/[A-z]+([A-z0-9_/.-]+\.m3u8)/i);
                 endpoint = endpoint ? endpoint[1] : "";
                 libs.log({ q: q, endpoint: endpoint }, PROVIDER, 'Q AND ENDPOINT');
                 if (!q || !endpoint) {

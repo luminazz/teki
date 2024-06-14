@@ -35,12 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["vid41c"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+hosts["vid1f61"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
     var DOMAIN, HOST, subParse, t, subs, headers;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                DOMAIN = 'https://vid41c.site';
+                DOMAIN = 'https://vid1f61.site';
                 HOST = 'Vidplay';
                 subParse = url.match(/\&sub\.info\=([^\&]+)/i);
                 subParse = subParse ? decodeURIComponent(subParse[1]) : '';

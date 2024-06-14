@@ -45,7 +45,7 @@ hosts["vidstream"] = function (url, movieInfo, provider, config, callback) { ret
                 HOST = 'Vidstream';
                 subParse = url.match(/\?sub\.info\=([^\&]+)/i);
                 subParse = subParse ? decodeURIComponent(subParse[1]) : '';
-                libs.log({ subParse: subParse }, HOST, 'SUBPARSE');
+                libs.log({ subParse: subParse, url: url }, HOST, 'SUBPARSE');
                 subs = [];
                 if (!subParse) return [3, 2];
                 return [4, libs.request_get(subParse)];
@@ -55,7 +55,7 @@ hosts["vidstream"] = function (url, movieInfo, provider, config, callback) { ret
                 _a.label = 2;
             case 2:
                 headers = {
-                    'Referer': "https://fmoviesz.to/",
+                    'Referer': "https://fmovies24.to/",
                     'user-agent': libs.request_getRandomUserAgent()
                 };
                 callback({

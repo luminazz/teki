@@ -36,32 +36,83 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 hosts["rabbitstream"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, headers;
-    return __generator(this, function (_a) {
-        libs.log({ provider: provider }, provider, 'PROVIDER');
-        DOMAIN = 'https://rabbitstream.net';
-        HOST = 'Rabbitstream';
-        headers = {
-            'referer': 'https://fmovies.ps',
-            'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
-        };
-        libs.log({ url: url }, provider, 'URL');
-        callback({
-            callback: {
-                provider: provider,
-                host: HOST,
-                url: url,
-                headers: headers,
-                callback: callback,
-                metadata: {
-                    url_webview: url,
-                    domain: DOMAIN,
-                    s: 0,
-                },
-                beforeLoadScript: "\n        \n            var open = XMLHttpRequest.prototype.open;\n            XMLHttpRequest.prototype.open = function() {\n                CryptoJS.AES.decrypt = (hash, key) => {\n                    window.ReactNativeWebView.postMessage(JSON.stringify({hash, key}));\n                }\n                open.apply(this, arguments);\n            }; \n            ",
-                metadata: {},
-            }
-        });
-        return [2];
+    var DOMAIN, HOST, headers, idRabbit, dataRabbit, source3, parseTrack, tracks, _i, parseTrack_1, trackItem, lang, parseLang, rank, _a, source3_1, item, directSizes, patternSize, directQuality, _b, patternSize_1, patternItem, sizeQuality;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                libs.log({ provider: provider }, provider, 'PROVIDER');
+                DOMAIN = 'https://rabbitstream.net';
+                HOST = 'Rabbitstream';
+                headers = {
+                    "Referer": "https://fmovies.ps/"
+                };
+                idRabbit = url.match(/embed\-[0-9]+\/([A-z0-9]+)/);
+                idRabbit = idRabbit ? idRabbit[1] : '';
+                return [4, libs.request_get("https://aquariumtv.app/rabbit?id=".concat(idRabbit))];
+            case 1:
+                dataRabbit = _c.sent();
+                libs.log({ dataRabbit: dataRabbit }, HOST, "DATA RABBIT");
+                source3 = dataRabbit['sources'] || [];
+                parseTrack = dataRabbit['tracks'] || [];
+                tracks = [];
+                for (_i = 0, parseTrack_1 = parseTrack; _i < parseTrack_1.length; _i++) {
+                    trackItem = parseTrack_1[_i];
+                    lang = trackItem.label;
+                    if (!lang) {
+                        continue;
+                    }
+                    libs.log({ lang: lang, trackItem: trackItem }, HOST, "TRACK ITEM");
+                    parseLang = lang.match(/([A-z0-9]+)/i);
+                    parseLang = parseLang ? parseLang[1].trim() : '';
+                    if (!parseLang) {
+                        continue;
+                    }
+                    tracks.push({
+                        file: trackItem.file,
+                        kind: 'captions',
+                        label: parseLang
+                    });
+                }
+                libs.log({ source3: source3, tracks: tracks }, HOST, 'SOURCES_TRACK');
+                rank = 0;
+                _a = 0, source3_1 = source3;
+                _c.label = 2;
+            case 2:
+                if (!(_a < source3_1.length)) return [3, 5];
+                item = source3_1[_a];
+                if (!item.file) {
+                    return [3, 4];
+                }
+                return [4, libs.request_get(item.file, {})];
+            case 3:
+                directSizes = _c.sent();
+                patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
+                if (!patternSize) {
+                    libs.embed_callback(item.file, provider, host, item.type, callback, ++rank, tracks);
+                    return [3, 4];
+                }
+                directQuality = [];
+                libs.log({ patternSize: patternSize }, provider, 'PATTERN SIZE');
+                for (_b = 0, patternSize_1 = patternSize; _b < patternSize_1.length; _b++) {
+                    patternItem = patternSize_1[_b];
+                    sizeQuality = patternItem.match(/\/([0-9]+)\//i);
+                    sizeQuality = sizeQuality ? Number(sizeQuality[1]) : 1080;
+                    directQuality.push({
+                        file: patternItem,
+                        quality: sizeQuality
+                    });
+                }
+                if (!directQuality.length) {
+                    return [3, 4];
+                }
+                directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
+                libs.log({ directQuality: directQuality }, provider, 'DIRECT QUALITY');
+                libs.embed_callback(directQuality[0].file, provider, HOST, 'Hls', callback, ++rank, tracks, directQuality);
+                _c.label = 4;
+            case 4:
+                _a++;
+                return [3, 2];
+            case 5: return [2];
+        }
     });
 }); };

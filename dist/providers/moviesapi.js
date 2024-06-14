@@ -118,7 +118,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 4:
                 sKey = _a.sent();
                 libs.log({ sKey: sKey }, PROVIDER, 'SKEY1');
-                decryptData = CryptoJSAesJson.decrypt(hashData, sKey);
+                decryptData = CryptoJSAesJson.decrypt(hashData, "KB3c1lgTx6cHL3W");
                 libs.log({ decryptData: decryptData }, PROVIDER, 'DECRYPT DATA');
                 hlsUrl = decryptData.match(/\"file\" *\: *\"([^\"]+)/i);
                 hlsUrl = hlsUrl ? hlsUrl[1] : '';

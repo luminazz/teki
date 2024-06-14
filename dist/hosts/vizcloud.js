@@ -55,7 +55,7 @@ hosts["vizcloud"] = function (url, movieInfo, provider, config, callback) { retu
                 _a.label = 2;
             case 2:
                 headers = {
-                    'Referer': "https://fmoviesz.to/",
+                    'Referer': "https://fmovies24.to/",
                     'user-agent': libs.request_getRandomUserAgent()
                 };
                 callback({
