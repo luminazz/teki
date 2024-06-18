@@ -4,7 +4,7 @@
     "title": "iOS version available!",
     "contents": "<p>ExcitingExciting News: Our New iOS App is Now Available! Grab it quick ASAP.</p><p>Instructions: Open app and allow permission, then wait for a minute to changed.</p>",
     "btn_title": "Get it",
-    "show": true,
+    "show": false,
     "key": "NOTI_1.7"
   },
   "ads_config": {

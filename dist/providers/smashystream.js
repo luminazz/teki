@@ -122,13 +122,18 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return "";
                 };
                 video1 = function (urlSearch) { return __awaiter(_this, void 0, void 0, function () {
-                    var parseDetail, subs, parseTitles, _i, parseTitles_1, subItem, lang, parseSub, _a, _b, file, decodeFile, directSizes, patternSize, directQuality, _c, patternSize_1, patternItem, sizeQuality;
+                    var headers, parseDetail, subs, parseTitles, _i, parseTitles_1, subItem, lang, parseSub, _a, _b, file, decodeFile, parseDecodeFile, splitDecode, fileDirect, fileHeader, directSizes, patternSize, directQuality, _c, patternSize_1, patternItem, sizeQuality;
                     return __generator(this, function (_d) {
                         switch (_d.label) {
                             case 0:
                                 libs.log({
                                     urlSearch: urlSearch
                                 }, PROVIDER, 'URL SEARCH');
+                                headers = {
+                                    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+                                    "Origin": "https://player.smashy.stream",
+                                    "Referer": "https://player.smashy.stream/",
+                                };
                                 return [4, libs.request_get(urlSearch, {
                                         'Sec-Fetch-Site': "cross-site",
                                         Referer: "https://player.smashy.stream/"
@@ -172,17 +177,28 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                 if (decodeFile.indexOf('.m3u8') == -1) {
                                     return [3, 4];
                                 }
-                                return [4, libs.request_get(decodeFile, {})];
+                                parseDecodeFile = decodeFile.replace("https://stream.smashystream.com/proxy/m3u8/", "");
+                                parseDecodeFile = decodeURIComponent(parseDecodeFile);
+                                splitDecode = parseDecodeFile.split("/{");
+                                fileDirect = splitDecode[0];
+                                fileHeader = splitDecode[1];
+                                if (!fileDirect) {
+                                    return [3, 4];
+                                }
+                                if (fileHeader) {
+                                    fileHeader = JSON.parse("{" + fileHeader);
+                                }
+                                libs.log({ fileDirect: fileDirect, fileHeader: fileHeader, decodeFile: decodeFile }, PROVIDER, 'FILE DIRECT');
+                                return [4, libs.request_get(fileDirect, fileHeader)];
                             case 3:
                                 directSizes = _d.sent();
                                 patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
-                                libs.log({ patternSize: patternSize }, PROVIDER, 'PATTERN SIZE');
                                 if (!patternSize) {
-                                    libs.embed_callback(decodeFile, PROVIDER, PROVIDER, 'hls', callback, 1, subs);
+                                    libs.embed_callback(fileDirect, PROVIDER, PROVIDER, 'hls', callback, 1, subs, [], fileHeader || headers);
                                     return [3, 4];
                                 }
                                 directQuality = [];
-                                libs.log({ patternSize: patternSize }, PROVIDER, 'PATTERN SIZE');
+                                libs.log({ patternSize: patternSize, decodeFile: decodeFile }, PROVIDER, 'PATTERN SIZE');
                                 for (_c = 0, patternSize_1 = patternSize; _c < patternSize_1.length; _c++) {
                                     patternItem = patternSize_1[_c];
                                     sizeQuality = patternItem.match(/\/([0-9]+)\//i);
@@ -197,7 +213,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                 }
                                 directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
                                 libs.log({ directQuality: directQuality }, PROVIDER, 'DIRECT QUALITY');
-                                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, subs, directQuality);
+                                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, subs, directQuality, fileHeader || headers);
                                 _d.label = 4;
                             case 4:
                                 _a++;
