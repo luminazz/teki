@@ -75,7 +75,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                 };
                 PROVIDER = 'DIdFlix';
-                DOMAIN = "https://vip.idlixofficial.net";
+                DOMAIN = "https://tv.idlixofficialx.com";
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 8, , 9]);

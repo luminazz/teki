@@ -106,15 +106,26 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 e = function (x) {
                     var a = x.substr(2);
                     var v = {
-                        "bk0": "SFL\/dU7B\/Dlx", "bk1": "0ca\/BVoI\/NS9", "bk2": "box\/2SI\/ZSFc", "bk3": "Hbt\/WFjB\/7GW", "bk4": "xNv\/T08\/z7F3"
+                        "bk0": "vXch5\/GNVBbrXO\/Xt", "bk1": "qxO\/5lMkx\/N5Gjv5J", "bk2": "OVw\/M39ryrfCs\/yO5", "bk3": "eeAd\/OwcV07\/Wgo7T", "bk4": "UN\/35mMFQjt3\/9vst"
                     };
                     for (var i = 4; i > -1; i--) {
                         if (v["bk" + i] != "") {
-                            a = a.replace("//" + b1(v["bk" + i]), "");
+                            a = a.replace("///" + b1(v["bk" + i]), "");
                         }
                     }
                     try {
-                        return b2(a);
+                        var data = b2(a);
+                        var v3 = "/";
+                        var v2 = ".";
+                        var v5 = "5";
+                        var v1 = "0";
+                        var v4 = "m3u8";
+                        data = data.replace(/\{v1\}/ig, v1);
+                        data = data.replace(/\{v2\}/ig, v2);
+                        data = data.replace(/\{v3\}/ig, v3);
+                        data = data.replace(/\{v4\}/ig, v4);
+                        data = data.replace(/\{v5\}/ig, v5);
+                        return data;
                     }
                     catch (e) {
                         libs.log({ e: e }, PROVIDER, 'ERROR');
@@ -222,9 +233,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         }
                     });
                 }); };
-                urlSearch = "".concat(DOMAIN, "/dataa.php?tmdb=").concat(movieInfo.tmdb_id);
+                urlSearch = "https://smashystream.top/dataad.php?tmdb=".concat(movieInfo.tmdb_id);
                 if (movieInfo.type == 'tv') {
-                    urlSearch = "".concat(DOMAIN, "/dataa.php?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
+                    urlSearch = "https://smashystream.top/dataad.php?tmdb=".concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
                 }
                 libs.log({ urlSearch: urlSearch }, PROVIDER, "URL SEARCH");
                 return [4, libs.request_get(urlSearch, {})];

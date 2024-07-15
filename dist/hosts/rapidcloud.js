@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 hosts["rapid-cloud"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, headers, megacloudLink_1, get_key, id, urlSource, sourceData, scriptData, secret, decryptData, source3, rank, tracks, _i, source3_1, item, directSizes, patternSize, directQuality, firstFile, _a, patternSize_1, patternItem, sizeQuality, e_1;
+    var DOMAIN, HOST, headers, megacloudLink_1, get_key, id, urlSource, sourceData, source3, rank, tracks, _i, source3_1, item, directSizes, patternSize, directQuality, firstFile, _a, patternSize_1, patternItem, sizeQuality, e_1;
     var _this = this;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -48,7 +48,7 @@ hosts["rapid-cloud"] = function (url, movieInfo, provider, config, callback) { r
                 };
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 9, , 10]);
+                _b.trys.push([1, 7, , 8]);
                 megacloudLink_1 = {
                     script: "https://rapid-cloud.co/js/player/prod/e6-player-v2.min.js?v=",
                     sources: "https://rapid-cloud.co/ajax/embed-6-v2/getSources?id=",
@@ -136,36 +136,19 @@ hosts["rapid-cloud"] = function (url, movieInfo, provider, config, callback) { r
                 if (!sourceData) {
                     return [2];
                 }
-                return [4, libs.request_get(megacloudLink_1.script + Date.now().toString())];
-            case 3:
-                scriptData = _b.sent();
-                libs.log({ scriptData: scriptData }, HOST, "scriptData");
-                if (!scriptData) {
-                    return [2];
-                }
-                return [4, get_key(sourceData.sources)];
-            case 4:
-                secret = _b.sent();
-                libs.log({ secret: secret }, HOST, "data");
-                decryptData = (cryptoS.AES.decrypt(secret[1], secret[0])).toString(cryptoS.enc.Utf8);
-                libs.log({
-                    decryptData: decryptData,
-                    secret: secret,
-                    type: config.options.type,
-                }, HOST, 'EMBED DECRYPT DATA');
-                source3 = JSON.parse(decryptData);
+                source3 = sourceData.sources;
                 rank = 0;
                 tracks = sourceData.tracks;
                 _i = 0, source3_1 = source3;
-                _b.label = 5;
-            case 5:
-                if (!(_i < source3_1.length)) return [3, 8];
+                _b.label = 3;
+            case 3:
+                if (!(_i < source3_1.length)) return [3, 6];
                 item = source3_1[_i];
                 if (!item.file) {
-                    return [3, 7];
+                    return [3, 5];
                 }
                 return [4, libs.request_get(item.file, {})];
-            case 6:
+            case 4:
                 directSizes = _b.sent();
                 patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
                 libs.log({ patternSize: patternSize }, provider, 'PATTERN SIZE');
@@ -173,7 +156,7 @@ hosts["rapid-cloud"] = function (url, movieInfo, provider, config, callback) { r
                     libs.embed_callback(item.file, provider, HOST, item.type, callback, ++rank, tracks, [{ file: item.file, quality: 1080, type: config.options.type || "" }], {}, {
                         type: config.options.type || ""
                     });
-                    return [3, 7];
+                    return [3, 5];
                 }
                 directQuality = [];
                 libs.log({ patternSize: patternSize }, provider, 'PATTERN SIZE');
@@ -195,16 +178,16 @@ hosts["rapid-cloud"] = function (url, movieInfo, provider, config, callback) { r
                 libs.embed_callback(firstFile, provider, HOST, 'Hls', callback, ++rank, tracks, directQuality, {}, {
                     type: config.options.type || ""
                 });
-                _b.label = 7;
-            case 7:
+                _b.label = 5;
+            case 5:
                 _i++;
-                return [3, 5];
-            case 8: return [3, 10];
-            case 9:
+                return [3, 3];
+            case 6: return [3, 8];
+            case 7:
                 e_1 = _b.sent();
                 libs.log({ e: e_1 }, HOST, "error");
-                return [3, 10];
-            case 10: return [2];
+                return [3, 8];
+            case 8: return [2];
         }
     });
 }); };

@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -54,6 +54,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ urlSearch: urlSearch }, PROVIDER, "URL SEARCH");
                 parseSearch_1(".last_episodes .items li").each(function (key, item) {
                     var title = parseSearch_1(item).find(".name a").text();
+                    var titleRoot = parseSearch_1(item).find(".name a").text();
                     var href = parseSearch_1(item).find(".name a").attr("href");
                     var year = parseSearch_1(item).find(".released").text();
                     year = year.match(/([0-9]+)/i);
@@ -74,7 +75,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                     libs.log({ title: title, href: href, year: year, match_title: libs.string_matching_title(movieInfo, title, false, ""), match_year: year == movieInfo.year, parseTitle: parseTitle }, PROVIDER, "SEARCH INFO");
                     if (title && href && !LINK_DETAIL_1) {
-                        if ((libs.string_matching_title(movieInfo, title, false, "") || matchMovie) && year == movieInfo.year) {
+                        if ((libs.string_matching_title(movieInfo, title, false, "") || matchMovie || movieInfo.title.trim() == titleRoot.trim()) && year == movieInfo.year) {
                             LINK_DETAIL_1 = href;
                         }
                     }

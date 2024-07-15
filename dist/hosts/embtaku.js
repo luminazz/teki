@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["embtaku"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+hosts["s3taku"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
     var DOMAIN, HOST, headers, parseDetail, a, key, iv, _0x302318, _0x249a7e, _0x4d306e, hashID, directData, d, _0x3b405f, _i, _a, item, file, parseFile, patternSize, fileQuality, _b, patternSize_1, patternItem, directUrl, size, e_1;
     return __generator(this, function (_c) {
         switch (_c.label) {
@@ -57,7 +57,7 @@ hosts["embtaku"] = function (url, movieInfo, provider, config, callback) { retur
                 a = parseDetail("script[data-name='episode']").data("value");
                 key = parseDetail("body[class^='container-']").attr("class").split('-').pop();
                 iv = parseDetail("div[class*='container-']").attr("class").split('-').pop();
-                libs.log({ a: a }, HOST, "A");
+                libs.log({ a: a }, HOST, "A_HOST");
                 _0x302318 = cryptoS.AES.decrypt(a, cryptoS.enc.Utf8.parse(key), {
                     'iv': cryptoS.enc.Utf8.parse(iv)
                 });
@@ -68,7 +68,7 @@ hosts["embtaku"] = function (url, movieInfo, provider, config, callback) { retur
                     'iv': cryptoS.enc.Utf8.parse(iv)
                 }).toString() + _0x249a7e.substr(_0x249a7e.indexOf('&')) + '&alias=' + _0x4d306e;
                 libs.log({ hashID: hashID }, HOST, "HASHID");
-                return [4, libs.request_get("https://embtaku.pro/encrypt-ajax.php?id=".concat(hashID), {
+                return [4, libs.request_get("https://s3taku.com/encrypt-ajax.php?id=".concat(hashID), {
                         referer: url,
                         "X-Requested-With": "XMLHttpRequest",
                         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
