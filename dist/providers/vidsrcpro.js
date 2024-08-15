@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, urlSearch, htmlSearch, textSearch, decodeHash, hash, parseHash, _i, parseHash_1, item, urlDirect, dataDirect, tracks, _a, _b, itemTrack, label, q, endpoint, urlDirect, e_1;
+    var PROVIDER, DOMAIN, headers, urlSearch, htmlSearch, textSearch, decodeHash, hash, parseHash, _i, parseHash_1, item, urlDirect, dataDirect, tracks, _a, _b, itemTrack, label, urlDirect_1, q, endpoint, urlDirect, e_1;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
@@ -105,6 +105,11 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 catch (etrack) { }
                 libs.log({ tracks: tracks }, PROVIDER, 'TRACKS');
+                if (dataDirect.source.indexOf("m3u8.justchill") !== -1) {
+                    urlDirect_1 = dataDirect.source.replace("https://m3u8.justchill.workers.dev/?url=", "");
+                    libs.embed_callback(urlDirect_1, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, [{ file: urlDirect_1, quality: 1080 }], headers);
+                    return [3, 6];
+                }
                 q = dataDirect.source.match(/\?base\=([A-z0-9.]+)/i);
                 q = q ? q[1] : "";
                 endpoint = dataDirect.source.match(/proxy\/[A-z]+([A-z0-9_/.-]+\.m3u8)/i);

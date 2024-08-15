@@ -1,11 +1,11 @@
 {
   "notification": {
-    "url": "https://apps.apple.com/app/id6502909204",
-    "title": "iOS version available!",
-    "contents": "<p>ExcitingExciting News: Our New iOS App is Now Available! Grab it quick ASAP.</p><p>Instructions: Open app and allow permission, then wait for a minute to changed.</p>",
+    "url": "https://wianime.com/",
+    "title": "New Anime App",
+    "contents": "<p>Download the app to enjoy your favorite anime shows anytime, anywhere.</p>",
     "btn_title": "Get it",
-    "show": false,
-    "key": "NOTI_1.7"
+    "show": true,
+    "key": "NOTI_1.8"
   },
   "ads_config": {
     "init_ads": "admob"
