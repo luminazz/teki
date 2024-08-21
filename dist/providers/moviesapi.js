@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -108,7 +108,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     })];
             case 3:
                 parseDetail = _a.sent();
-                hashData = parseDetail.match(/JScripts *\= *\'([^\']+)/i);
+                hashData = parseDetail.match(/Contents *\= *\'([^\']+)/i);
                 hashData = hashData ? hashData[1] : '';
                 libs.log({ hashData: hashData }, PROVIDER, 'HASH DATA');
                 if (!hashData) {
@@ -118,7 +118,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 4:
                 sKey = _a.sent();
                 libs.log({ sKey: sKey }, PROVIDER, 'SKEY1');
-                decryptData = CryptoJSAesJson.decrypt(hashData, "KB3c1lgTx6cHL3W");
+                decryptData = CryptoJSAesJson.decrypt(hashData, "1FHuaQhhcsKgpTRB");
                 libs.log({ decryptData: decryptData }, PROVIDER, 'DECRYPT DATA');
                 hlsUrl = decryptData.match(/\"file\" *\: *\"([^\"]+)/i);
                 hlsUrl = hlsUrl ? hlsUrl[1] : '';
