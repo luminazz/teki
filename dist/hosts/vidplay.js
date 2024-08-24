@@ -36,17 +36,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 hosts["vid2faf"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    function mapp(a, b, c) {
-        var d = b.length;
-        var e = {};
-        while (d-- && (e[b[d]] = c[d] || '')) {
-            ;
-        }
-        return a.split('').map(function (a) { return e[a] || a; }).join('');
-    }
-    function reverse(a) {
-        return a.split('').reverse().join('');
-    }
     function rc4(key, inp) {
         var arr = [];
         var counter = 0;
@@ -80,7 +69,68 @@ hosts["vid2faf"] = function (url, movieInfo, provider, config, callback) { retur
     function subst_(a) {
         return libs.string_atob((a).replace(/_/g, '/').replace(/-/g, '+'));
     }
-    var DOMAIN, HOST, PARSEDOMAIN, subParse, t, subs, headers, keys_1, enc_1, dec_1, id_1, stream, playlist, rank, _i, _a, embedItem, embedData, patternQuality, directQuality, _b, patternQuality_1, patternItem, sizeQuality, urlDirect, urlDirect, e_1, e1_1;
+    function mapp(a, b, c) {
+        var d = b.length;
+        var e = {};
+        while (d-- && (e[b[d]] = c[d] || '')) {
+            ;
+        }
+        return a.split('').map(function (a) { return e[a] || a; }).join('');
+    }
+    function reverse(a) {
+        return a.split('').reverse().join('');
+    }
+    function string_to_func(func) {
+        switch (func) {
+            case "rc4":
+                return rc4;
+            case "mapp":
+                return mapp;
+            case "subst":
+                return subst;
+            case "reverse":
+                return reverse;
+        }
+    }
+    function get_encrypt_order(host) {
+        if (rootKey_1["encrypt_order"][host])
+            return rootKey_1["encrypt_order"][host].map(function (f) { return string_to_func(f); });
+        return [];
+    }
+    function enc_with_order(keys, order, inp) {
+        var res = "";
+        var k_i = 0;
+        function use_func(func, inp) {
+            var r = 0;
+            switch (func) {
+                case rc4:
+                    r = rc4(keys[k_i], inp);
+                    k_i++;
+                    break;
+                case mapp:
+                    r = mapp(inp, keys[k_i], keys[k_i + 1]);
+                    k_i += 2;
+                    break;
+                default:
+                    r = func(inp);
+                    break;
+            }
+            return r;
+        }
+        try {
+            for (var i = 0; i < order.length; i++)
+                res = use_func(order[i], i == 0 ? inp : res);
+        }
+        catch (e) {
+            libs.log({ e: e }, HOST, 'ERROR ENC');
+            return "";
+        }
+        return res;
+    }
+    function dec_with_order(keys, order, inp) {
+        return enc_with_order(keys.concat().reverse(), order.concat().reverse().map(function (f) { return f == subst ? subst_ : f; }), inp);
+    }
+    var DOMAIN, HOST, PARSEDOMAIN, subParse, t, subs, headers, rootKey_1, keys_1, enc_1, dec_1, id_1, stream, playlist, rank, _i, _a, embedItem, embedData, patternQuality, directQuality, _b, patternQuality_1, patternItem, sizeQuality, urlDirect, urlDirect, e_1, e1_1;
     var _this = this;
     return __generator(this, function (_c) {
         switch (_c.label) {
@@ -110,39 +160,30 @@ hosts["vid2faf"] = function (url, movieInfo, provider, config, callback) { retur
                 };
                 return [4, libs.request_get("https://raw.githubusercontent.com/giammirove/videogatherer/main/src/keys.json")];
             case 4:
-                keys_1 = _c.sent();
-                keys_1 = keys_1["vid2faf.site"] || [];
+                rootKey_1 = _c.sent();
+                keys_1 = rootKey_1['keys'][PARSEDOMAIN] || [];
+                libs.log({ keys: keys_1 }, HOST, 'KEYS');
                 enc_1 = function (inp) {
-                    var a = mapp(inp, keys_1[0], keys_1[1]);
-                    a = reverse(a);
-                    a = rc4(keys_1[2], a);
-                    a = subst(a);
-                    a = reverse(a);
-                    a = mapp(a, keys_1[3], keys_1[4]);
-                    a = rc4(keys_1[5], a);
-                    a = subst(a);
-                    a = rc4(keys_1[6], a);
-                    a = subst(a);
-                    a = reverse(a);
-                    a = mapp(a, keys_1[7], keys_1[8]);
+                    var order = get_encrypt_order(PARSEDOMAIN);
+                    libs.log({ order: order }, HOST, 'ORDER');
+                    if (order.length > 0) {
+                        return enc_with_order(keys_1, order, inp);
+                    }
+                    var a = subst(rc4(keys_1[2], reverse(mapp(inp, keys_1[0], keys_1[1]))));
+                    a = subst(rc4(keys_1[5], reverse(mapp(a, keys_1[3], keys_1[4]))));
+                    a = subst(rc4(keys_1[8], reverse(mapp(a, keys_1[6], keys_1[7]))));
                     a = subst(a);
                     return a;
                 };
                 dec_1 = function (inp) {
-                    var a = subst_(inp);
-                    a = mapp(a, keys_1[8], keys_1[7]);
-                    a = reverse(a);
-                    a = subst_(a);
-                    a = rc4(keys_1[6], a);
-                    a = subst_(a);
-                    a = rc4(keys_1[5], a);
-                    a = mapp(a, keys_1[4], keys_1[3]);
-                    a = reverse(a);
-                    a = subst_(a);
-                    a = rc4(keys_1[2], a);
-                    a = reverse(a);
-                    a = mapp(a, keys_1[1], keys_1[0]);
-                    return a;
+                    var order = get_encrypt_order(PARSEDOMAIN);
+                    if (order.length > 0)
+                        return dec_with_order(keys_1, order, inp);
+                    var c = subst_(inp);
+                    c = mapp(reverse(rc4(keys_1[8], subst_(c))), keys_1[7], keys_1[6]);
+                    c = mapp(reverse(rc4(keys_1[5], subst_(c))), keys_1[4], keys_1[3]);
+                    c = mapp(reverse(rc4(keys_1[2], subst_(c))), keys_1[1], keys_1[0]);
+                    return c;
                 };
                 id_1 = url.match(/\/e\/([^\?]+)/i);
                 id_1 = id_1 ? id_1[1] : '';

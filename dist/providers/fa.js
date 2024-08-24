@@ -39,55 +39,101 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
     function c(t) {
         return ""["concat"]((2199 + -1789 + -410, i1_1)(t))["replace"](/\//g, "_")["replace"](/\+/g, "-");
     }
-    function _0x4e1570(_0xe62397, _0x33513e, _0x54486c) {
-        var _0x4f5745 = _0x33513e.length;
-        var _0x355727 = {};
-        while (_0x4f5745-- && (_0x355727[_0x33513e[_0x4f5745]] = _0x54486c[_0x4f5745] || "")) {
+    function rc4(key, inp) {
+        var arr = [];
+        var counter = 0;
+        var i = 0;
+        var tmp = 0;
+        var decrypted = "";
+        for (i = 0; i < 256; i++) {
+            arr[i] = i;
+        }
+        for (i = 0; i < 256; i++) {
+            counter = (counter + arr[i] + key.charCodeAt(i % key.length)) % 256;
+            tmp = arr[i];
+            arr[i] = arr[counter];
+            arr[counter] = tmp;
+        }
+        i = 0;
+        counter = 0;
+        for (var j = 0; j < inp.length; j++) {
+            i = (i + 1) % 256;
+            counter = (counter + arr[i]) % 256;
+            tmp = arr[i];
+            arr[i] = arr[counter];
+            arr[counter] = tmp;
+            decrypted += String.fromCharCode(inp.charCodeAt(j) ^ arr[(arr[i] + arr[counter]) % 256]);
+        }
+        return decrypted;
+    }
+    function subst(a) {
+        return (libs.string_btoa(a)).replace(/\//g, '_').replace(/\+/g, '-');
+    }
+    function subst_(a) {
+        return libs.string_atob((a).replace(/_/g, '/').replace(/-/g, '+'));
+    }
+    function mapp(a, b, c) {
+        var d = b.length;
+        var e = {};
+        while (d-- && (e[b[d]] = c[d] || '')) {
             ;
         }
-        return _0xe62397.split("").map(function (_0x27fe6d) { return _0x355727[_0x27fe6d] || _0x27fe6d; }).join("");
+        return a.split('').map(function (a) { return e[a] || a; }).join('');
     }
-    function _0xb23638(_0x2b4191, _0x2a0f52) {
-        var _0x7799ad = [];
-        var _0x672d90 = 0;
-        var _0x552723 = 0;
-        var _0x107606;
-        var _0x267043 = "";
-        for (_0x552723 = 0; _0x552723 < 256; _0x552723++) {
-            _0x7799ad[_0x552723] = _0x552723;
+    function reverse(a) {
+        return a.split('').reverse().join('');
+    }
+    function string_to_func(func) {
+        switch (func) {
+            case "rc4":
+                return rc4;
+            case "mapp":
+                return mapp;
+            case "subst":
+                return subst;
+            case "reverse":
+                return reverse;
         }
-        for (_0x552723 = 0; _0x552723 < 256; _0x552723++) {
-            _0x672d90 = (_0x672d90 + _0x7799ad[_0x552723] + _0x2b4191.charCodeAt(_0x552723 % _0x2b4191.length)) % 256;
-            _0x107606 = _0x7799ad[_0x552723];
-            _0x7799ad[_0x552723] = _0x7799ad[_0x672d90];
-            _0x7799ad[_0x672d90] = _0x107606;
+    }
+    function get_encrypt_order(host) {
+        if (rootKey_1["encrypt_order"][host])
+            return rootKey_1["encrypt_order"][host].map(function (f) { return string_to_func(f); });
+        return [];
+    }
+    function enc_with_order(keys, order, inp) {
+        var res = "";
+        var k_i = 0;
+        function use_func(func, inp) {
+            var r = 0;
+            switch (func) {
+                case rc4:
+                    r = rc4(keys[k_i], inp);
+                    k_i++;
+                    break;
+                case mapp:
+                    r = mapp(inp, keys[k_i], keys[k_i + 1]);
+                    k_i += 2;
+                    break;
+                default:
+                    r = func(inp);
+                    break;
+            }
+            return r;
         }
-        _0x552723 = 0;
-        for (var _0x398be8 = _0x672d90 = 0; _0x398be8 < _0x2a0f52.length; _0x398be8++) {
-            _0x552723 = (_0x552723 + 1) % 256;
-            _0x672d90 = (_0x672d90 + _0x7799ad[_0x552723]) % 256;
-            _0x107606 = _0x7799ad[_0x552723];
-            _0x7799ad[_0x552723] = _0x7799ad[_0x672d90];
-            _0x7799ad[_0x672d90] = _0x107606;
-            _0x267043 += String.fromCharCode(_0x2a0f52.charCodeAt(_0x398be8) ^ _0x7799ad[(_0x7799ad[_0x552723] + _0x7799ad[_0x672d90]) % 256]);
+        try {
+            for (var i = 0; i < order.length; i++)
+                res = use_func(order[i], i == 0 ? inp : res);
         }
-        return _0x267043;
+        catch (e) {
+            libs.log({ e: e }, PROVIDER, 'ERROR ENC');
+            return "";
+        }
+        return res;
     }
-    function genCodeNewV2(_0x221e04) {
-        _0x221e04 = ("" + libs.string_btoa(_0xb23638(keys_1[2], _0x221e04 = (_0x221e04 = _0x4e1570(_0x221e04 = "" + _0x221e04, keys_1[0], keys_1[1])).split("").reverse().join("")))).replace(/\//g, "_").replace(/\+/g, "-");
-        _0x221e04 = ("" + libs.string_btoa(_0xb23638(keys_1[5], _0x221e04 = (_0x221e04 = _0x4e1570(_0x221e04, keys_1[3], keys_1[4])).split("").reverse().join("")))).replace(/\//g, "_").replace(/\+/g, "-");
-        _0x221e04 = ("" + libs.string_btoa(_0xb23638(keys_1[8], _0x221e04 = (_0x221e04 = _0x4e1570(_0x221e04, keys_1[6], keys_1[7])).split("").reverse().join("")))).replace(/\//g, "_").replace(/\+/g, "-");
-        return _0x221e04 = ("" + libs.string_btoa(_0x221e04)).replace(/\//g, "_").replace(/\+/g, "-");
+    function dec_with_order(keys, order, inp) {
+        return enc_with_order(keys.concat().reverse(), order.concat().reverse().map(function (f) { return f == subst ? subst_ : f; }), inp);
     }
-    function decodeRes_2(result) {
-        var _0x4dd662 = "";
-        _0x4dd662 = libs.string_atob(("" + (_0x4dd662 = "" + (_0x4dd662 = result))).replace(/_/g, "/").replace(/-/g, "+"));
-        _0x4dd662 = _0x4e1570(_0x4dd662 = (_0x4dd662 = _0xb23638(keys_1[8], libs.string_atob(("" + _0x4dd662).replace(/_/g, "/").replace(/-/g, "+")))).split("").reverse().join(""), keys_1[7], keys_1[6]);
-        _0x4dd662 = _0x4e1570(_0x4dd662 = (_0x4dd662 = _0xb23638(keys_1[5], libs.string_atob(("" + _0x4dd662).replace(/_/g, "/").replace(/-/g, "+")))).split("").reverse().join(""), keys_1[4], keys_1[3]);
-        _0x4dd662 = _0x4e1570(_0x4dd662 = (_0x4dd662 = _0xb23638("hAGMmLFnoa0", libs.string_atob(("" + _0x4dd662).replace(/_/g, "/").replace(/-/g, "+")))).split("").reverse().join(""), keys_1[1], keys_1[0]);
-        return _0x4dd662;
-    }
-    var PROVIDER, DOMAIN, userAgent, LINK_DETAIL, i1_1, O_1, genMovie, u_1, decodeRes_3, decodeRes_1, keys_1, genCodeNew, headers, urlSearch, parseSearch_1, LINK_TV_DETAIL, parseTvDetail, tvId, episodeInfoUrl, episodeRes, parseEpisodeData, dataId, serverData, parseServerData_1, serverIds_3, _i, serverIds_1, idItem, embedUrl, embedData, directData, decodeUrl, parseMovieDetail, movieId, movieInfoUrl, movieInfoRes, parseMovieInfo, dataId, serverData, parseServerData_2, serverIds_4, _a, serverIds_2, idItem, embedUrl, embedData, directData, decodeUrl, e_1;
+    var PROVIDER, DOMAIN, userAgent, LINK_DETAIL, i1_1, O_1, genMovie, u_1, decodeRes_2, decodeRes_1, rootKey_1, keys_1, enc, dec, headers, urlSearch, parseSearch_1, LINK_TV_DETAIL, parseTvDetail, tvId, episodeInfoUrl, episodeRes, parseEpisodeData, dataId, serverData, parseServerData_1, serverIds_3, _i, serverIds_1, idItem, embedUrl, embedData, directData, decodeUrl, parseMovieDetail, movieId, movieInfoUrl, movieInfoRes, parseMovieInfo, dataId, serverData, parseServerData_2, serverIds_4, _a, serverIds_2, idItem, embedUrl, embedData, directData, decodeUrl, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -165,87 +211,38 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         u = (u <<= 3896 + 1633 * -2 + -104 * 6) | (r = t[e], (r = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"["indexOf"](r)) < 9541 + -752 + -17 * 517 ? void (-109 * 1 + 1802 + 1 * -1693) : r), 7344 + 17 * 125 + 9445 * -1 === (s += 13 * 691 + -592 * -15 + -17857) && (o = (o = (o += String["fromCharCode"]((19012171 + 12170 * 1516 + -20750211 & u) >> 4808 + 23 * -384 + 4040)) + String["fromCharCode"]((47 * -1378 + 80921 + 49125 & u) >> 5843 + -344 * 13 + 1 * -1363)) + String["fromCharCode"]((-6913 + -9482 * -1 + -2314 & u)), u = s = -190 * -28 + 5743 * 1 + 299 * -37);
                     return -4877 + 2050 * 4 + -3311 === s ? (u >>= -5268 + -7159 * -1 + -1887, o += String["fromCharCode"](u)) : 44 * 65 + 492 + -3334 === s && (u >>= -9224 + 5853 * -1 + -17 * -887, o = (o += String["fromCharCode"]((-18277 + -73892 + 157449 & u) >> -2606 * 2 + -7 * -1417 + 37 * -127)) + String["fromCharCode"](9423 + 3 * 239 + 5 * -1977 & u)), o;
                 };
-                decodeRes_3 = function (t) {
+                decodeRes_2 = function (t) {
                     return t = (1007 + 679 * -10 + 5783, u_1)(""["concat"](t)["replace"](/_/g, "/")["replace"](/-/g, "+")), t = O_1("8z5Ag5wgagfsOuhz", t), t;
                 };
                 decodeRes_1 = function (t) {
-                    return (decodeRes_3(t));
+                    return (decodeRes_2(t));
                 };
                 return [4, libs.request_get("https://raw.githubusercontent.com/giammirove/videogatherer/main/src/keys.json")];
             case 2:
-                keys_1 = _b.sent();
-                keys_1 = keys_1["watchseriesx.to"] || [];
-                genCodeNew = function (id) {
-                    var n;
-                    function D() {
-                        var t = [arguments];
-                        t[5] = keys_1;
-                        t[1] = encodeURIComponent("" + t[0][0]);
-                        t[1] = Z(t[5], t[1]);
-                        t[1] = function () {
-                            var t = [arguments];
-                            return ("" + libs.string_btoa(t[0][0]))["replace"](/\//g, "_")["replace"]("/\+/g", "-");
-                        }(t[1]);
-                        return t[1];
+                rootKey_1 = _b.sent();
+                keys_1 = rootKey_1["keys"]["watchseriesx.to"] || [];
+                libs.log({ keys: keys_1 }, PROVIDER, 'KEYS');
+                enc = function (inp) {
+                    var order = get_encrypt_order("watchseriesx.to");
+                    libs.log({ order: order }, PROVIDER, 'ORDER');
+                    if (order.length > 0) {
+                        return enc_with_order(keys_1, order, inp);
                     }
-                    function Z() {
-                        var i = [arguments];
-                        i[8] = [];
-                        i[1] = 0;
-                        i[3] = "";
-                        i[6] = 0;
-                        for (; i[6] < 256; i[6]++) {
-                            i[8][i[6]] = i[6];
-                        }
-                        for (i[6] = 0; i[6] < 256; i[6]++) {
-                            i[4] = "len";
-                            i[4] += "gth";
-                            n = 0;
-                            i[2] = 256;
-                            i[1] = (i[1] + i[8][i[6]] + i[0][0]["charCodeAt"](i[6] % i[0][0][i[4]])) % i[2];
-                            i[9] = i[8][i[6]];
-                            i[8][i[6]] = i[8][i[1]];
-                            i[8][i[1]] = i[9];
-                        }
-                        i[6] = 0;
-                        i[1] = 0;
-                        i[5] = 0;
-                        var k3_1 = function () {
-                            var t;
-                            var i = arguments;
-                            switch (n) {
-                                case 1:
-                                    t = (i[1] + i[0]) % i[2];
-                                    break;
-                                case 2:
-                                    t = (i[1] + i[0] + i[2]) / i[3] - i[4];
-                                    break;
-                                case 0:
-                                    t = (i[0] + i[3]) / i[2] + i[1];
-                            }
-                            return t;
-                        };
-                        var JUVeL_1 = function (t, i) {
-                            return t % i;
-                        };
-                        for (; i[5] < i[0][1]["length"]; i[5]++) {
-                            i[7] = "c";
-                            i[7] += "har";
-                            i[7] += "CodeA";
-                            i[7] += "t";
-                            n = 1;
-                            i[6] = k3_1(1, i[6], 256);
-                            n = 2;
-                            i[76] = 256;
-                            i[1] = (i[1] + i[8][i[6]]) % i[76];
-                            i[9] = i[8][i[6]];
-                            i[8][i[6]] = i[8][i[1]];
-                            i[8][i[1]] = i[9];
-                            i[3] += String["fromCharCode"](i[0][1][i[7]](i[5]) ^ i[8][JUVeL_1(i[8][i[6]] + i[8][i[1]], 256)]);
-                        }
-                        return i[3];
-                    }
-                    return D(id);
+                    var a = subst(rc4(keys_1[2], reverse(mapp(inp, keys_1[0], keys_1[1]))));
+                    a = subst(rc4(keys_1[5], reverse(mapp(a, keys_1[3], keys_1[4]))));
+                    a = subst(rc4(keys_1[8], reverse(mapp(a, keys_1[6], keys_1[7]))));
+                    a = subst(a);
+                    return a;
+                };
+                dec = function (inp) {
+                    var order = get_encrypt_order("watchseriesx.to");
+                    if (order.length > 0)
+                        return dec_with_order(keys_1, order, inp);
+                    var c = subst_(inp);
+                    c = mapp(reverse(rc4(keys_1[8], subst_(c))), keys_1[7], keys_1[6]);
+                    c = mapp(reverse(rc4(keys_1[5], subst_(c))), keys_1[4], keys_1[3]);
+                    c = mapp(reverse(rc4(keys_1[2], subst_(c))), keys_1[1], keys_1[0]);
+                    return c;
                 };
                 headers = {
                     'user-agent': libs.request_getRandomUserAgent()
@@ -294,7 +291,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!tvId) {
                     return [2];
                 }
-                episodeInfoUrl = "".concat(DOMAIN, "/ajax/episode/list/").concat(tvId, "?vrf=").concat(genCodeNewV2(tvId));
+                episodeInfoUrl = "".concat(DOMAIN, "/ajax/episode/list/").concat(tvId, "?vrf=").concat(enc(tvId));
                 return [4, libs.request_get(episodeInfoUrl, headers, false)];
             case 5:
                 episodeRes = _b.sent();
@@ -308,7 +305,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!dataId) {
                     return [2];
                 }
-                return [4, libs.request_get("".concat(DOMAIN, "/ajax/server/list/").concat(dataId, "?vrf=").concat(genCodeNewV2(dataId)), headers, false)];
+                return [4, libs.request_get("".concat(DOMAIN, "/ajax/server/list/").concat(dataId, "?vrf=").concat(enc(dataId)), headers, false)];
             case 6:
                 serverData = _b.sent();
                 if (serverData.status != 200) {
@@ -331,7 +328,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 7:
                 if (!(_i < serverIds_1.length)) return [3, 11];
                 idItem = serverIds_1[_i];
-                embedUrl = "".concat(DOMAIN, "/ajax/server/").concat(idItem, "?vrf=").concat(genCodeNewV2(idItem));
+                embedUrl = "".concat(DOMAIN, "/ajax/server/").concat(idItem, "?vrf=").concat(enc(idItem));
                 return [4, libs.request_get(embedUrl, headers, false)];
             case 8:
                 embedData = _b.sent();
@@ -343,7 +340,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!directData) {
                     return [3, 10];
                 }
-                decodeUrl = decodeRes_2(directData);
+                decodeUrl = dec(directData);
                 libs.log({ decodeUrl: decodeURIComponent(decodeUrl) }, PROVIDER, 'DECODE URL');
                 return [4, libs.embed_redirect(decodeURIComponent(decodeUrl), '', movieInfo, PROVIDER, callback, undefined, [])];
             case 9:
@@ -361,7 +358,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!movieId) {
                     return [2];
                 }
-                movieInfoUrl = "".concat(DOMAIN, "/ajax/episode/list/").concat(movieId, "?vrf=").concat(genCodeNewV2(movieId));
+                movieInfoUrl = "".concat(DOMAIN, "/ajax/episode/list/").concat(movieId, "?vrf=").concat(enc(movieId));
                 return [4, libs.request_get(movieInfoUrl, headers, false)];
             case 14:
                 movieInfoRes = _b.sent();
@@ -375,7 +372,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!dataId) {
                     return [2];
                 }
-                return [4, libs.request_get("".concat(DOMAIN, "/ajax/server/list/").concat(dataId, "?vrf=").concat(genCodeNewV2(dataId)), headers, false)];
+                return [4, libs.request_get("".concat(DOMAIN, "/ajax/server/list/").concat(dataId, "?vrf=").concat(enc(dataId)), headers, false)];
             case 15:
                 serverData = _b.sent();
                 libs.log({ serverData: serverData }, PROVIDER, 'SERVER DATA');
@@ -395,7 +392,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 16:
                 if (!(_a < serverIds_2.length)) return [3, 20];
                 idItem = serverIds_2[_a];
-                embedUrl = "".concat(DOMAIN, "/ajax/server/").concat(idItem, "?vrf=").concat(genCodeNewV2(idItem));
+                embedUrl = "".concat(DOMAIN, "/ajax/server/").concat(idItem, "?vrf=").concat(enc(idItem));
                 return [4, libs.request_get(embedUrl, headers, false)];
             case 17:
                 embedData = _b.sent();
@@ -407,7 +404,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!directData) {
                     return [3, 19];
                 }
-                decodeUrl = decodeRes_2(directData);
+                decodeUrl = dec(directData);
                 libs.log({ decodeUrl: decodeURIComponent(decodeUrl) }, PROVIDER, 'DECODE URL');
                 return [4, libs.embed_redirect(decodeURIComponent(decodeUrl), '', movieInfo, PROVIDER, callback, undefined, [])];
             case 18:
