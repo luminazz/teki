@@ -27,6 +27,7 @@
 	"dist/hosts/vidcdn.js",
 	"dist/hosts/fstream365.js",
 	"dist/hosts/turbovid.js",
-	"dist/hosts/moviplus.js"
+	"dist/hosts/moviplus.js",
+	"dist/hosts/smashystream.js"
 	]
 }

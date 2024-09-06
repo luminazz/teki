@@ -8,6 +8,7 @@
 		"dist/callback/vidstream.js",
 		"dist/callback/soap2day.js",
 		"dist/callback/play9str_playm4u.js",
-		"dist/callback/vidplay.js"
+		"dist/callback/vidplay.js",
+		"dist/callback/smashystream.js"
 	]
 }

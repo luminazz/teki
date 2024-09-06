@@ -35,22 +35,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, domainWeb;
+hosts["player.smashy"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var HOST;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                PROVIDER = 'TSmashyStream';
-                DOMAIN = "https://embed.smashystream.com";
-                domainWeb = "https://player.smashy.stream/movie/".concat(movieInfo.tmdb_id);
-                if (movieInfo.type == 'tv') {
-                    domainWeb = "https://player.smashy.stream/tv/".concat(movieInfo.tmdb_id, "?s=").concat(movieInfo.season, "&e=").concat(movieInfo.episode);
+        HOST = "SMASHYSTREAM";
+        try {
+            libs.log({ url: url }, "HOST SMASHYSTREAM");
+            callback({
+                callback: {
+                    provider: provider,
+                    host: HOST,
+                    url: url,
+                    headers: {
+                        referer: "https://smashystream.xyz/",
+                    },
+                    callback: callback,
+                    script: "\n                setTimeout(() => {\n                    try {\n                       window.ReactNativeWebView.postMessage(JSON.stringify({token: Module.cwrap(\"generate_token\", \"string\", [\"string\"])(secret)}));\n                    } catch(e) {\n                     window.ReactNativeWebView.postMessage(JSON.stringify({error: string(e)}));  \n                    }\n                    \n                }, 2000)\n                \n                ",
+                    metadata: {
+                        movieInfo: movieInfo
+                    }
                 }
-                libs.log({ domainWeb: domainWeb }, PROVIDER, "DOMAIN WEB");
-                return [4, libs.embed_redirect(domainWeb, '', movieInfo, PROVIDER, callback, '')];
-            case 1:
-                _a.sent();
-                return [2];
+            });
         }
+        catch (e) {
+            libs.log({ e: e }, HOST, "ERROR");
+        }
+        return [2];
     });
 }); };
