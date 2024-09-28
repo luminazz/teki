@@ -60,7 +60,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 _e.label = 1;
             case 1:
                 _e.trys.push([1, 9, , 10]);
-                urlIco = "".concat(DOMAIN, "/statics/icon/icaegab.ico");
+                urlIco = "".concat(DOMAIN, "/statics/icon/jihccab.ico");
                 sources = ["nova", "hydrax"];
                 urlSources = [];
                 for (_i = 0, sources_1 = sources; _i < sources_1.length; _i++) {
@@ -117,7 +117,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
                 libs.log({ directQuality: directQuality }, PROVIDER, 'DIRECT QUALITY');
-                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, directQuality);
+                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, directQuality, {
+                    "Referer": "https://vidsrc.vip/",
+                    "Origin": "https://vidsrc.vip"
+                });
                 _e.label = 6;
             case 6:
                 _b++;

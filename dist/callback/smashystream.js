@@ -46,7 +46,7 @@ callbacksEmbed["smashystream"] = function (dataCallback, provider, host, callbac
             return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(""));
     }
-    var movieInfo, e_1, parseCallback_1, video1_1, sourceAPI, _loop_1, _i, sourceAPI_1, item;
+    var movieInfo, parseData, token_1, e_1, video1_1, sourceAPI, _loop_1, _i, sourceAPI_1, item;
     var _this = this;
     return __generator(this, function (_a) {
         libs.log(dataCallback, provider, 'DATA CALLBACK');
@@ -55,6 +55,16 @@ callbacksEmbed["smashystream"] = function (dataCallback, provider, host, callbac
         }
         movieInfo = metadata.movieInfo;
         try {
+            parseData = JSON.parse(dataCallback);
+            if (!parseData || !parseData.data) {
+                return [2];
+            }
+            token_1 = parseData.data.match(/token\=([A-z0-9\-\.]+)/i);
+            token_1 = token_1 ? token_1[1] : "";
+            libs.log({ token: token_1 }, provider, 'TOKEN');
+            if (!token_1) {
+                return [2];
+            }
             e_1 = function (x) {
                 var a = x.substr(2);
                 var v = {
@@ -84,11 +94,6 @@ callbacksEmbed["smashystream"] = function (dataCallback, provider, host, callbac
                 }
                 return "";
             };
-            parseCallback_1 = JSON.parse(dataCallback);
-            if (!parseCallback_1 || !parseCallback_1.token) {
-                return [2];
-            }
-            libs.log({ token: parseCallback_1.token }, provider, 'TOKEN');
             video1_1 = function (urlSearch) { return __awaiter(_this, void 0, void 0, function () {
                 var headers, parseDetail, subs, parseTitles, _i, parseTitles_1, subItem, lang, parseSub, _a, _b, file, decodeFile, parseDecodeFile, splitDecode, fileDirect, fileHeader, directSizes, patternSize, directQuality, _c, patternSize_1, patternItem, sizeQuality;
                 return __generator(this, function (_d) {
@@ -204,9 +209,9 @@ callbacksEmbed["smashystream"] = function (dataCallback, provider, host, callbac
                 if (movieInfo.type == 'tv') {
                     urlSearch = "".concat(item).concat(movieInfo.tmdb_id, "/").concat(movieInfo.season, "/").concat(movieInfo.episode);
                 }
-                libs.log({ urlSearch: urlSearch, token: parseCallback_1.token }, provider, "URL SEARCH");
+                libs.log({ urlSearch: urlSearch, token: token_1 }, provider, "URL SEARCH");
                 setTimeout(function () {
-                    video1_1("".concat(urlSearch, "?token=").concat(parseCallback_1.token));
+                    video1_1("".concat(urlSearch, "?token=").concat(token_1));
                 }, 500);
             };
             for (_i = 0, sourceAPI_1 = sourceAPI; _i < sourceAPI_1.length; _i++) {

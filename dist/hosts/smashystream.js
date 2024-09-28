@@ -50,7 +50,8 @@ hosts["player.smashy"] = function (url, movieInfo, provider, config, callback) {
                         referer: "https://smashystream.xyz/",
                     },
                     callback: callback,
-                    script: "\n                setTimeout(() => {\n                    try {\n                       window.ReactNativeWebView.postMessage(JSON.stringify({token: Module.cwrap(\"generate_token\", \"string\", [\"string\"])(secret)}));\n                    } catch(e) {\n                     window.ReactNativeWebView.postMessage(JSON.stringify({error: string(e)}));  \n                    }\n                    \n                }, 2000)\n                \n                ",
+                    userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+                    beforeLoadScript: "\n                try {\n                    var b = fetch;\n                    fetch = (data, config) => {\n                        window.ReactNativeWebView.postMessage(JSON.stringify({data})); \n                        return b(data, config)\n                    }\n                } catch(e) {\n                   window.ReactNativeWebView.postMessage(JSON.stringify({error: string(e)}));\n                }\n                ",
                     metadata: {
                         movieInfo: movieInfo
                     }

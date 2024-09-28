@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, urlSearch, htmlSearch, textSearch, decodeHash, hash, parseHash, _i, parseHash_1, item, urlDirect, dataDirect, tracks, _a, _b, itemTrack, label, urlDirect_1, q, endpoint, urlDirect, e_1;
+    var PROVIDER, DOMAIN, headers, urlSearch, htmlSearch, textSearch, decodeHash, hash, parseHash, _i, parseHash_1, item, urlDirect, dataDirect, tracks, _a, _b, itemTrack, label, urlDirect_1, urlDirect, e_1;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
@@ -44,7 +44,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 DOMAIN = "https://vidsrc.pro";
                 headers = {
                     'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    'referer': "https://vidsrc.pro/"
+                    'referer': "https://vidsrc.pro/",
+                    'Origin': 'https://vidsrc.pro'
                 };
                 _c.label = 1;
             case 1:
@@ -110,15 +111,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     libs.embed_callback(urlDirect_1, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, [{ file: urlDirect_1, quality: 1080 }], headers);
                     return [3, 6];
                 }
-                q = dataDirect.source.match(/\?base\=([A-z0-9.]+)/i);
-                q = q ? q[1] : "";
-                endpoint = dataDirect.source.match(/proxy\/[A-z]+([A-z0-9_/.-]+\.m3u8)/i);
-                endpoint = endpoint ? endpoint[1] : "";
-                libs.log({ q: q, endpoint: endpoint }, PROVIDER, 'Q AND ENDPOINT');
-                if (!q || !endpoint) {
-                    return [3, 6];
-                }
-                urlDirect = "https://".concat(q).concat(endpoint);
+                urlDirect = dataDirect.source;
                 libs.embed_callback(urlDirect, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, [{ file: urlDirect, quality: 1080 }], headers);
                 _c.label = 6;
             case 6:
