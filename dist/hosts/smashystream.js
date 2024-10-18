@@ -47,11 +47,18 @@ hosts["player.smashy"] = function (url, movieInfo, provider, config, callback) {
                     host: HOST,
                     url: url,
                     headers: {
-                        referer: "https://smashystream.xyz/",
+                        accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                        "Upgrade-Insecure-Requests": 1,
+                        "Sec-Fetch-Mode": "navigate",
+                        "Sec-Fetch-Site": "none",
+                        "Sec-Fetch-User": "?1",
+                        "Sec-Fetch-Dest": "document",
+                        "Accept-Language": "en-US,en;q=0.9",
+                        "Accept-Encoding": "gzip, deflate, br, zstd",
                     },
                     callback: callback,
                     userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-                    beforeLoadScript: "\n                try {\n                    var b = fetch;\n                    fetch = (data, config) => {\n                        window.ReactNativeWebView.postMessage(JSON.stringify({data})); \n                        return b(data, config)\n                    }\n                } catch(e) {\n                   window.ReactNativeWebView.postMessage(JSON.stringify({error: string(e)}));\n                }\n                ",
+                    beforeLoadScript: "\n                try {\n                window.ReactNativeWebView.postMessage(JSON.stringify({\"asdasd\": \"asd\"})); \n                    var b = fetch;\n                    fetch = (data, config = {}) => {\n                    \n                        window.ReactNativeWebView.postMessage(JSON.stringify({data})); \n                        return b(data, config)\n                    }\n                } catch(e) {\n                   window.ReactNativeWebView.postMessage(JSON.stringify({error: string(e)}));\n                }\n                ",
                     metadata: {
                         movieInfo: movieInfo
                     }

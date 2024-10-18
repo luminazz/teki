@@ -36,20 +36,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, urlSearch, htmlSearch, textSearch, decodeHash, hash, parseHash, _i, parseHash_1, item, urlDirect, dataDirect, tracks, _a, _b, itemTrack, label, urlDirect_1, urlDirect, e_1;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var PROVIDER, DOMAIN, headers, urlSearch, htmlSearch, textSearch, hashEncode, hashDecode, mEncrypt, mDEcrypt, _i, mDEcrypt_1, item, urlDirect, dataDirect, tracks, _a, _b, itemTrack, label, urlDirect, requestDirectSize, parseRequest, patternSize, parseDirectSize, _c, parseDirectSize_1, item_1, directQuality, _d, patternSize_1, patternItem, sizeQuality, dURL, e_1;
+    return __generator(this, function (_e) {
+        switch (_e.label) {
             case 0:
                 PROVIDER = 'ZVidsrcPro';
-                DOMAIN = "https://vidsrc.pro";
+                DOMAIN = "https://embed.su";
                 headers = {
                     'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    'referer': "https://vidsrc.pro/",
-                    'Origin': 'https://vidsrc.pro'
+                    'Referer': "https://embed.su/",
+                    'Origin': "https://embed.su",
                 };
-                _c.label = 1;
+                _e.label = 1;
             case 1:
-                _c.trys.push([1, 8, , 9]);
+                _e.trys.push([1, 10, , 11]);
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
                     urlSearch = "".concat(DOMAIN, "/embed/tv/").concat(movieInfo.tmdb_id, "/").concat(movieInfo.season, "/").concat(movieInfo.episode);
@@ -63,31 +63,44 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         headers: headers,
                     })];
             case 2:
-                htmlSearch = _c.sent();
+                htmlSearch = _e.sent();
                 return [4, htmlSearch.text()];
             case 3:
-                textSearch = _c.sent();
-                decodeHash = function (a) { return libs.string_atob(a.split("").reverse().join("")); };
-                hash = textSearch.match(/hash\" *\: *\"([^\"]+)/i);
-                hash = hash ? hash[1] : "";
-                libs.log({ hash: hash }, PROVIDER, 'HASH');
-                if (!hash) {
+                textSearch = _e.sent();
+                hashEncode = textSearch.match(/JSON\.parse\(atob\(\`([^\`]+)/i);
+                hashEncode = hashEncode ? hashEncode[1] : "";
+                libs.log({ hashEncode: hashEncode }, PROVIDER, "HASH ENCODE");
+                if (!hashEncode) {
                     return [2];
                 }
-                parseHash = JSON.parse(decodeHash(hash));
-                libs.log({ parseHash: parseHash }, PROVIDER, 'PARSE HASH');
-                _i = 0, parseHash_1 = parseHash;
-                _c.label = 4;
+                hashDecode = JSON.parse(libs.string_atob(hashEncode));
+                libs.log({ hashDecode: hashDecode }, PROVIDER, "HASH DECODE");
+                mEncrypt = hashDecode.hash;
+                if (!mEncrypt) {
+                    return [2];
+                }
+                mDEcrypt = JSON["parse"](libs.string_atob(mEncrypt.split("")["reverse"]()["join"]("")));
+                libs.log({ mDEcrypt: mDEcrypt }, PROVIDER, 'M DECRYPT');
+                if (!mDEcrypt || mDEcrypt.length == 0) {
+                    return [2];
+                }
+                _i = 0, mDEcrypt_1 = mDEcrypt;
+                _e.label = 4;
             case 4:
-                if (!(_i < parseHash_1.length)) return [3, 7];
-                item = parseHash_1[_i];
+                if (!(_i < mDEcrypt_1.length)) return [3, 9];
+                item = mDEcrypt_1[_i];
+                if (item.name.toLowerCase() != "viper") {
+                    return [3, 8];
+                }
                 urlDirect = "".concat(DOMAIN, "/api/e/").concat(item.hash);
-                return [4, libs.request_get(urlDirect, headers, false)];
+                return [4, libs.request_get(urlDirect, {
+                        'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                    }, false)];
             case 5:
-                dataDirect = _c.sent();
-                libs.log({ dataDirect: dataDirect }, PROVIDER, 'DATA DIRECT');
+                dataDirect = _e.sent();
+                libs.log({ dataDirect: dataDirect, urlDirect: urlDirect }, PROVIDER, 'DATA DIRECT');
                 if (!dataDirect.source) {
-                    return [3, 6];
+                    return [3, 8];
                 }
                 tracks = [];
                 try {
@@ -106,23 +119,75 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 catch (etrack) { }
                 libs.log({ tracks: tracks }, PROVIDER, 'TRACKS');
-                if (dataDirect.source.indexOf("m3u8.justchill") !== -1) {
-                    urlDirect_1 = dataDirect.source.replace("https://m3u8.justchill.workers.dev/?url=", "");
-                    libs.embed_callback(urlDirect_1, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, [{ file: urlDirect_1, quality: 1080 }], headers);
-                    return [3, 6];
-                }
                 urlDirect = dataDirect.source;
-                libs.embed_callback(urlDirect, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, [{ file: urlDirect, quality: 1080 }], headers);
-                _c.label = 6;
+                return [4, fetch(urlDirect, {
+                        headers: {
+                            "Referer": "https://embed.su/",
+                            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                            "Accept": "*/*"
+                        },
+                        method: "GET",
+                    })];
             case 6:
+                requestDirectSize = _e.sent();
+                return [4, requestDirectSize.text()];
+            case 7:
+                parseRequest = _e.sent();
+                libs.log({ parseRequest: parseRequest, urlDirect: urlDirect }, PROVIDER, 'DIRECT SIZES');
+                patternSize = [];
+                parseDirectSize = parseRequest.split('\n');
+                libs.log({ parseDirectSize: parseDirectSize }, PROVIDER, 'PARSE DIRECT SIZE');
+                for (_c = 0, parseDirectSize_1 = parseDirectSize; _c < parseDirectSize_1.length; _c++) {
+                    item_1 = parseDirectSize_1[_c];
+                    if (item_1.indexOf('/proxy/') == -1) {
+                        continue;
+                    }
+                    patternSize.push(item_1);
+                }
+                libs.log({ patternSize: patternSize }, PROVIDER, 'PATTERN SIZES');
+                directQuality = [];
+                for (_d = 0, patternSize_1 = patternSize; _d < patternSize_1.length; _d++) {
+                    patternItem = patternSize_1[_d];
+                    sizeQuality = patternItem.match(/\/([0-9]+)\//i);
+                    sizeQuality = sizeQuality ? Number(sizeQuality[1]) : 1080;
+                    dURL = "".concat(DOMAIN).concat(patternItem);
+                    directQuality.push({
+                        file: dURL,
+                        quality: sizeQuality
+                    });
+                }
+                if (!directQuality.length) {
+                    return [3, 8];
+                }
+                directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
+                libs.log({ directQuality: directQuality }, PROVIDER, 'DIRECT QUALITY');
+                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, directQuality, {
+                    "Referer": "https://embed.su/",
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                    "Origin": "https://embed.su",
+                    "Sec-Fetch-Site": "same-origin",
+                    "Accept": "*/*",
+                    "Sec-Fetch-Dest": "iframe",
+                    "DNT": "1",
+                    "sec-ch-ua": '"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
+                    "Sec-Fetch-Mode": "cors",
+                    "Sec-Fetch-User": "?1",
+                    "sec-ch-ua-mobile": "?0",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                    "Access-Control-Allow-Headers": "If-Modified-Since,Range",
+                    "Access-Control-Expose-Headers": "Accept-Ranges,Content-Encoding,Content-Length,Content-Range"
+                });
+                _e.label = 8;
+            case 8:
                 _i++;
                 return [3, 4];
-            case 7: return [3, 9];
-            case 8:
-                e_1 = _c.sent();
+            case 9: return [3, 11];
+            case 10:
+                e_1 = _e.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
-                return [3, 9];
-            case 9: return [2];
+                return [3, 11];
+            case 11: return [2];
         }
     });
 }); };

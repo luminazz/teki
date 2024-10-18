@@ -46,7 +46,7 @@ callbacksEmbed["smashystream"] = function (dataCallback, provider, host, callbac
             return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(""));
     }
-    var movieInfo, parseData, token_1, e_1, video1_1, sourceAPI, _loop_1, _i, sourceAPI_1, item;
+    var movieInfo, parseData, token_1, user_id_1, e_1, video1_1, sourceAPI, _loop_1, _i, sourceAPI_1, item;
     var _this = this;
     return __generator(this, function (_a) {
         libs.log(dataCallback, provider, 'DATA CALLBACK');
@@ -61,8 +61,10 @@ callbacksEmbed["smashystream"] = function (dataCallback, provider, host, callbac
             }
             token_1 = parseData.data.match(/token\=([A-z0-9\-\.]+)/i);
             token_1 = token_1 ? token_1[1] : "";
-            libs.log({ token: token_1 }, provider, 'TOKEN');
-            if (!token_1) {
+            user_id_1 = parseData.data.match(/user_id\=([A-z0-9\-\.]+)/i);
+            user_id_1 = user_id_1 ? user_id_1[1] : "";
+            libs.log({ token: token_1, user_id: user_id_1 }, provider, 'TOKEN');
+            if (!token_1 || !user_id_1) {
                 return [2];
             }
             e_1 = function (x) {
@@ -95,7 +97,7 @@ callbacksEmbed["smashystream"] = function (dataCallback, provider, host, callbac
                 return "";
             };
             video1_1 = function (urlSearch) { return __awaiter(_this, void 0, void 0, function () {
-                var headers, parseDetail, subs, parseTitles, _i, parseTitles_1, subItem, lang, parseSub, _a, _b, file, decodeFile, parseDecodeFile, splitDecode, fileDirect, fileHeader, directSizes, patternSize, directQuality, _c, patternSize_1, patternItem, sizeQuality;
+                var headers, parseDetail, subs, parseTitles, _i, parseTitles_1, subItem, lang, parseSub, _a, _b, file, decodeFile, parseDecodeFile, directSizes, patternSize, directQuality, _c, patternSize_1, patternItem, sizeQuality;
                 return __generator(this, function (_d) {
                     switch (_d.label) {
                         case 0:
@@ -150,32 +152,22 @@ callbacksEmbed["smashystream"] = function (dataCallback, provider, host, callbac
                             if (decodeFile.indexOf('.m3u8') == -1) {
                                 return [3, 4];
                             }
-                            parseDecodeFile = decodeFile.replace("https://streams.smashystream.top/proxy/m3u8/", "");
-                            parseDecodeFile = decodeURIComponent(parseDecodeFile);
+                            parseDecodeFile = decodeFile;
                             libs.log({ parseDecodeFile: parseDecodeFile }, provider, 'PARSE DECODE FILE');
-                            splitDecode = parseDecodeFile.split("/{");
-                            fileDirect = splitDecode[0];
-                            fileHeader = splitDecode[1];
-                            if (!fileDirect) {
-                                return [3, 4];
-                            }
-                            if (fileHeader) {
-                                fileHeader = JSON.parse("{" + fileHeader);
-                            }
-                            libs.log({ fileDirect: fileDirect, fileHeader: fileHeader, decodeFile: decodeFile }, provider, 'FILE DIRECT');
-                            return [4, libs.request_get(fileDirect, fileHeader)];
+                            return [4, libs.request_get(parseDecodeFile, headers)];
                         case 3:
                             directSizes = _d.sent();
                             patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
+                            libs.log({ patternSize: patternSize }, provider, 'PATTERN SIZE');
                             if (!patternSize) {
-                                libs.embed_callback(fileDirect, provider, provider, 'hls', callback, 1, subs, [], fileHeader || headers);
+                                libs.embed_callback(parseDecodeFile, provider, provider, 'hls', callback, 1, subs, [], headers);
                                 return [3, 4];
                             }
                             directQuality = [];
-                            libs.log({ patternSize: patternSize, decodeFile: decodeFile }, provider, 'PATTERN SIZE');
                             for (_c = 0, patternSize_1 = patternSize; _c < patternSize_1.length; _c++) {
                                 patternItem = patternSize_1[_c];
-                                sizeQuality = patternItem.match(/\/([0-9]+)\//i);
+                                sizeQuality = patternItem.match(/\%2F([0-9]+)\%2F/i);
+                                libs.log({ patternItem: patternItem, sizeQuality: sizeQuality }, provider, 'SIZE QUALITY');
                                 sizeQuality = sizeQuality ? Number(sizeQuality[1]) : 720;
                                 directQuality.push({
                                     file: patternItem,
@@ -187,7 +179,7 @@ callbacksEmbed["smashystream"] = function (dataCallback, provider, host, callbac
                             }
                             directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
                             libs.log({ directQuality: directQuality }, provider, 'DIRECT QUALITY');
-                            libs.embed_callback(directQuality[0].file, provider, provider, 'Hls', callback, 1, subs, directQuality, fileHeader || headers);
+                            libs.embed_callback(directQuality[0].file, provider, provider, 'Hls', callback, 1, subs, directQuality, headers);
                             _d.label = 4;
                         case 4:
                             _a++;
@@ -197,12 +189,7 @@ callbacksEmbed["smashystream"] = function (dataCallback, provider, host, callbac
                 });
             }); };
             sourceAPI = [
-                "https://api.smashystream.top/api/v1/videoflx/",
-                "https://api.smashystream.top/api/v1/shortvidsr/",
-                "https://api.smashystream.top/api/v1/shortmoviesc/",
-                "https://api.smashystream.top/api/v1/shortjara/",
-                "https://api.smashystream.top/api/v1/shortsotv/",
-                "https://api.smashystream.top/api/v1/shortfeb/"
+                "https://api.smashystream.top/api/v1/sdayflxcloe/",
             ];
             _loop_1 = function (item) {
                 var urlSearch = "".concat(item).concat(movieInfo.tmdb_id);
@@ -211,7 +198,7 @@ callbacksEmbed["smashystream"] = function (dataCallback, provider, host, callbac
                 }
                 libs.log({ urlSearch: urlSearch, token: token_1 }, provider, "URL SEARCH");
                 setTimeout(function () {
-                    video1_1("".concat(urlSearch, "?token=").concat(token_1));
+                    video1_1("".concat(urlSearch, "?token=").concat(token_1, "&user_id=").concat(user_id_1));
                 }, 500);
             };
             for (_i = 0, sourceAPI_1 = sourceAPI; _i < sourceAPI_1.length; _i++) {
