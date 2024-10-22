@@ -135,6 +135,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!hash) {
                     return [2];
                 }
+                hash = libs.string_base64_encode(hash);
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
                     urlSearch = "".concat(DOMAIN, "/api/").concat(keyEndpoint, "/tv/").concat(hash, "/").concat(movieInfo.season, "/").concat(movieInfo.episode, "?multiLang=0");
