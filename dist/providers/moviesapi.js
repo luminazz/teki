@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var CryptoJSAesJson, PROVIDER, DOMAIN, urlSearch, parseSeach, iframeUrl, parseDetail, hashData, sKey, decryptData, hlsUrl, parseDirect, parseQuality, directQuality, newDomain, _i, parseQuality_1, item, quality, direct, e_1;
+    var CryptoJSAesJson, PROVIDER, DOMAIN, urlSearch, parseSeach, iframeUrl, parseDetail_1, scriptData_1, Encrypted, decryptData, hlsUrl, parseDirect, parseQuality, directQuality, newDomain, _i, parseQuality_1, item, quality, direct, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -75,7 +75,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 DOMAIN = "https://moviesapi.club";
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 6, , 7]);
+                _a.trys.push([1, 5, , 6]);
                 urlSearch = "";
                 if (movieInfo.type == 'movie') {
                     urlSearch = "".concat(DOMAIN, "/movie/").concat(movieInfo.tmdb_id);
@@ -105,20 +105,25 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         "Sec-Fetch-Dest": "empty",
                         "Sec-Fetch-Mode": "cors",
                         "Sec-Fetch-Site": "cross-site"
-                    })];
+                    }, true)];
             case 3:
-                parseDetail = _a.sent();
-                hashData = parseDetail.match(/Contents *\= *\'([^\']+)/i);
-                hashData = hashData ? hashData[1] : '';
-                libs.log({ hashData: hashData }, PROVIDER, 'HASH DATA');
-                if (!hashData) {
+                parseDetail_1 = _a.sent();
+                scriptData_1 = "";
+                Encrypted = "";
+                parseDetail_1("script").each(function (key, item) {
+                    var text = parseDetail_1(item).text();
+                    if (text.indexOf("Encrypted") != -1) {
+                        scriptData_1 = text;
+                    }
+                });
+                libs.log({ scriptData: scriptData_1 }, PROVIDER, "SCRIPT DATA");
+                if (!scriptData_1) {
                     return [2];
                 }
-                return [4, libs.request_get("https://raw.githubusercontent.com/lulunnqqq/mvapi/key/key")];
-            case 4:
-                sKey = _a.sent();
-                libs.log({ sKey: sKey }, PROVIDER, 'SKEY1');
-                decryptData = CryptoJSAesJson.decrypt(hashData, "1FHuaQhhcsKgpTRB");
+                scriptData_1 = scriptData_1.replace(/const *Encrypted/, 'Encrypted');
+                eval(scriptData_1);
+                libs.log({ Encrypted: Encrypted }, PROVIDER, "Encrypted");
+                decryptData = CryptoJSAesJson.decrypt(Encrypted, "=JV[t}{trEV=Ilh5");
                 libs.log({ decryptData: decryptData }, PROVIDER, 'DECRYPT DATA');
                 hlsUrl = decryptData.match(/\"file\" *\: *\"([^\"]+)/i);
                 hlsUrl = hlsUrl ? hlsUrl[1] : '';
@@ -134,7 +139,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         "Sec-Fetch-Mode": "cors",
                         "Sec-Fetch-Site": "cross-site"
                     })];
-            case 5:
+            case 4:
                 parseDirect = _a.sent();
                 libs.log({ parseDirect: parseDirect }, PROVIDER, "DATA DIRECT");
                 parseQuality = parseDirect.match(/[0-9]+.m3u8.*/ig);
@@ -166,12 +171,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     "Sec-Fetch-Mode": "cors",
                     "Sec-Fetch-Site": "cross-site"
                 });
-                return [3, 7];
-            case 6:
+                return [3, 6];
+            case 5:
                 e_1 = _a.sent();
                 libs.log(e_1, PROVIDER, 'ERROR');
-                return [3, 7];
-            case 7: return [2, true];
+                return [3, 6];
+            case 6: return [2, true];
         }
     });
 }); };

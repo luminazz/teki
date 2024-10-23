@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, decryptjs, urlEmbed, parseEmbed_1, scripts_2, KEY, KEY2, keyEndpoint, _i, scripts_1, item, scriptData, textData, matchKey, matchKey2, matchEndpoint, hash, urlSearch, dataSearch, textSearch, decrypt, e_1;
+    var PROVIDER, DOMAIN, headers, decryptjs, urlEmbed, parseEmbed_1, scripts_2, KEY, keyEndpoint, _i, scripts_1, item, scriptData, textData, matchKey, matchEndpoint, hash, urlSearch, dataSearch, textSearch, decrypt, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -91,7 +91,6 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 });
                 libs.log({ scripts: scripts_2 }, PROVIDER, "SCRIPT");
                 KEY = "";
-                KEY2 = "";
                 keyEndpoint = "";
                 _i = 0, scripts_1 = scripts_2;
                 _a.label = 3;
@@ -109,11 +108,6 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (matchKey) {
                     KEY = matchKey;
                 }
-                matchKey2 = textData.match(/\.toString\(\) *\, *\"([^\"]+)/i);
-                matchKey2 = matchKey2 ? matchKey2[1] : "";
-                if (matchKey2) {
-                    KEY2 = matchKey2;
-                }
                 matchEndpoint = textData.match(/\/api\/([A-z]+)\/[A-z]+\//i);
                 matchEndpoint = matchEndpoint ? matchEndpoint[1] : "";
                 if (matchEndpoint) {
@@ -124,8 +118,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 _i++;
                 return [3, 3];
             case 7:
-                libs.log({ KEY: KEY, KEY2: KEY2, keyEndpoint: keyEndpoint }, PROVIDER, "KEY");
-                if (!KEY || !KEY2 || !keyEndpoint) {
+                libs.log({ KEY: KEY, keyEndpoint: keyEndpoint }, PROVIDER, "KEY");
+                if (!KEY || !keyEndpoint) {
                     return [2];
                 }
                 return [4, libs.request_get("https://aquariumtv.app/encrypt?id=".concat(movieInfo.tmdb_id, "&key=").concat(KEY))];
@@ -152,12 +146,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 return [4, dataSearch.text()];
             case 10:
                 textSearch = _a.sent();
-                textSearch = libs.string_base64_encode(textSearch);
                 libs.log({ textSearch: textSearch }, PROVIDER, 'TEXT SEARCH');
-                if (!textSearch) {
-                    return [2];
-                }
-                return [4, libs.request_get("https://aquariumtv.app/decrypt?data=".concat(textSearch, "&key1=").concat(KEY2, "&key2=").concat(KEY))];
+                return [4, libs.request_get("https://aquariumtv.app/decrypt?data=".concat(textSearch, "&key1=").concat(KEY))];
             case 11:
                 decrypt = _a.sent();
                 libs.log({ decrypt: decrypt }, PROVIDER, 'DECRYPT');
