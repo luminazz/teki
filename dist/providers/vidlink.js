@@ -160,7 +160,6 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
 
                 let subs = (decrypt.stream.captions ?? []).map(item => {
                     return {
-                        id: item.id,
                         file: item.url,
                         label: item.language,
                         kind: item.type
