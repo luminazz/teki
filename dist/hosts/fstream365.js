@@ -51,50 +51,30 @@ hosts["fstream365"] = function (url, movieInfo, provider, config, callback) { re
             case 1:
                 _a.trys.push([1, 7, , 8]);
                 CryptoJSAesJson = {
-                    'stringify': function (_0x2446ec) {
-                        var _0x168df0 = {
-                            'ct': _0x2446ec["ciphertext"]["toString"](cryptoS["enc"]["Base64"])
+                    stringify: function (_0x475ee0) {
+                        var _0xefa3d6 = {
+                            ct: _0x475ee0.ciphertext.toString(cryptoS.enc.Base64)
                         };
-                        if (_0x2446ec.iv) {
-                            _0x168df0.iv = _0x2446ec.iv["toString"]();
+                        if (_0x475ee0.iv) {
+                            _0xefa3d6.iv = _0x475ee0.iv.toString();
                         }
-                        if (_0x2446ec["salt"]) {
-                            _0x168df0.s = _0x2446ec["salt"]["toString"]();
+                        if (_0x475ee0.salt) {
+                            _0xefa3d6.s = _0x475ee0.salt.toString();
                         }
-                        return JSON["stringify"](_0x168df0);
+                        return JSON.stringify(_0xefa3d6);
                     },
-                    'parse': function (_0x50e8b5) {
-                        var _a;
-                        var _0x2ff517 = (_a = {},
-                            _a["oPPMn"] = "3|1|0|2|4",
-                            _a);
-                        var _0x16be06 = _0x2ff517["oPPMn"]["split"]('|');
-                        var _0x2c7ffe = 0;
-                        while (true) {
-                            switch (_0x16be06[_0x2c7ffe++]) {
-                                case '0':
-                                    if (_0x41868a.iv) {
-                                        _0x4032ce.iv = cryptoS["enc"]["Hex"]["parse"](_0x41868a.iv);
-                                    }
-                                    continue;
-                                case '1':
-                                    var _0x4032ce = cryptoS["lib"]["CipherParams"]["create"]({
-                                        'ciphertext': cryptoS["enc"]["Base64"]["parse"](_0x41868a.ct)
-                                    });
-                                    continue;
-                                case '2':
-                                    if (_0x41868a.s) {
-                                        _0x4032ce["salt"] = cryptoS["enc"]["Hex"]["parse"](_0x41868a.s);
-                                    }
-                                    continue;
-                                case '3':
-                                    var _0x41868a = JSON["parse"](_0x50e8b5);
-                                    continue;
-                                case '4':
-                                    return _0x4032ce;
-                            }
-                            break;
+                    parse: function (_0x1075b1) {
+                        var _0x5a0cec = JSON.parse(_0x1075b1);
+                        var _0x44cb90 = cryptoS.lib.CipherParams.create({
+                            ciphertext: cryptoS.enc.Base64.parse(_0x5a0cec.ct)
+                        });
+                        if (_0x5a0cec.iv) {
+                            _0x44cb90.iv = cryptoS.enc.Hex.parse(_0x5a0cec.iv);
                         }
+                        if (_0x5a0cec.s) {
+                            _0x44cb90.salt = cryptoS.enc.Hex.parse(_0x5a0cec.s);
+                        }
+                        return _0x44cb90;
                     }
                 };
                 _0x20e478 = function (_0x597fed) {

@@ -157,16 +157,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!decrypt.stream || !decrypt.stream.playlist) {
                     return [2];
                 }
-
-                let subs = (decrypt.stream.captions ?? []).map(item => {
-                    return {
-                        file: item.url,
-                        label: item.language,
-                        kind: item.type
-                    };
-                });
-                
-                libs.embed_callback(decrypt.stream.playlist, PROVIDER, PROVIDER, 'Hls', callback, 1, subs, [{ "file": decrypt.stream.playlist, "quality": 1080 }], headers);
+                libs.embed_callback(decrypt.stream.playlist, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ "file": decrypt.stream.playlist, "quality": 1080 }], headers);
                 return [3, 13];
             case 12:
                 e_1 = _a.sent();
