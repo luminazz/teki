@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, urlSearch, htmlSearch, textSearch, hashEncode, hashDecode, mEncrypt, mDEcrypt, _i, mDEcrypt_1, item, urlDirect, dataDirect, tracks, _a, _b, itemTrack, label, urlDirect, requestDirectSize, parseRequest, patternSize, parseDirectSize, _c, parseDirectSize_1, item_1, directQuality, _d, patternSize_1, patternItem, sizeQuality, dURL, e_1;
+    var PROVIDER, DOMAIN, headers, urlSearch, htmlSearch, textSearch, hashEncode, hashDecode, mEncrypt, firstDecode, secondDecode, _i, secondDecode_1, item, urlDirect, dataDirect, tracks, _a, _b, itemTrack, label, urlDirect, requestDirectSize, parseRequest, patternSize, parseDirectSize, _c, parseDirectSize_1, item_1, directQuality, _d, patternSize_1, patternItem, sizeQuality, dURL, e_1;
     return __generator(this, function (_e) {
         switch (_e.label) {
             case 0:
@@ -79,16 +79,17 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!mEncrypt) {
                     return [2];
                 }
-                mDEcrypt = JSON["parse"](libs.string_atob(mEncrypt.split("")["reverse"]()["join"]("")));
-                libs.log({ mDEcrypt: mDEcrypt }, PROVIDER, 'M DECRYPT');
-                if (!mDEcrypt || mDEcrypt.length == 0) {
+                firstDecode = libs.string_atob(mEncrypt).split(".").map(function (item) { return item.split("").reverse().join(""); });
+                secondDecode = JSON.parse(libs.string_atob(firstDecode.join("").split("").reverse().join("")));
+                libs.log({ secondDecode: secondDecode }, PROVIDER, 'M DECRYPT');
+                if (!secondDecode || secondDecode.length == 0) {
                     return [2];
                 }
-                _i = 0, mDEcrypt_1 = mDEcrypt;
+                _i = 0, secondDecode_1 = secondDecode;
                 _e.label = 4;
             case 4:
-                if (!(_i < mDEcrypt_1.length)) return [3, 9];
-                item = mDEcrypt_1[_i];
+                if (!(_i < secondDecode_1.length)) return [3, 9];
+                item = secondDecode_1[_i];
                 if (item.name.toLowerCase() != "viper") {
                     return [3, 8];
                 }
@@ -151,6 +152,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     sizeQuality = patternItem.match(/\/([0-9]+)\//i);
                     sizeQuality = sizeQuality ? Number(sizeQuality[1]) : 1080;
                     dURL = "".concat(DOMAIN).concat(patternItem);
+                    dURL = dURL.replace("embed.su/api/proxy/viper/", "");
+                    dURL = dURL.replace(".png", ".m3u8");
                     directQuality.push({
                         file: dURL,
                         quality: sizeQuality
@@ -165,18 +168,6 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     "Referer": "https://embed.su/",
                     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
                     "Origin": "https://embed.su",
-                    "Sec-Fetch-Site": "same-origin",
-                    "Accept": "*/*",
-                    "Sec-Fetch-Dest": "iframe",
-                    "DNT": "1",
-                    "sec-ch-ua": '"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
-                    "Sec-Fetch-Mode": "cors",
-                    "Sec-Fetch-User": "?1",
-                    "sec-ch-ua-mobile": "?0",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-                    "Access-Control-Allow-Headers": "If-Modified-Since,Range",
-                    "Access-Control-Expose-Headers": "Accept-Ranges,Content-Encoding,Content-Length,Content-Range"
                 });
                 _e.label = 8;
             case 8:

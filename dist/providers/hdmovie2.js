@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -36,17 +36,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    function parseM3U8(content) {
+        var lines = content.split('\n').filter(function (line) { return line.trim() !== ''; });
+        var result = [];
+        for (var i = 0; i < lines.length; i++) {
+            if (lines[i].startsWith('#EXT-X-STREAM-INF:')) {
+                var resolutionMatch = lines[i].match(/RESOLUTION=(\d+)x(\d+)/);
+                if (resolutionMatch && lines[i + 1]) {
+                    var quality = parseInt(resolutionMatch[2]);
+                    var file = lines[i + 1];
+                    if (!file) {
+                        continue;
+                    }
+                    file += ".m3u8";
+                    result.push({
+                        file: file,
+                        quality: quality
+                    });
+                }
+                i++;
+            }
+        }
+        return result;
+    }
     var PROVIDER, DOMAIN, userAgent, urlSearch, parseSearch, LINK_DETAIL, ID, index, title, year, href, type, season, parseDetail_1, sourceData_2, iframeUrl, _i, sourceData_1, sourceItem, urlAjax, body, headers, resultAjax, embedUrl, parseEmbedUrl, _a, iframeUrl_1, iframeItem, headerAkamai, fAkamai, textAkamai, sniff, parseSniff, uid, md5, directUrl, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                PROVIDER = 'BHDMOVIE2';
-                DOMAIN = "https://hdmovie2.stream";
+                PROVIDER = 'KHDMOVIE2';
+                DOMAIN = "https://hdmovie2.diy";
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 13, , 14]);
                 userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36";
-                urlSearch = "".concat(DOMAIN, "/wp-json/dooplay/search/?keyword=").concat(libs.url_slug_search(movieInfo, '%20'), "&nonce=9bc76cac54");
+                urlSearch = "".concat(DOMAIN, "/wp-json/dooplay/search/?keyword=").concat(libs.url_slug_search(movieInfo, '%20'), "&nonce=1827d015db");
                 return [4, libs.request_get(urlSearch, {}, false)];
             case 2:
                 parseSearch = _b.sent();
@@ -131,7 +154,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!embedUrl) {
                     return [3, 6];
                 }
-                parseEmbedUrl = embedUrl.match(/src\=\"([^\"]+)/i);
+                parseEmbedUrl = embedUrl.match(/src=\"([^\"]+)/i);
+                if (!parseEmbedUrl) {
+                    parseEmbedUrl = embedUrl.match(/src=([^ *]+)/i);
+                }
                 parseEmbedUrl = parseEmbedUrl ? parseEmbedUrl[1] : "";
                 libs.log({ parseEmbedUrl: parseEmbedUrl }, PROVIDER, 'PARSE EMBED URL');
                 if (!parseEmbedUrl) {
@@ -176,11 +202,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 md5 = parseSniff[2].replace(/\"/g, "");
                 directUrl = "https://akamaicdn.life" + "/m3u8/" + "".concat(uid, "/").concat(md5, "/master.txt?s=1&cache=1");
                 libs.log({ directUrl: directUrl }, PROVIDER, 'DIRECT URL');
-                libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'hls', callback, 1, [], [{
-                        file: directUrl,
-                        quality: 1080
-                    }], {
-                    Referer: iframeItem
+                libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'hls', callback, 1, [], [], {
+                    "User-Agent": userAgent
                 });
                 _b.label = 11;
             case 11:
