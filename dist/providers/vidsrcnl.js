@@ -62,7 +62,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!iframeURL) {
                     return [2];
                 }
-                if (!(iframeURL.indexOf("hyplexnetworks") != -1)) return [3, 7];
+                if (!(iframeURL.indexOf("bombthe.irish") != -1)) return [3, 7];
                 return [4, libs.request_get(iframeURL, headers, true)];
             case 3:
                 parseIframeURL_1 = _a.sent();
@@ -70,7 +70,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 parseIframeURL_1("#dropdownMenu a").each(function (key, item) {
                     var u = parseIframeURL_1(item).attr('data-url');
                     if (u) {
-                        var e = u.replace("https://node.hyplexnetworks.pw/embed/decode.php?url=", "");
+                        var e = u.replace("https://bombthe.irish/embed/decode.php?url=", "");
                         e = libs.string_base64_decode(e);
                         urls_2.push(e);
                     }

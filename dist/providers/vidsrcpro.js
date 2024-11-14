@@ -94,9 +94,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [3, 8];
                 }
                 urlDirect = "".concat(DOMAIN, "/api/e/").concat(item.hash);
-                return [4, libs.request_get(urlDirect, {
-                        'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    }, false)];
+                return [4, libs.request_get(urlDirect, headers, false)];
             case 5:
                 dataDirect = _e.sent();
                 libs.log({ dataDirect: dataDirect, urlDirect: urlDirect }, PROVIDER, 'DATA DIRECT');

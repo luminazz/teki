@@ -123,7 +123,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 scriptData_1 = scriptData_1.replace(/const *Encrypted/, 'Encrypted');
                 eval(scriptData_1);
                 libs.log({ Encrypted: Encrypted }, PROVIDER, "Encrypted");
-                decryptData = CryptoJSAesJson.decrypt(Encrypted, "=JV[t}{trEV=Ilh5");
+                decryptData = CryptoJSAesJson.decrypt(Encrypted, "^#Cz@QzTHP!Z_~0u");
                 libs.log({ decryptData: decryptData }, PROVIDER, 'DECRYPT DATA');
                 hlsUrl = decryptData.match(/\"file\" *\: *\"([^\"]+)/i);
                 hlsUrl = hlsUrl ? hlsUrl[1] : '';
