@@ -1,5 +1,7 @@
 {
 	"providers": [
+		"dist/providers/tomautoembed.js",
+"dist/providers/streamflix.js",
 "dist/providers/vidsrcpro.js",
 "dist/providers/whvx.js",
 "dist/providers/vidsrcnl.js",

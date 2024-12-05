@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["s3taku"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+hosts["s3embtaku"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
     var DOMAIN, HOST, headers, parseDetail, a, key, iv, _0x302318, _0x249a7e, _0x4d306e, hashID, directData, d, _0x3b405f, _i, _a, item, file, parseFile, patternSize, fileQuality, _b, patternSize_1, patternItem, directUrl, size, e_1;
     return __generator(this, function (_c) {
         switch (_c.label) {
@@ -68,7 +68,7 @@ hosts["s3taku"] = function (url, movieInfo, provider, config, callback) { return
                     'iv': cryptoS.enc.Utf8.parse(iv)
                 }).toString() + _0x249a7e.substr(_0x249a7e.indexOf('&')) + '&alias=' + _0x4d306e;
                 libs.log({ hashID: hashID }, HOST, "HASHID");
-                return [4, libs.request_get("https://s3taku.com/encrypt-ajax.php?id=".concat(hashID), {
+                return [4, libs.request_get("https://s3embtaku.pro/encrypt-ajax.php?id=".concat(hashID), {
                         referer: url,
                         "X-Requested-With": "XMLHttpRequest",
                         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"

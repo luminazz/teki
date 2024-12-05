@@ -59,15 +59,15 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         }
         return result;
     }
-    var PROVIDER, DOMAIN, userAgent, urlSearch, parseSearch, LINK_DETAIL, ID, index, title, year, href, type, season, parseDetail_1, sourceData_2, iframeUrl, _i, sourceData_1, sourceItem, urlAjax, body, headers, resultAjax, embedUrl, parseEmbedUrl, _a, iframeUrl_1, iframeItem, headerAkamai, fAkamai, textAkamai, sniff, parseSniff, uid, md5, directUrl, e_1;
+    var PROVIDER, DOMAIN, userAgent, urlSearch, parseSearch, LINK_DETAIL, ID, index, title, year, href, type, season, parseDetail_1, sourceData_2, iframeUrl, _i, sourceData_1, sourceItem, urlAjax, body, headers, resultAjax, embedUrl, parseEmbedUrl, _a, iframeUrl_1, iframeItem, headerAkamai, fAkamai, textAkamai, sniff, parseSniff, uid, md5, directUrl, parseDirect, textDirect, m3u8Data, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 PROVIDER = 'KHDMOVIE2';
-                DOMAIN = "https://hdmovie2.diy";
+                DOMAIN = "https://hdmovie2.ad";
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 13, , 14]);
+                _b.trys.push([1, 15, , 16]);
                 userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36";
                 urlSearch = "".concat(DOMAIN, "/wp-json/dooplay/search/?keyword=").concat(libs.url_slug_search(movieInfo, '%20'), "&nonce=1827d015db");
                 return [4, libs.request_get(urlSearch, {}, false)];
@@ -173,10 +173,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 _a = 0, iframeUrl_1 = iframeUrl;
                 _b.label = 8;
             case 8:
-                if (!(_a < iframeUrl_1.length)) return [3, 12];
+                if (!(_a < iframeUrl_1.length)) return [3, 14];
                 iframeItem = iframeUrl_1[_a];
                 if (iframeItem.indexOf('akamaicdn') == -1) {
-                    return [3, 11];
+                    return [3, 13];
                 }
                 headerAkamai = {
                     Referer: DOMAIN,
@@ -194,7 +194,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 sniff = sniff ? sniff[1] : "";
                 libs.log({ sniff: sniff, iframeItem: iframeItem }, PROVIDER, 'SNIFF');
                 if (!sniff) {
-                    return [3, 11];
+                    return [3, 13];
                 }
                 parseSniff = sniff.split(",");
                 libs.log({ parseSniff: parseSniff }, PROVIDER, 'PARSE SNIFF');
@@ -202,19 +202,31 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 md5 = parseSniff[2].replace(/\"/g, "");
                 directUrl = "https://akamaicdn.life" + "/m3u8/" + "".concat(uid, "/").concat(md5, "/master.txt?s=1&cache=1");
                 libs.log({ directUrl: directUrl }, PROVIDER, 'DIRECT URL');
-                libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'hls', callback, 1, [], [], {
+                return [4, fetch(directUrl)];
+            case 11:
+                parseDirect = _b.sent();
+                return [4, parseDirect.text()];
+            case 12:
+                textDirect = _b.sent();
+                m3u8Data = parseM3U8(textDirect);
+                libs.log({ m3u8Data: m3u8Data }, PROVIDER, 'M3u8 data');
+                if (!m3u8Data.length) {
+                    return [3, 13];
+                }
+                libs.embed_callback(m3u8Data[0].file, PROVIDER, PROVIDER, 'hls', callback, 1, [], m3u8Data, {
+                    Referer: directUrl,
                     "User-Agent": userAgent
                 });
-                _b.label = 11;
-            case 11:
+                _b.label = 13;
+            case 13:
                 _a++;
                 return [3, 8];
-            case 12: return [2, true];
-            case 13:
+            case 14: return [2, true];
+            case 15:
                 e_1 = _b.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
-                return [3, 14];
-            case 14: return [2];
+                return [3, 16];
+            case 16: return [2];
         }
     });
 }); };

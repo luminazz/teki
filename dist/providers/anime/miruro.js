@@ -36,53 +36,45 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, key, xorEncryptDecrypt_1, generateVRF, domainAPI, vrf, parseAPI, _i, _a, item, e_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var PROVIDER, DOMAIN, xTAX, params, headers, urlSearch, data, directUrl, item, item2, item3, e_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                PROVIDER = 'UStreamflix';
-                DOMAIN = "https://watch.streamflix.one";
-                _b.label = 1;
+                PROVIDER = 'Miruro - Anime';
+                DOMAIN = "https://gamma.miruro.tv";
+                _a.label = 1;
             case 1:
-                _b.trys.push([1, 3, , 4]);
-                key = "M6mV3KZOa4Kt53FsHijMMxdVBpMScfMv";
-                xorEncryptDecrypt_1 = function (r, t) {
-                    var e = Array.from(r, function (n) { return n.charCodeAt(0); });
-                    var o = Array.from(t, function (n) { return n.charCodeAt(0); }).map(function (n, d) { return n ^ e[d % e.length]; });
-                    return String.fromCharCode.apply(String, o);
+                _a.trys.push([1, 3, , 4]);
+                xTAX = "12RmYtJexlqnNym38z4ahwy+g1g0la/El8nkkMOVtiQ=";
+                params = encodeURIComponent("https://dio.miruro.tv/sources?id=".concat(libs.url_slug_search(movieInfo, "-"), "&ep=").concat(movieInfo.episode, "&provider=anivibe"));
+                headers = {
+                    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+                    "x-atx": xTAX
                 };
-                generateVRF = function (r, t) {
-                    var e = decodeURIComponent(t);
-                    var a = xorEncryptDecrypt_1(r, e);
-                    return encodeURIComponent(libs.string_btoa(a));
-                };
-                domainAPI = "https://vidsrc.rip/api/source/streamflix/flixhq/".concat(movieInfo.tmdb_id);
-                if (movieInfo.type == 'tv') {
-                    domainAPI += "/".concat(movieInfo.season, "/").concat(movieInfo.episode);
-                }
-                vrf = generateVRF(key, domainAPI);
-                domainAPI += "?vrf=".concat(vrf);
-                libs.log({ domainAPI: domainAPI, vrf: vrf }, PROVIDER, 'DOMAIN API');
-                return [4, libs.request_get(domainAPI, {}, false)];
+                urlSearch = "".concat(DOMAIN, "/?url=").concat(params);
+                return [4, libs.request_get(urlSearch, headers, false)];
             case 2:
-                parseAPI = _b.sent();
-                libs.log({ parseAPI: parseAPI }, PROVIDER, 'PARSE API');
-                if (!parseAPI.sources) {
-                    return [2];
-                }
-                for (_i = 0, _a = parseAPI.sources; _i < _a.length; _i++) {
-                    item = _a[_i];
-                    if (!item.file) {
-                        continue;
+                data = _a.sent();
+                libs.log({ data: data }, PROVIDER, "DATA");
+                directUrl = data.srcList || [];
+                libs.log({ directUrl: directUrl }, PROVIDER, "directUrl");
+                for (item in directUrl) {
+                    for (item2 in directUrl[item]) {
+                        for (item3 in directUrl[item][item2]) {
+                            if (item3 != "m3u8") {
+                                continue;
+                            }
+                            libs.log({ data: directUrl[item][item2][item3] }, PROVIDER, "DIRECTURL");
+                            libs.embed_callback(directUrl[item][item2][item3], PROVIDER, PROVIDER, 'Hls', callback, 0, [], [{ file: directUrl[item][item2][item3], quality: 1080, type: item.toUpperCase() }]);
+                        }
                     }
-                    libs.embed_callback(item.file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: item.file, quality: 1080 }]);
                 }
                 return [3, 4];
             case 3:
-                e_1 = _b.sent();
+                e_1 = _a.sent();
                 libs.log({ e: e_1 }, PROVIDER, 'ERROR');
                 return [3, 4];
-            case 4: return [2];
+            case 4: return [2, true];
         }
     });
 }); };

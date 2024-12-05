@@ -80,14 +80,15 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 _loop_1 = function (item) {
-                    var parseDirect, script, unpacker, file;
+                    var newItem, parseDirect, script, unpacker, file;
                     return __generator(this, function (_b) {
                         switch (_b.label) {
                             case 0:
-                                if (item.indexOf("vidhidepro") == -1) {
+                                if (item.indexOf("strwish.com") == -1) {
                                     return [2, "continue"];
                                 }
-                                return [4, libs.request_get(item, {
+                                newItem = item.replace("strwish.com", "hlsflast.com");
+                                return [4, libs.request_get(newItem, {
                                         "Sec-Fetch-Site": "same-origin",
                                         "Sec-Fetch-Mode": "navigate",
                                         "Sec-Fetch-Dest": "iframe"

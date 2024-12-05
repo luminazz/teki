@@ -41,7 +41,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         switch (_a.label) {
             case 0:
                 PROVIDER = 'GoGoAnime - Anime';
-                DOMAIN = "https://gogoanime3.co";
+                DOMAIN = "https://ww18.gogoanimes.fi";
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 10, , 11]);
