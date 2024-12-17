@@ -75,7 +75,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                 };
                 PROVIDER = 'JIdFlix';
-                DOMAIN = "https://tv2.idlix.asia";
+                DOMAIN = "https://tv4.idlix.asia";
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 8, , 9]);
@@ -94,7 +94,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ urlSearch: urlSearch, id: id }, PROVIDER, "URL SEARCH");
                 headers = {
                     "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-                    "Referer": urlSearch.replace("tv.idlixofficials.com", "tv2.idlixplus.com")
+                    "Referer": urlSearch.replace("tv.idlixofficials.com", "tv3.idlix.asia")
                 };
                 numes_2 = [];
                 parseSeach_1('.dooplay_player_option').each(function (key, item) {

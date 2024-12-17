@@ -1,10 +1,10 @@
 {
 	"providers": [
-		"dist/providers/tomautoembed.js",
+		"dist/providers/rivestream.js",
+		"dist/providers/vidlink.js",
+"dist/providers/tomautoembed.js",
 "dist/providers/streamflix.js",
 "dist/providers/vidsrcpro.js",
-"dist/providers/whvx.js",
-"dist/providers/vidsrcnl.js",
 "dist/providers/ymovies.js",
 "dist/providers/yesmovies.js",
 "dist/providers/vidlink.js",
@@ -13,7 +13,6 @@
 "dist/providers/2embedcc.js",
 "dist/providers/vidsrcvip.js",
 "dist/providers/uniquestream.js",
-"dist/providers/emovies.js",
 "dist/providers/ridomovie.js",
 "dist/providers/gomovies.js",
 "dist/providers/moviesapi.js",

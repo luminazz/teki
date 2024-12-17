@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, query, provider, apiSearch, parseSearch, urlDirect, parseDirect, firstStream, directURL, e_1;
+    var PROVIDER, DOMAIN, headers, dataRabbit, textToken, query, provider, apiSearch, parseSearch, urlDirect, parseDirect, firstStream, directURL, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -48,20 +48,26 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 };
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 4, , 5]);
-                query = "{\"title\":\"".concat(movieInfo.title, "\",\"releaseYear\":").concat(movieInfo.year, ",\"tmdbId\":\"").concat(movieInfo.tmdb_id, "\",\"imdbId\":\"").concat(movieInfo.imdb_id, "\",\"type\":\"").concat(movieInfo.type == "movie" ? "movie" : "show", "\",\"season\":\"").concat(movieInfo.type == "movie" ? "" : movieInfo.season, "\",\"episode\":\"").concat(movieInfo.type == "movie" ? "" : movieInfo.episode, "\"}");
-                provider = "astra";
-                apiSearch = "".concat(DOMAIN, "/search?query=").concat(encodeURIComponent(query), "&provider=").concat(provider);
-                return [4, libs.request_get(apiSearch, headers, false)];
+                _a.trys.push([1, 6, , 7]);
+                return [4, fetch("https://aquariumtv.app/bingetoken")];
             case 2:
+                dataRabbit = _a.sent();
+                return [4, dataRabbit.text()];
+            case 3:
+                textToken = _a.sent();
+                query = "{\"title\":\"".concat(movieInfo.title, "\",\"releaseYear\":").concat(movieInfo.year, ",\"tmdbId\":\"").concat(movieInfo.tmdb_id, "\",\"imdbId\":\"").concat(movieInfo.imdb_id, "\",\"type\":\"").concat(movieInfo.type == "movie" ? "movie" : "show", "\",\"season\":\"").concat(movieInfo.type == "movie" ? "" : movieInfo.season, "\",\"episode\":\"").concat(movieInfo.type == "movie" ? "" : movieInfo.episode, "\"}");
+                provider = "orion";
+                apiSearch = "".concat(DOMAIN, "/search?query=").concat(encodeURIComponent(query), "&provider=").concat(provider, "&token=").concat(encodeURIComponent(textToken));
+                return [4, libs.request_get(apiSearch, headers, false)];
+            case 4:
                 parseSearch = _a.sent();
-                libs.log({ parseSearch: parseSearch, apiSearch: apiSearch }, PROVIDER, "PARSE SEARCH");
+                libs.log({ parseSearch: parseSearch, apiSearch: apiSearch, textToken: textToken }, PROVIDER, "PARSE SEARCH");
                 if (!parseSearch || !parseSearch.url) {
                     return [2];
                 }
                 urlDirect = "".concat(DOMAIN, "/source?resourceId=").concat(encodeURIComponent(parseSearch.url), "&provider=").concat(provider);
                 return [4, libs.request_get(urlDirect, headers)];
-            case 3:
+            case 5:
                 parseDirect = _a.sent();
                 libs.log({ parseDirect: parseDirect }, PROVIDER, 'PARSE DIRECT');
                 if (!parseDirect.stream) {
@@ -73,12 +79,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 directURL = firstStream.playlist;
                 libs.embed_callback(directURL, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: directURL, quality: 1080 }], headers);
-                return [3, 5];
-            case 4:
+                return [3, 7];
+            case 6:
                 e_1 = _a.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
-                return [3, 5];
-            case 5: return [2];
+                return [3, 7];
+            case 7: return [2];
         }
     });
 }); };

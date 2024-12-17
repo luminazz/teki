@@ -36,9 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, decryptjs, urlEmbed, parseEmbed_1, scripts_2, KEY, keyEndpoint, _i, scripts_1, item, scriptData, textData, matchKey, matchEndpoint, hash, urlSearch, dataSearch, textSearch, decrypt, e_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var PROVIDER, DOMAIN, headers, decryptjs, urlEmbed, parseEmbed_1, scripts_2, keyEndpoint, _i, scripts_1, item, scriptData, textData, matchEndpoint, hash, textHash, urlSearch, parseSearch, directUrl, tracks, _a, _b, item, type, directSizes, patternSize, directQuality, _c, patternSize_1, patternItem, sizeQuality, e_1;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0:
                 PROVIDER = 'MVidlink';
                 DOMAIN = "https://vidlink.pro";
@@ -47,9 +47,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     'Referer': "https://vidlink.pro/",
                     'Origin': DOMAIN,
                 };
-                _a.label = 1;
+                _d.label = 1;
             case 1:
-                _a.trys.push([1, 12, , 13]);
+                _d.trys.push([1, 12, , 13]);
                 decryptjs = function (e, t) {
                     var n = JSON.parse(e);
                     libs.log({ n: n }, PROVIDER, "N");
@@ -81,7 +81,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ urlEmbed: urlEmbed }, PROVIDER, 'URL EMBED');
                 return [4, libs.request_get(urlEmbed, {}, true)];
             case 2:
-                parseEmbed_1 = _a.sent();
+                parseEmbed_1 = _d.sent();
                 scripts_2 = [];
                 parseEmbed_1("script").each(function (key, item) {
                     var scriptData = parseEmbed_1(item).attr("src");
@@ -90,77 +90,100 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                 });
                 libs.log({ scripts: scripts_2 }, PROVIDER, "SCRIPT");
-                KEY = "";
                 keyEndpoint = "";
                 _i = 0, scripts_1 = scripts_2;
-                _a.label = 3;
+                _d.label = 3;
             case 3:
                 if (!(_i < scripts_1.length)) return [3, 7];
                 item = scripts_1[_i];
                 return [4, fetch(item)];
             case 4:
-                scriptData = _a.sent();
+                scriptData = _d.sent();
                 return [4, scriptData.text()];
             case 5:
-                textData = _a.sent();
-                matchKey = textData.match(/\, *i *\= *\"([^\"]+)/i);
-                matchKey = matchKey ? matchKey[1] : "";
-                if (matchKey) {
-                    KEY = matchKey;
-                }
+                textData = _d.sent();
                 matchEndpoint = textData.match(/\/api\/([A-z]+)\/[A-z]+\//i);
                 matchEndpoint = matchEndpoint ? matchEndpoint[1] : "";
                 if (matchEndpoint) {
                     keyEndpoint = matchEndpoint;
                 }
-                _a.label = 6;
+                _d.label = 6;
             case 6:
                 _i++;
                 return [3, 3];
             case 7:
-                libs.log({ KEY: KEY, keyEndpoint: keyEndpoint }, PROVIDER, "KEY");
-                if (!KEY || !keyEndpoint) {
+                libs.log({ keyEndpoint: keyEndpoint }, PROVIDER, "KEY");
+                if (!keyEndpoint) {
                     return [2];
                 }
-                return [4, libs.request_get("https://aquariumtv.app/encrypt?id=".concat(movieInfo.tmdb_id, "&key=").concat(KEY))];
+                return [4, fetch("https://aquariumtv.app/vlinktoken?id=".concat(movieInfo.tmdb_id))];
             case 8:
-                hash = _a.sent();
-                libs.log({ hash: hash }, PROVIDER, "HASH");
-                if (!hash) {
+                hash = _d.sent();
+                return [4, hash.text()];
+            case 9:
+                textHash = _d.sent();
+                libs.log({ textHash: textHash }, PROVIDER, "HASH");
+                if (!textHash) {
                     return [2];
                 }
-                hash = libs.string_base64_encode(hash);
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
-                    urlSearch = "".concat(DOMAIN, "/api/").concat(keyEndpoint, "/tv/").concat(hash, "/").concat(movieInfo.season, "/").concat(movieInfo.episode, "?multiLang=0");
+                    urlSearch = "".concat(DOMAIN, "/api/").concat(keyEndpoint, "/tv/").concat(textHash, "/").concat(movieInfo.season, "/").concat(movieInfo.episode, "?multiLang=0");
                 }
                 else {
-                    urlSearch = "".concat(DOMAIN, "/api/").concat(keyEndpoint, "/movie/").concat(hash, "?multiLang=0");
+                    urlSearch = "".concat(DOMAIN, "/api/").concat(keyEndpoint, "/movie/").concat(textHash, "?multiLang=0");
                 }
                 libs.log({ urlSearch: urlSearch }, PROVIDER, 'URLSEARCH');
-                return [4, fetch(urlSearch, {
-                        headers: headers
-                    })];
-            case 9:
-                dataSearch = _a.sent();
-                return [4, dataSearch.text()];
+                return [4, libs.request_get(urlSearch, {}, false)];
             case 10:
-                textSearch = _a.sent();
-                libs.log({ textSearch: textSearch }, PROVIDER, 'TEXT SEARCH');
-                return [4, libs.request_get("https://aquariumtv.app/decrypt?data=".concat(textSearch, "&key1=").concat(KEY))];
+                parseSearch = _d.sent();
+                libs.log({ parseSearch: parseSearch }, PROVIDER, "PARSE SEARCH");
+                directUrl = parseSearch.stream.playlist;
+                tracks = [];
+                for (_a = 0, _b = parseSearch.stream.captions; _a < _b.length; _a++) {
+                    item = _b[_a];
+                    type = "";
+                    if (item.url.indexOf(".srt") == -1 && item.url.indexOf(".vtt") == -1) {
+                        type = "download";
+                    }
+                    tracks.push({
+                        file: item.url,
+                        kind: 'captions',
+                        label: item.language,
+                        type: type,
+                    });
+                }
+                if (!directUrl) {
+                    return [2];
+                }
+                return [4, libs.request_get(directUrl, {})];
             case 11:
-                decrypt = _a.sent();
-                libs.log({ decrypt: decrypt }, PROVIDER, 'DECRYPT');
-                if (!decrypt) {
+                directSizes = _d.sent();
+                patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
+                if (!patternSize) {
+                    libs.embed_callback(directUrl, PROVIDER, PROVIDER, "hls", callback, 1, tracks);
                     return [2];
                 }
-                if (!decrypt.stream || !decrypt.stream.playlist) {
+                directQuality = [];
+                libs.log({ patternSize: patternSize, tracks: tracks }, PROVIDER, 'PATTERN SIZE');
+                for (_c = 0, patternSize_1 = patternSize; _c < patternSize_1.length; _c++) {
+                    patternItem = patternSize_1[_c];
+                    sizeQuality = patternItem.match(/\/([0-9]+)\//i);
+                    sizeQuality = sizeQuality ? Number(sizeQuality[1]) : 1080;
+                    directQuality.push({
+                        file: patternItem,
+                        quality: sizeQuality
+                    });
+                }
+                if (!directQuality.length) {
                     return [2];
                 }
-                libs.embed_callback(decrypt.stream.playlist, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ "file": decrypt.stream.playlist, "quality": 1080 }], headers);
+                directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
+                libs.log({ directQuality: directQuality }, PROVIDER, 'DIRECT QUALITY');
+                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, directQuality);
                 return [3, 13];
             case 12:
-                e_1 = _a.sent();
+                e_1 = _d.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
                 return [3, 13];
             case 13: return [2];

@@ -36,7 +36,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, providers, _i, _a, item, apiUrl, resDirect, tracks, directQuality, _b, _c, directItem, directUrl, quality, _d, _e, directItem, label, e_1, e_2;
+    function u(e) {
+        if (e !== undefined) {
+            return c_1[e % c_1.length];
+        }
+        else {
+            return "rive";
+        }
+    }
+    var PROVIDER, DOMAIN, providers, c_1, _i, _a, item, apiUrl, resDirect, tracks, directQuality, _b, _c, directItem, directUrl, quality, _d, _e, directItem, label, e_1, e_2;
     return __generator(this, function (_f) {
         switch (_f.label) {
             case 0:
@@ -45,25 +53,27 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 _f.label = 1;
             case 1:
                 _f.trys.push([1, 9, , 10]);
-                return [4, libs.request_get("".concat(DOMAIN, "/api/backendfetch?requestID=VideoProviderServices"))];
+                return [4, libs.request_get("".concat(DOMAIN, "/api/backendfetch?requestID=VideoProviderServices&secretKey=rive"))];
             case 2:
                 providers = _f.sent();
                 libs.log({ providers: providers }, PROVIDER, "PROVIDER");
                 if (!providers || !providers.data) {
                     return [2];
                 }
+                c_1 = ["N", "1y", "R", "efH", "bR", "CY", "HF", "JL", "5", "A", "mh", "4", "F7g", "GzH", "7cb", "gfg", "f", "Q", "8", "c", "YP", "I", "KL", "CzW", "YTL", "4", "u", "3", "Vlg", "9q", "NzG", "9CK", "AbS", "jUG", "Fd", "c3S", "VWx", "wp", "bgx", "V", "o1H", "Pa", "yk", "a", "KJ", "VnV", "O", "m", "ihF", "x"];
                 _i = 0, _a = providers.data;
                 _f.label = 3;
             case 3:
                 if (!(_i < _a.length)) return [3, 8];
                 item = _a[_i];
-                if (!["upcloud", "vidcloud"].includes(item)) {
+                if (!["fastx", "astra", "ghost"].includes(item)) {
                     return [3, 7];
                 }
-                apiUrl = "".concat(DOMAIN, "/api/backendfetch?requestID=movieVideoProvider&id=").concat(movieInfo.tmdb_id, "&service=").concat(item);
+                apiUrl = "".concat(DOMAIN, "/api/backendfetch?requestID=movieVideoProvider&id=").concat(movieInfo.tmdb_id, "&service=").concat(item, "&secretKey=").concat(u(movieInfo.tmdb_id));
                 if (movieInfo.type == "tv") {
-                    apiUrl = "".concat(DOMAIN, "/api/backendfetch?requestID=tvVideoProvider&id=").concat(movieInfo.tmdb_id, "&service=").concat(item, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
+                    apiUrl = "".concat(DOMAIN, "/api/backendfetch?requestID=tvVideoProvider&id=").concat(movieInfo.tmdb_id, "&service=").concat(item, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode, "&secretKey=").concat(u(movieInfo.tmdb_id));
                 }
+                libs.log({ apiUrl: apiUrl }, PROVIDER, "API URL");
                 _f.label = 4;
             case 4:
                 _f.trys.push([4, 6, , 7]);
