@@ -36,9 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, urlSearch, htmlSearch, textSearch, hashEncode, hashDecode, mEncrypt, firstDecode, secondDecode, _i, secondDecode_1, item, urlDirect, dataDirect, tracks, _a, _b, itemTrack, label, urlDirect, requestDirectSize, parseRequest, patternSize, parseDirectSize, _c, parseDirectSize_1, item_1, directQuality, _d, patternSize_1, patternItem, sizeQuality, dURL, e_1;
-    return __generator(this, function (_e) {
-        switch (_e.label) {
+    var PROVIDER, DOMAIN, headers, urlSearch, htmlSearch, textSearch, hashEncode, hashDecode, mEncrypt, firstDecode, secondDecode, _i, secondDecode_1, item, urlDirect, dataDirect, tracks, _a, _b, itemTrack, label, urlDirect, e_1;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0:
                 PROVIDER = 'ZVidsrcPro';
                 DOMAIN = "https://embed.su";
@@ -47,9 +47,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     'Referer': "https://embed.su/",
                     'Origin': "https://embed.su",
                 };
-                _e.label = 1;
+                _c.label = 1;
             case 1:
-                _e.trys.push([1, 10, , 11]);
+                _c.trys.push([1, 8, , 9]);
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
                     urlSearch = "".concat(DOMAIN, "/embed/tv/").concat(movieInfo.tmdb_id, "/").concat(movieInfo.season, "/").concat(movieInfo.episode);
@@ -63,10 +63,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         headers: headers,
                     })];
             case 2:
-                htmlSearch = _e.sent();
+                htmlSearch = _c.sent();
                 return [4, htmlSearch.text()];
             case 3:
-                textSearch = _e.sent();
+                textSearch = _c.sent();
                 hashEncode = textSearch.match(/JSON\.parse\(atob\(\`([^\`]+)/i);
                 hashEncode = hashEncode ? hashEncode[1] : "";
                 libs.log({ hashEncode: hashEncode }, PROVIDER, "HASH ENCODE");
@@ -86,20 +86,20 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 _i = 0, secondDecode_1 = secondDecode;
-                _e.label = 4;
+                _c.label = 4;
             case 4:
-                if (!(_i < secondDecode_1.length)) return [3, 9];
+                if (!(_i < secondDecode_1.length)) return [3, 7];
                 item = secondDecode_1[_i];
                 if (item.name.toLowerCase() != "viper") {
-                    return [3, 8];
+                    return [3, 6];
                 }
                 urlDirect = "".concat(DOMAIN, "/api/e/").concat(item.hash);
                 return [4, libs.request_get(urlDirect, headers, false)];
             case 5:
-                dataDirect = _e.sent();
+                dataDirect = _c.sent();
                 libs.log({ dataDirect: dataDirect, urlDirect: urlDirect }, PROVIDER, 'DATA DIRECT');
                 if (!dataDirect.source) {
-                    return [3, 8];
+                    return [3, 6];
                 }
                 tracks = [];
                 try {
@@ -119,64 +119,17 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 catch (etrack) { }
                 libs.log({ tracks: tracks }, PROVIDER, 'TRACKS');
                 urlDirect = dataDirect.source;
-                return [4, fetch(urlDirect, {
-                        headers: {
-                            "Referer": "https://embed.su/",
-                            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                            "Accept": "*/*"
-                        },
-                        method: "GET",
-                    })];
+                libs.embed_callback(urlDirect, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, [{ file: urlDirect, quality: 1080 }], headers);
+                return [2];
             case 6:
-                requestDirectSize = _e.sent();
-                return [4, requestDirectSize.text()];
-            case 7:
-                parseRequest = _e.sent();
-                libs.log({ parseRequest: parseRequest, urlDirect: urlDirect }, PROVIDER, 'DIRECT SIZES');
-                patternSize = [];
-                parseDirectSize = parseRequest.split('\n');
-                libs.log({ parseDirectSize: parseDirectSize }, PROVIDER, 'PARSE DIRECT SIZE');
-                for (_c = 0, parseDirectSize_1 = parseDirectSize; _c < parseDirectSize_1.length; _c++) {
-                    item_1 = parseDirectSize_1[_c];
-                    if (item_1.indexOf('/proxy/') == -1) {
-                        continue;
-                    }
-                    patternSize.push(item_1);
-                }
-                libs.log({ patternSize: patternSize }, PROVIDER, 'PATTERN SIZES');
-                directQuality = [];
-                for (_d = 0, patternSize_1 = patternSize; _d < patternSize_1.length; _d++) {
-                    patternItem = patternSize_1[_d];
-                    sizeQuality = patternItem.match(/\/([0-9]+)\//i);
-                    sizeQuality = sizeQuality ? Number(sizeQuality[1]) : 1080;
-                    dURL = "".concat(DOMAIN).concat(patternItem);
-                    dURL = dURL.replace("embed.su/api/proxy/viper/", "");
-                    dURL = dURL.replace(".png", ".m3u8");
-                    directQuality.push({
-                        file: dURL,
-                        quality: sizeQuality
-                    });
-                }
-                if (!directQuality.length) {
-                    return [3, 8];
-                }
-                directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
-                libs.log({ directQuality: directQuality }, PROVIDER, 'DIRECT QUALITY');
-                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, directQuality, {
-                    "Referer": "https://embed.su/",
-                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    "Origin": "https://embed.su",
-                });
-                _e.label = 8;
-            case 8:
                 _i++;
                 return [3, 4];
-            case 9: return [3, 11];
-            case 10:
-                e_1 = _e.sent();
+            case 7: return [3, 9];
+            case 8:
+                e_1 = _c.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
-                return [3, 11];
-            case 11: return [2];
+                return [3, 9];
+            case 9: return [2];
         }
     });
 }); };

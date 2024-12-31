@@ -75,7 +75,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                 };
                 PROVIDER = 'JIdFlix';
-                DOMAIN = "https://tv4.idlix.asia";
+                DOMAIN = "https://tv5.idlix.asia";
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 8, , 9]);

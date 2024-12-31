@@ -80,43 +80,45 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 };
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 7, , 8]);
-                vrf = enc("".concat(movieInfo.tmdb_id));
-                urlHash = "".concat(DOMAIN, "/api/episodes/").concat(movieInfo.tmdb_id, "/servers?id=").concat(movieInfo.tmdb_id, "&type=").concat(movieInfo.type, "&isMobile=false&vrf=").concat(vrf);
+                _b.trys.push([1, 8, , 9]);
+                return [4, libs.request_get("https://aquariumtv.app/vidsrccc?id=".concat(movieInfo.tmdb_id))];
+            case 2:
+                vrf = _b.sent();
+                urlHash = "".concat(DOMAIN, "/api/").concat(movieInfo.tmdb_id, "/servers?id=").concat(movieInfo.tmdb_id, "&type=").concat(movieInfo.type, "&vrf=").concat(vrf);
                 if (movieInfo.type == 'tv') {
                     urlHash += "&season=".concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
                 }
                 return [4, libs.request_get(urlHash, headers)];
-            case 2:
+            case 3:
                 resHash = _b.sent();
-                libs.log({ urlHash: urlHash, resHash: resHash }, PROVIDER, 'RES HASH');
+                libs.log({ urlHash: urlHash, resHash: resHash, vrf: vrf }, PROVIDER, 'RES HASH');
                 if (!resHash || !resHash.data || resHash.data.length == 0) {
                     return [2];
                 }
                 _i = 0, _a = resHash.data;
-                _b.label = 3;
-            case 3:
-                if (!(_i < _a.length)) return [3, 6];
-                item = _a[_i];
-                urlDirect = "".concat(DOMAIN, "/api/source/").concat(item.hash);
-                return [4, libs.request_get(urlDirect, headers)];
+                _b.label = 4;
             case 4:
+                if (!(_i < _a.length)) return [3, 7];
+                item = _a[_i];
+                urlDirect = "".concat(DOMAIN, "/api/source/").concat(item.hash, "?t=1735063337497");
+                return [4, libs.request_get(urlDirect, headers)];
+            case 5:
                 resDirect = _b.sent();
                 libs.log({ resDirect: resDirect }, PROVIDER, 'RES DIRECT');
                 if (!resDirect || !resDirect.data || !resDirect.data.source) {
-                    return [3, 5];
+                    return [3, 6];
                 }
                 libs.embed_callback(resDirect.data.source, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: resDirect.data.source, quality: 1080 }], headers);
-                _b.label = 5;
-            case 5:
+                _b.label = 6;
+            case 6:
                 _i++;
-                return [3, 3];
-            case 6: return [3, 8];
-            case 7:
+                return [3, 4];
+            case 7: return [3, 9];
+            case 8:
                 e_1 = _b.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
-                return [3, 8];
-            case 8: return [2];
+                return [3, 9];
+            case 9: return [2];
         }
     });
 }); };

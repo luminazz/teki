@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -36,41 +36,68 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, userAgent, urlDetail, parseDetail, iframe, e_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var PROVIDER, DOMAIN, userAgent, urlDetail, episodeData, ID_DETAIL, _i, _a, item, detail, htmlDetail, embedUrl, decode, e_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
                 PROVIDER = 'HCatFlix';
                 DOMAIN = "https://catflix.su";
-                _a.label = 1;
+                _b.label = 1;
             case 1:
-                _a.trys.push([1, 4, , 5]);
+                _b.trys.push([1, 7, , 8]);
                 userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36';
-                urlDetail = "".concat(DOMAIN, "/movies/").concat(libs.url_slug_search(movieInfo, '-'), "/");
-                if (movieInfo.type == 'tv') {
-                    urlDetail = "".concat(DOMAIN, "/episdes/").concat(libs.url_slug_search(movieInfo, '-'), "-").concat(movieInfo.season, "x").concat(movieInfo.episode, "/");
-                }
-                libs.log({ urlDetail: urlDetail }, PROVIDER, "URL DETAIL");
-                return [4, libs.request_get(urlDetail, {
-                        'user-agent': userAgent,
-                        "referer": DOMAIN
-                    }, true)];
+                urlDetail = "".concat(DOMAIN, "/movie/").concat(libs.url_slug_search(movieInfo, '-'), "-").concat(movieInfo.tmdb_id, "/");
+                if (!(movieInfo.type == "tv")) return [3, 3];
+                return [4, libs.request_get("https://api.themoviedb.org/3/tv/".concat(movieInfo.tmdb_id, "/season/").concat(movieInfo.season, "?append_to_response=external_ids,images,videos,credits&language=en&api_key=56fe967269070acc229414a3bdeed3b5"), {}, false)];
             case 2:
-                parseDetail = _a.sent();
-                iframe = parseDetail("iframe").attr("src");
-                libs.log({ iframe: iframe }, PROVIDER, 'IFRAME');
-                if (!iframe) {
+                episodeData = _b.sent();
+                ID_DETAIL = "";
+                for (_i = 0, _a = episodeData.episodes; _i < _a.length; _i++) {
+                    item = _a[_i];
+                    if (item.episode_number == movieInfo.episode) {
+                        ID_DETAIL = item.id;
+                    }
+                }
+                libs.log({ ID_DETAIL: ID_DETAIL }, PROVIDER, "DETAIL");
+                if (!ID_DETAIL) {
                     return [2];
                 }
-                return [4, libs.embed_redirect(iframe, '', movieInfo, PROVIDER, callback, '')];
+                urlDetail = "".concat(DOMAIN, "/episode/").concat(libs.url_slug_search(movieInfo, '-'), "-season-").concat(movieInfo.season, "-episode-").concat(movieInfo.episode, "/eid-").concat(ID_DETAIL);
+                libs.log({ urlDetail: urlDetail }, PROVIDER, "URL DETAIL");
+                _b.label = 3;
             case 3:
-                _a.sent();
-                return [3, 5];
+                libs.log({ urlDetail: urlDetail }, PROVIDER, "URL DETAIL");
+                return [4, fetch(urlDetail, {
+                        headers: {
+                            'user-agent': userAgent,
+                            "referer": DOMAIN
+                        }
+                    })];
             case 4:
-                e_1 = _a.sent();
+                detail = _b.sent();
+                return [4, detail.text()];
+            case 5:
+                htmlDetail = _b.sent();
+                embedUrl = htmlDetail.match(/ *main_origin *\= *\"([^\"]+)/i);
+                embedUrl = embedUrl ? embedUrl[1] : "";
+                libs.log({ embedUrl: embedUrl }, PROVIDER, "EMBED URL");
+                if (!embedUrl) {
+                    return [2];
+                }
+                decode = libs.string_base64_decode(embedUrl);
+                libs.log({ decode: decode }, PROVIDER, "DECODE");
+                if (!decode) {
+                    return [2];
+                }
+                return [4, libs.embed_redirect(decode, '', movieInfo, PROVIDER, callback, '')];
+            case 6:
+                _b.sent();
+                return [3, 8];
+            case 7:
+                e_1 = _b.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
-                return [3, 5];
-            case 5: return [2];
+                return [3, 8];
+            case 8: return [2];
         }
     });
 }); };
