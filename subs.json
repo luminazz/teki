@@ -1,6 +1,9 @@
 {
   "subs": [
-    "dist/subs/opensubtitles.js",
-    "dist/subs/subsource.js"
+    "dist/subs/subf2m.js",
+    "dist/subs/tvsubtitles.js",
+    "dist/subs/subdl.js",
+    "dist/subs/subsource.js",
+    "dist/subs/podnapisi.js"
   ]
 }

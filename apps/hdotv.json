@@ -3,7 +3,7 @@
     "build": 11,
     "url": "https://github.com/hdoonline/hdotv/releases/download/v1.1.6/hdo-tv-1.1.6.apk",
     "contents": "There is a new update, please download to experience.",
-    "force_update": false
+    "force_update": true
   },
   "app_player_config": {
     "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.18/mediaon-1.0.18.apk",

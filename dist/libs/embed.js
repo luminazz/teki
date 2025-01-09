@@ -124,6 +124,9 @@ libs.embed_callback = function (urlDirect, provider, host, quality, callback, ra
             if (item.file.indexOf(".srt") == -1 && item.file.indexOf(".vtt") == -1) {
                 type = "download";
             }
+            if (item.file.indexOf("opensubtitles") != -1) {
+                continue;
+            }
             parseSubs.push({
                 file: item.file,
                 kind: 'captions',
