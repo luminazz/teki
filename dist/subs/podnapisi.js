@@ -149,6 +149,7 @@ subs.getResource = function (movieInfo, config, callback) {
       item,
       urlDetail,
       parseSub_1,
+      validLangs_1,
       e_1;
     return __generator(this, function (_b) {
       switch (_b.label) {
@@ -157,7 +158,15 @@ subs.getResource = function (movieInfo, config, callback) {
           SEARCH_URL = "https://www.podnapisi.net/en/moviedb/search/";
           slug = "".concat(libs.url_slug_search(movieInfo, "-"));
           urlSearch = "".concat(SEARCH_URL, "?keywords=").concat(slug);
-          libs.log({ urlSearch: urlSearch }, PROVIDER, "==URL SEARCH==");
+          libs.log(
+            {
+              urlSearch: urlSearch,
+              year: movieInfo.year,
+              type: movieInfo.type,
+            },
+            PROVIDER,
+            "==URL SEARCH=="
+          );
           _b.label = 1;
         case 1:
           _b.trys.push([1, 4, , 5]);
@@ -181,13 +190,21 @@ subs.getResource = function (movieInfo, config, callback) {
               ""
                 .concat(libs.url_slug_search(movieInfo, "-"), "-")
                 .concat(movieInfo.year) == item.slug &&
-              item.type == movieInfo.type &&
               !ID
             ) {
               ID = item.id;
             }
           }
-          libs.log({ ID: ID }, PROVIDER, "==ID==");
+          libs.log(
+            {
+              ID: ID,
+              slug: ""
+                .concat(libs.url_slug_search(movieInfo, "-"), "-")
+                .concat(movieInfo.year),
+            },
+            PROVIDER,
+            "==ID=="
+          );
           if (!ID) {
             return [2];
           }
@@ -195,30 +212,88 @@ subs.getResource = function (movieInfo, config, callback) {
           return [4, libs.request_get(urlDetail, {}, true)];
         case 3:
           parseSub_1 = _b.sent();
-          parseSub_1("tbody").each(function (key, item) {
-            var link = parseSub_1(item).find("tr").attr("data-href");
-            libs.log({ link: link }, PROVIDER, "SUBS LINK ====>");
+          validLangs_1 = [
+            { code: "ar", name: "Arabic", id: "sublanguageid-ara" },
+            { code: "zh", name: "Chinese", id: "sublanguageid-chi" },
+            { code: "hr", name: "Croatian", id: "sublanguageid-hrv" },
+            { code: "nl", name: "Dutch", id: "sublanguageid-dut" },
+            { code: "no", name: "Norwegian", id: "sublanguageid-nor" },
+            { code: "en", name: "English", id: "sublanguageid-eng" },
+            { code: "fr", name: "French", id: "sublanguageid-fre" },
+            { code: "de", name: "German", id: "sublanguageid-ger" },
+            { code: "el", name: "Greek", id: "sublanguageid-ell" },
+            { code: "he", name: "Hebrew", id: "sublanguageid-heb" },
+            { code: "it", name: "Italian", id: "sublanguageid-ita" },
+            { code: "id", name: "Indonesia", id: "sublanguageid-ind" },
+            { code: "ja", name: "Japanese", id: "sublanguageid-jpn" },
+            { code: "la", name: "Latin", id: "sublanguageid-lav" },
+            { code: "pl", name: "Polish", id: "sublanguageid-pol" },
+            { code: "pt", name: "Portuguese", id: "sublanguageid-por" },
+            { code: "ro", name: "Romanian", id: "sublanguageid-rum" },
+            { code: "ru", name: "Russian", id: "sublanguageid-rus" },
+            { code: "es", name: "Spanish", id: "sublanguageid-spa" },
+            { code: "sr", name: "Serbian", id: "sublanguageid-scc" },
+            { code: "sv", name: "Swedish", id: "sublanguageid-swe" },
+            { code: "th", name: "Thai", id: "sublanguageid-tha" },
+            { code: "tr", name: "Turkish", id: "sublanguageid-tur" },
+            { code: "ukr", name: "Ukrainian", id: "sublanguageid-ukr" },
+            { code: "vi", name: "Vietnamese", id: "sublanguageid-vie" },
+          ];
+          parseSub_1("tr.subtitle-entry").each(function (key, item) {
+            var link = parseSub_1(item).attr("data-href");
+            var title = parseSub_1(item).find("span.release").text();
+            if (movieInfo.type == "tv") {
+              var episode = "S"
+                .concat(
+                  movieInfo.season < 10
+                    ? "0" + movieInfo.season
+                    : movieInfo.season,
+                  "E"
+                )
+                .concat(
+                  movieInfo.episode < 10
+                    ? "0" + movieInfo.episode
+                    : movieInfo.episode
+                );
+              if (title.indexOf(episode) == -1) {
+                link = "";
+              }
+            }
             if (link) {
+              libs.log(
+                { link: link, title: title },
+                PROVIDER,
+                "SUBS LINK ====>"
+              );
               var linkData = link.split("/");
-              if (linkData.length < 2) {
-                return;
+              if (linkData.length > 2) {
+                var langData = linkData[2].split("-");
+                var lang_1 = langData[0];
+                var validLang = validLangs_1.find(function (item) {
+                  return item.code == lang_1;
+                });
+                if (validLang) {
+                  link = "https://www.podnapisi.net/".concat(link, "/download");
+                  callback({
+                    file: link,
+                    kind: "Captions",
+                    label: validLang.name,
+                    type: "download",
+                    provider: PROVIDER,
+                  });
+                  libs.log(
+                    {
+                      file: link,
+                      kind: "Captions",
+                      label: validLang.name,
+                      type: "download",
+                      provider: PROVIDER,
+                    },
+                    PROVIDER,
+                    "SUBS CALLBACK ====>"
+                  );
+                }
               }
-              var langData = linkData[2].split("-");
-              var lang = langData[0];
-              libs.log({ lang: lang }, PROVIDER, "SUBS LANG ====>");
-              if (!lang) {
-                return;
-              }
-              if (lang == "en") {
-                lang = "English";
-              }
-              link = "https://www.podnapisi.net/".concat(link, "/download");
-              callback({
-                file: link,
-                kind: "Captions",
-                label: lang,
-                type: "download",
-              });
             }
           });
           return [3, 5];

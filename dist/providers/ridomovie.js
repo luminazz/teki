@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -36,21 +36,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, slugDetail, url, parseSearch, _i, _a, item, url, htmlSearch, parseSeach, id, detailUrl, parseDetail, _b, _c, item, iframeUrl, htmlDetail, textDetail, parseDirect, e_1;
-    return __generator(this, function (_d) {
-        switch (_d.label) {
+    var PROVIDER, DOMAIN, slugDetail, url, parseSearch, _i, _a, item, urlTv, htmlTv, parseTv, parseEpisode, SLUG_TV, _b, parseEpisode_1, item, slugMatch, parseID, detailUrl, parseDetail, _c, _d, item, iframeUrl, htmlDetail, textDetail, parseDirect, e_1;
+    return __generator(this, function (_e) {
+        switch (_e.label) {
             case 0:
                 PROVIDER = 'LRIDOMOVIE';
                 DOMAIN = "https://ridomovies.tv";
-                _d.label = 1;
+                _e.label = 1;
             case 1:
-                _d.trys.push([1, 15, , 16]);
+                _e.trys.push([1, 14, , 15]);
                 slugDetail = '';
-                if (!(movieInfo.type == 'movie')) return [3, 3];
-                url = "".concat(DOMAIN, "/core/api/search?q=").concat(movieInfo.imdb_id);
+                url = "".concat(DOMAIN, "/core/api/search?q=").concat(libs.url_slug_search(movieInfo, "%20"));
                 return [4, libs.request_get(url)];
             case 2:
-                parseSearch = _d.sent();
+                parseSearch = _e.sent();
                 libs.log({ parseSearch: parseSearch }, PROVIDER, "PARSE SEARCH");
                 for (_i = 0, _a = parseSearch.data.items; _i < _a.length; _i++) {
                     item = _a[_i];
@@ -59,80 +58,97 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         break;
                     }
                 }
-                return [3, 6];
-            case 3:
-                url = "".concat(DOMAIN, "/tv/").concat(libs.url_slug_search(movieInfo, '-'), "/season-").concat(movieInfo.season, "/episode-").concat(movieInfo.episode);
-                return [4, fetch(url)];
-            case 4:
-                htmlSearch = _d.sent();
-                return [4, htmlSearch.text()];
-            case 5:
-                parseSeach = _d.sent();
-                libs.log({ parseSeach: parseSeach, url: url }, PROVIDER, "PARSE SEARCH");
-                id = parseSeach.match(/postid\\\"\:\\\"([0-9]+)/i);
-                id = id ? id[1] : '';
-                libs.log({ id: id }, PROVIDER, "PARSE SEARCH");
-                if (!id) {
-                    return [2];
-                }
-                slugDetail = id;
-                _d.label = 6;
-            case 6:
                 libs.log({ slugDetail: slugDetail }, PROVIDER, 'SLUG_DETAIL');
                 if (!slugDetail) {
                     return [2];
                 }
-                detailUrl = "".concat(DOMAIN, "/core/api/movies/").concat(slugDetail, "/videos");
+                if (!(movieInfo.type == 'tv')) return [3, 5];
+                urlTv = "".concat(DOMAIN, "/tv/").concat(slugDetail);
+                return [4, fetch(urlTv, {
+                        headers: {
+                            "user-agent": 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+                            Referer: "".concat(DOMAIN, "/")
+                        }
+                    })];
+            case 3:
+                htmlTv = _e.sent();
+                return [4, htmlTv.text()];
+            case 4:
+                parseTv = _e.sent();
+                parseEpisode = parseTv.match(/\\"id\\":\\"(\d+)\\"\,\\"slug\\":\\"([^\\]+)/img);
+                libs.log({ parseEpisode: parseEpisode }, PROVIDER, 'PARSE EPISODE');
+                SLUG_TV = "";
+                for (_b = 0, parseEpisode_1 = parseEpisode; _b < parseEpisode_1.length; _b++) {
+                    item = parseEpisode_1[_b];
+                    slugMatch = "/season-".concat(movieInfo.season, "/episode-").concat(movieInfo.episode, "-");
+                    if (item.indexOf(slugMatch) == -1) {
+                        continue;
+                    }
+                    parseID = item.match(/([0-9]+)/i);
+                    parseID = parseID ? parseID[1] : '';
+                    libs.log({ parseID: parseID }, PROVIDER, 'PARSE ID - SLUG');
+                    if (!parseID) {
+                        continue;
+                    }
+                    SLUG_TV = parseID;
+                }
+                if (!SLUG_TV) {
+                    return [2];
+                }
+                slugDetail = SLUG_TV;
+                _e.label = 5;
+            case 5:
+                detailUrl = "".concat(DOMAIN, "/api/movies/").concat(slugDetail);
                 if (movieInfo.type == 'tv') {
-                    detailUrl = "".concat(DOMAIN, "/core/api/episodes/").concat(slugDetail, "/videos");
+                    detailUrl = "".concat(DOMAIN, "/api/episodes/").concat(slugDetail);
                 }
                 return [4, libs.request_get(detailUrl)];
-            case 7:
-                parseDetail = _d.sent();
+            case 6:
+                parseDetail = _e.sent();
                 libs.log({ parseDetail: parseDetail }, PROVIDER, "PARSE DETAIL");
-                _b = 0, _c = parseDetail.data;
-                _d.label = 8;
-            case 8:
-                if (!(_b < _c.length)) return [3, 14];
-                item = _c[_b];
+                _c = 0, _d = parseDetail.data;
+                _e.label = 7;
+            case 7:
+                if (!(_c < _d.length)) return [3, 13];
+                item = _d[_c];
                 iframeUrl = item.url.match(/data\-src\=\"([^\"]+)/i);
                 iframeUrl = iframeUrl ? iframeUrl[1] : '';
                 libs.log({ iframeUrl: iframeUrl }, PROVIDER, 'IFRAME URL');
                 if (!iframeUrl) {
-                    return [3, 13];
+                    return [3, 12];
                 }
-                if (!(iframeUrl.indexOf("ridoo.net") != -1)) return [3, 11];
+                if (!(iframeUrl.indexOf("ridoo.net") != -1)) return [3, 10];
                 return [4, fetch(iframeUrl, {
                         headers: {
                             Referer: "".concat(DOMAIN, "/"),
                             "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
                         }
                     }, false)];
-            case 9:
-                htmlDetail = _d.sent();
+            case 8:
+                htmlDetail = _e.sent();
                 return [4, htmlDetail.text()];
-            case 10:
-                textDetail = _d.sent();
+            case 9:
+                textDetail = _e.sent();
                 parseDirect = textDetail.match(/file\:\"([^\"]+)/i);
                 parseDirect = parseDirect ? parseDirect[1] : "";
                 libs.log({ parseDirect: parseDirect }, PROVIDER, 'PARSE DIRECT');
                 libs.embed_callback(parseDirect, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: parseDirect, quality: 1080 }], {
                     Referer: "".concat(DOMAIN, "/"),
                 });
-                return [3, 13];
-            case 11: return [4, libs.embed_redirect(iframeUrl, '', movieInfo, PROVIDER, callback, undefined, [])];
+                return [3, 12];
+            case 10: return [4, libs.embed_redirect(iframeUrl, '', movieInfo, PROVIDER, callback, undefined, [])];
+            case 11:
+                _e.sent();
+                _e.label = 12;
             case 12:
-                _d.sent();
-                _d.label = 13;
-            case 13:
-                _b++;
-                return [3, 8];
-            case 14: return [3, 16];
-            case 15:
-                e_1 = _d.sent();
+                _c++;
+                return [3, 7];
+            case 13: return [3, 15];
+            case 14:
+                e_1 = _e.sent();
                 libs.log({ e: e_1 }, PROVIDER);
-                return [3, 16];
-            case 16: return [2, true];
+                return [3, 15];
+            case 15: return [2, true];
         }
     });
 }); };

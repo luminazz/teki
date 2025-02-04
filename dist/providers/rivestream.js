@@ -60,7 +60,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!providers || !providers.data) {
                     return [2];
                 }
-                c_1 = ["N", "1y", "R", "efH", "bR", "CY", "HF", "JL", "5", "A", "mh", "4", "F7g", "GzH", "7cb", "gfg", "f", "Q", "8", "c", "YP", "I", "KL", "CzW", "YTL", "4", "u", "3", "Vlg", "9q", "NzG", "9CK", "AbS", "jUG", "Fd", "c3S", "VWx", "wp", "bgx", "V", "o1H", "Pa", "yk", "a", "KJ", "VnV", "O", "m", "ihF", "x"];
+                c_1 = ["I", "3LZu", "M2V3", "4EXX", "s4", "yRy", "oqMz", "ysE", "RT", "iSI", "zlc", "H", "YNp", "5vR6", "h9S", "R", "jo", "F", "h2", "W8", "i", "sz09", "Xom", "gpU", "q", "6Qvg", "Cu", "5Zaz", "VK", "od", "FGY4", "eu", "D5Q", "smH", "11eq", "QrXs", "3", "L3", "YhlP", "c", "Z", "YT", "bnsy", "5", "fcL", "L22G", "r8", "J", "4", "gnK"];
                 _i = 0, _a = providers.data;
                 _f.label = 3;
             case 3:

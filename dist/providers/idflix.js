@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var CryptoJSAesJson, PROVIDER, DOMAIN, urlSearch, parseSeach_1, id, headers, numes_2, _i, numes_1, nume, body, urlAjaxEmbed, embedData, decode, e_1;
+    var CryptoJSAesJson, PROVIDER, DOMAIN, parseHead, headerUrl, urlSearch, parseSeach_1, id, headers, numes_2, _i, numes_1, nume, body, urlAjaxEmbed, embedData, decode, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -75,20 +75,34 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                 };
                 PROVIDER = 'JIdFlix';
-                DOMAIN = "https://tv5.idlix.asia";
+                DOMAIN = "https://tv6.idlix.asia/";
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 8, , 9]);
+                _a.trys.push([1, 9, , 10]);
+                return [4, fetch("https://vip.idlixofficialx.net/", {
+                        method: "HEAD",
+                        headers: {
+                            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+                        },
+                        redirect: "manual"
+                    })];
+            case 2:
+                parseHead = _a.sent();
+                libs.log({ parseHead: parseHead }, PROVIDER, 'HEAD');
+                headerUrl = parseHead.url;
+                if (headerUrl) {
+                    DOMAIN = headerUrl;
+                }
                 urlSearch = "";
                 if (movieInfo.type == 'movie') {
-                    urlSearch = "".concat(DOMAIN, "/movie/").concat(libs.url_slug_search(movieInfo), "-").concat(movieInfo.year);
+                    urlSearch = "".concat(DOMAIN, "movie/").concat(libs.url_slug_search(movieInfo), "-").concat(movieInfo.year);
                 }
                 else {
-                    urlSearch = "".concat(DOMAIN, "/episode/").concat(libs.url_slug_search(movieInfo), "-season-").concat(movieInfo.season, "-episode-").concat(movieInfo.episode);
+                    urlSearch = "".concat(DOMAIN, "episode/").concat(libs.url_slug_search(movieInfo), "-season-").concat(movieInfo.season, "-episode-").concat(movieInfo.episode);
                 }
                 libs.log({ urlSearch: urlSearch }, PROVIDER, "URL SEARCH");
                 return [4, libs.request_get(urlSearch, {}, true)];
-            case 2:
+            case 3:
                 parseSeach_1 = _a.sent();
                 id = parseSeach_1("#player-option-1").attr("data-post");
                 libs.log({ urlSearch: urlSearch, id: id }, PROVIDER, "URL SEARCH");
@@ -104,9 +118,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                 });
                 _i = 0, numes_1 = numes_2;
-                _a.label = 3;
-            case 3:
-                if (!(_i < numes_1.length)) return [3, 7];
+                _a.label = 4;
+            case 4:
+                if (!(_i < numes_1.length)) return [3, 8];
                 nume = numes_1[_i];
                 body = qs.stringify({
                     action: "doo_player_ajax",
@@ -114,9 +128,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     nume: nume,
                     type: movieInfo.type == 'movie' ? 'movie' : 'tv'
                 });
-                urlAjaxEmbed = "".concat(DOMAIN, "/wp-admin/admin-ajax.php");
+                urlAjaxEmbed = "".concat(DOMAIN, "wp-admin/admin-ajax.php");
                 return [4, libs.request_post(urlAjaxEmbed, headers, body)];
-            case 4:
+            case 5:
                 embedData = _a.sent();
                 libs.log({ embedData: embedData, body: body, headers: headers, urlAjaxEmbed: urlAjaxEmbed }, PROVIDER, "EMBED DATA");
                 if (!embedData.embed_url) {
@@ -124,20 +138,22 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 decode = CryptoJSAesJson.decrypt(embedData.embed_url, embedData.key);
                 libs.log({ decode: decode }, PROVIDER, 'decode');
-                if (!decode) return [3, 6];
-                return [4, libs.embed_redirect(decode, '', movieInfo, PROVIDER, callback, undefined, [])];
-            case 5:
-                _a.sent();
-                _a.label = 6;
+                if (!decode) return [3, 7];
+                return [4, libs.embed_redirect(decode, '', movieInfo, PROVIDER, callback, undefined, [], {
+                        domain: DOMAIN
+                    })];
             case 6:
+                _a.sent();
+                _a.label = 7;
+            case 7:
                 _i++;
-                return [3, 3];
-            case 7: return [3, 9];
-            case 8:
+                return [3, 4];
+            case 8: return [3, 10];
+            case 9:
                 e_1 = _a.sent();
                 libs.log(e_1, PROVIDER, 'ERROR');
-                return [3, 9];
-            case 9: return [2, true];
+                return [3, 10];
+            case 10: return [2, true];
         }
     });
 }); };

@@ -329,10 +329,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                 }
                 catch (e) { }
-                libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE URL");
                 if (encodeURL.indexOf('m3u8') == -1) {
                     return [2];
                 }
+                libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE URL");
                 libs.embed_callback(encodeURL, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: encodeURL, quality: 1080 }], {
                     'User-Agent': userAgent,
                     referer: "https://".concat(host, "/"),

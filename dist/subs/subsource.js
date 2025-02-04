@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 subs.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, slug, headers, body, dataSearch, urlGetSub, subLang, _i, _a, item, lang, _b, _c, _d, _e, i, _f, _g, item, linkDetail, title, lang, subID, episode, slugGetSub, body_1, dataSub, token, urlDownload, e_1;
+    var PROVIDER, DOMAIN, slug, headers, body, dataSearch, urlGetSub, subLang, _i, _a, item, lang, title, episode, season, _b, _c, _d, _e, i, _f, _g, item, linkDetail, title, lang, subID, kind, episode, slugGetSub, body_1, dataSub, token, urlDownload, e_1;
     return __generator(this, function (_h) {
         switch (_h.label) {
             case 0:
@@ -82,18 +82,26 @@ subs.getResource = function (movieInfo, config, callback) { return __awaiter(_th
                 for (_i = 0, _a = dataSearch.subs; _i < _a.length; _i++) {
                     item = _a[_i];
                     lang = item.lang;
-                    if (!lang) {
+                    title = item.releaseName;
+                    if (!lang || lang !== movieInfo.lang) {
                         continue;
                     }
                     if (!subLang[lang]) {
                         subLang[lang] = [];
+                    }
+                    if (movieInfo.type == "tv") {
+                        episode = "S".concat(movieInfo.season < 10 ? "0" + movieInfo.season : movieInfo.season, "E").concat(movieInfo.episode < 10 ? "0" + movieInfo.episode : movieInfo.episode);
+                        season = "Season.".concat(movieInfo.season < 10 ? "0" + movieInfo.season : movieInfo.season);
+                        if (title.indexOf(episode) == -1 && title.indexOf(season) == -1) {
+                            continue;
+                        }
                     }
                     if (subLang[lang].length >= 1) {
                         continue;
                     }
                     subLang[lang].push(item);
                 }
-                libs.log({ subLang: subLang }, PROVIDER, "SUB LANG");
+                libs.log({ subLang: subLang }, PROVIDER, "SUB LANG==>");
                 _b = subLang;
                 _c = [];
                 for (_d in _b)
@@ -114,14 +122,15 @@ subs.getResource = function (movieInfo, config, callback) { return __awaiter(_th
                 title = item.releaseName;
                 lang = item.lang;
                 subID = item.subId;
-                libs.log({ linkDetail: linkDetail, title: title, lang: lang, subID: subID }, PROVIDER, "SUB");
+                libs.log({ linkDetail: linkDetail, title: title, lang: lang, subID: subID }, PROVIDER, "SUB==>");
                 if (!linkDetail || !title || !lang) {
                     return [3, 8];
                 }
+                kind = "Captions";
                 if (movieInfo.type == "tv") {
                     episode = "S".concat(movieInfo.season < 10 ? "0" + movieInfo.season : movieInfo.season, "E").concat(movieInfo.episode < 10 ? "0" + movieInfo.episode : movieInfo.episode);
                     if (title.indexOf(episode) == -1) {
-                        return [3, 8];
+                        kind = "Captions";
                     }
                 }
                 linkDetail = "".concat(DOMAIN).concat(linkDetail);
@@ -133,18 +142,25 @@ subs.getResource = function (movieInfo, config, callback) { return __awaiter(_th
                 return [4, libs.request_post(urlGetSub, headers, body_1, false)];
             case 7:
                 dataSub = _h.sent();
-                libs.log({ dataSub: dataSub, body: body_1, urlGetSub: urlGetSub }, PROVIDER, "== DATA SUB ==");
+                libs.log({ dataSub: dataSub, body: body_1, urlGetSub: urlGetSub }, PROVIDER, "== DATA SUB==>");
                 token = dataSub.sub.downloadToken;
                 if (!token) {
                     return [3, 8];
                 }
                 urlDownload = "https://api.subsource.net/api/downloadSub/".concat(token);
-                libs.log({ urlDownload: urlDownload }, PROVIDER, "== URL DOWNLOAD ==");
-                callback({
+                libs.log({
                     file: urlDownload,
-                    kind: "Captions",
+                    kind: kind,
                     label: lang,
                     type: "download",
+                    provider: PROVIDER,
+                }, PROVIDER, "== URL DOWNLOAD ==>");
+                callback({
+                    file: urlDownload,
+                    kind: kind,
+                    label: lang,
+                    type: "download",
+                    provider: PROVIDER,
                 });
                 _h.label = 8;
             case 8:

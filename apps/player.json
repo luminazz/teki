@@ -15,5 +15,20 @@
     "show": true,
     "session_time": 120
   },
-  "ads_init" : "admob"
+  "ads_init" : "admob",
+  "ads_start_remote" : {
+    "enable_admob": true,
+    "enable_applovin": true,
+    "enable_unity": true
+  },
+  "ads_back_remote" : {
+    "enable_admob": true,
+    "enable_applovin": true,
+    "enable_unity": true
+  },
+  "unity_remote" : {
+    "sdk_key": "5243515",
+    "unit_id": "Interstitial_Android"
+  },
+  "enable_open_admob": true
 }
