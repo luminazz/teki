@@ -84,7 +84,7 @@ subs.getResource = function (movieInfo, config, callback) { return __awaiter(_th
                             file: item.link,
                             kind: "Captions",
                             label: item.lang,
-                            type: "download",
+                            type: "zip",
                             provider: PROVIDER,
                         });
                     }
