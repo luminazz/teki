@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 hosts["closeload"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, parseDetail_1, script_1, unpacker, varName, pattern, regex, match, atobM, e_1;
+    var DOMAIN, HOST, parseDetail_1, script_1, unpacker, varName, pattern, regex, match, atobM, reversed, second, result, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -63,23 +63,28 @@ hosts["closeload"] = function (url, movieInfo, provider, config, callback) { ret
                 }
                 unpacker = libs.string_unpacker_v2(script_1);
                 libs.log({ unpacker: unpacker }, provider, 'Unpacker');
-                varName = unpacker.match(/src\:atob\(([^\)]+)/i);
+                varName = unpacker.match(/src:([^,]+),type/i);
                 varName = varName ? varName[1] : '';
-                libs.log({ varName: varName }, provider, 'VarName');
-                if (!varName) {
-                    return [2];
-                }
-                pattern = "".concat(varName, "=\"([^\"]+)");
+                libs.log({ varName: varName }, provider, "VARNAME");
+                pattern = "".concat(varName, "\\=[A-z0-9_]+\\(\"([^\"]+)\"\\)");
+                libs.log({ pattern: pattern }, provider, "PATTERN");
                 regex = new RegExp(pattern, "i");
                 match = regex.exec(unpacker);
+                libs.log({ match: match }, provider, "REGEX");
                 match = match ? match[1] : "";
                 if (!match) {
                     return [2];
                 }
-                libs.log({ match: match }, provider, 'Match');
+                libs.log({ match: match }, provider, "MATCH");
                 atobM = libs.string_atob(match);
-                libs.log({ atobM: atobM }, provider, 'ATOB');
-                libs.embed_callback(atobM, provider, HOST, 'Hls', callback, 1, [], [{ file: atobM, quality: 1080 }], {
+                reversed = atobM.split("").reverse().join("");
+                second = libs.string_atob(reversed);
+                result = second.split("|")[1];
+                libs.log({ result: result }, provider, 'ATOB');
+                if (!result) {
+                    return [2];
+                }
+                libs.embed_callback(result, provider, HOST, 'Hls', callback, 1, [], [{ file: result, quality: 1080 }], {
                     Referer: url,
                 }, {
                     type: "m3u8",

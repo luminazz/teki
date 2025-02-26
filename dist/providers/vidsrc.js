@@ -36,44 +36,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    function Iry9MQXnLs(_0x4abb1c) {
-        var _0x611579 = "pWB9V)[*4I`nJpp?ozyB~dbr9yt!_n4u";
-        var _0x31e7e2 = "";
-        var _0x2680b0 = _0x4abb1c.match(/.{1,2}/g).map(function (_0x356804) { return String.fromCharCode(parseInt(_0x356804, 16)); }).join("");
-        for (var _0xffe351 = 0; _0xffe351 < _0x2680b0.length; _0xffe351++) {
-            _0x31e7e2 += String.fromCharCode(_0x2680b0.charCodeAt(_0xffe351) ^ _0x611579.charCodeAt(_0xffe351 % _0x611579.length));
+    function Iry9MQXnLs(hexInput) {
+        var key = "pWB9V)[*4I`nJpp?ozyB~dbr9yt!*n4u";
+        var hexDecoded = hexInput.match(/.{1,2}/g)
+            .map(function (hex) { return String.fromCharCode(parseInt(hex, 16)); })
+            .join("");
+        var xorResult = "";
+        for (var i = 0; i < hexDecoded.length; i++) {
+            xorResult += String.fromCharCode(hexDecoded.charCodeAt(i) ^ key.charCodeAt(i % key.length));
         }
-        var _0x5e9147 = "";
-        for (var _0x57e5e6 = 0; _0x57e5e6 < _0x31e7e2.length; _0x57e5e6++) {
-            _0x5e9147 += String.fromCharCode(_0x31e7e2.charCodeAt(_0x57e5e6) - 3);
+        var shiftResult = "";
+        for (var i = 0; i < xorResult.length; i++) {
+            shiftResult += String.fromCharCode(xorResult.charCodeAt(i) - 3);
         }
-        return libs.string_atob(_0x5e9147);
+        return libs.string_atob(shiftResult);
     }
-    function IGLImMhWrI(_0x2ab3bb) {
-        var _0x2173f6 = _0x2ab3bb.split("").reverse().join("");
-        var _0x9b9638 = _0x2173f6.replace(/[a-zA-Z]/g, function (_0x3e4ab8) {
-            return String.fromCharCode(_0x3e4ab8.charCodeAt(0) + (_0x3e4ab8.toLowerCase() < "n" ? 13 : -13));
+    function IGLImMhWrI(input) {
+        var reversed = input.split("").reverse().join("");
+        var rot13Applied = reversed.replace(/[a-zA-Z]/g, function (char) {
+            return String.fromCharCode(char.charCodeAt(0) + (char.toLowerCase() < "n" ? 13 : -13));
         });
-        var _0x16f7f1 = _0x9b9638.split("").reverse().join("");
-        return libs.string_atob(_0x16f7f1);
+        var finalReversed = rot13Applied.split("").reverse().join("");
+        return libs.string_atob(finalReversed);
     }
-    function GTAxQyTyBx(_0x33dfa4) {
-        var _0x1457ba = _0x33dfa4.split("").reverse().join("");
-        var _0x49a8fe = "";
-        for (var _0x8bc703 = 0; _0x8bc703 < _0x1457ba.length; _0x8bc703 += 2) {
-            _0x49a8fe += _0x1457ba[_0x8bc703];
+    function GTAxQyTyBx(input) {
+        var reversed = input.split("").reverse().join("");
+        var evenCharsOnly = "";
+        for (var i = 0; i < reversed.length; i += 2) {
+            evenCharsOnly += reversed[i];
         }
-        return libs.string_atob(_0x49a8fe);
-    }
-    function C66jPHx8qu(_0x48e6c2) {
-        var _0x382290 = _0x48e6c2.split("").reverse().join("");
-        var _0x1cb155 = "X9a(O;FMV2-7VO5x;Ao:dN1NoFs?j,";
-        var _0x50d89b = _0x382290.match(/.{1,2}/g).map(function (_0x58f648) { return String.fromCharCode(parseInt(_0x58f648, 16)); }).join("");
-        var _0x574d54 = "";
-        for (var _0x151d1c = 0; _0x151d1c < _0x50d89b.length; _0x151d1c++) {
-            _0x574d54 += String.fromCharCode(_0x50d89b.charCodeAt(_0x151d1c) ^ _0x1cb155.charCodeAt(_0x151d1c % _0x1cb155.length));
-        }
-        return _0x574d54;
+        return libs.string_atob(evenCharsOnly);
     }
     function MyL1IRSfHe(_0xa54f5f) {
         var _0x2b197e = _0xa54f5f.split("").reverse().join("");
@@ -87,16 +79,21 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         }
         return _0x5e7210;
     }
-    function detdj7JHiK(_0x46ddbf) {
-        var _0x4fd99c = _0x46ddbf.slice(10, -16);
-        var _0x1effe6 = "3SAY~#%Y(V%>5d/Yg\"$G[Lh1rK4a;7ok";
-        var _0x411fd5 = libs.string_atob(_0x4fd99c);
-        var _0x1b9ca3 = _0x1effe6.repeat(Math.ceil(_0x411fd5.length / _0x1effe6.length)).substring(0, _0x411fd5.length);
-        var _0x5062ac = "";
-        for (var _0x47adac = 0; _0x47adac < _0x411fd5.length; _0x47adac++) {
-            _0x5062ac += String.fromCharCode(_0x411fd5.charCodeAt(_0x47adac) ^ _0x1b9ca3.charCodeAt(_0x47adac));
+    function detdj7JHiK(encodedInput) {
+        var trimmedInput = encodedInput.slice(10, -16);
+        var xorKey = "3SAY~#%Y(V%>5d/Yg\"$G[Lh1rK4a;7ok";
+        var base64Decoded = libs.string_atob(trimmedInput);
+        var repeatedKey = "";
+        var keyLength = xorKey.length;
+        var neededLength = base64Decoded.length;
+        for (var i = 0; i < neededLength; i++) {
+            repeatedKey += xorKey[i % keyLength];
         }
-        return _0x5062ac;
+        var result = "";
+        for (var i = 0; i < base64Decoded.length; i++) {
+            result += String.fromCharCode(base64Decoded.charCodeAt(i) ^ repeatedKey.charCodeAt(i));
+        }
+        return result;
     }
     function nZlUnj2VSo(_0x132a77) {
         var _0x4577d0 = {
@@ -272,60 +269,78 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 encodeURL = "";
                 try {
+                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 1");
                     encodeURL = Iry9MQXnLs(textEncode);
                 }
-                catch (e) { }
+                catch (e) {
+                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 1");
+                }
                 try {
                     if (encodeURL.indexOf('m3u8') == -1) {
+                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 2");
                         encodeURL = IGLImMhWrI(textEncode);
                     }
                 }
-                catch (e) { }
+                catch (e) {
+                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 2");
+                }
                 try {
                     if (encodeURL.indexOf('m3u8') == -1) {
+                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 3");
                         encodeURL = GTAxQyTyBx(textEncode);
                     }
                 }
-                catch (e) { }
-                try {
-                    if (encodeURL.indexOf('m3u8') == -1) {
-                        encodeURL = C66jPHx8qu(textEncode);
-                    }
+                catch (e) {
+                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 3");
                 }
-                catch (e) { }
                 try {
                     if (encodeURL.indexOf('m3u8') == -1) {
+                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 4");
                         encodeURL = MyL1IRSfHe(textEncode);
                     }
                 }
-                catch (e) { }
-                try {
-                    if (encodeURL.indexOf('m3u8') == -1) {
-                        encodeURL = detdj7JHiK(textEncode);
-                    }
+                catch (e) {
+                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 4");
                 }
-                catch (e) { }
                 try {
                     if (encodeURL.indexOf('m3u8') == -1) {
+                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 5");
                         encodeURL = nZlUnj2VSo(textEncode);
                     }
                 }
-                catch (e) { }
+                catch (e) {
+                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 5");
+                }
                 try {
                     if (encodeURL.indexOf('m3u8') == -1) {
+                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 6");
                         encodeURL = laM1dAi3vO(textEncode);
                     }
                 }
-                catch (e) { }
+                catch (e) {
+                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 6");
+                }
                 try {
                     if (encodeURL.indexOf('https') == -1) {
+                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 7");
                         encodeURL = GuxKGDsA2T(textEncode);
                     }
                 }
-                catch (e) { }
+                catch (e) {
+                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 7");
+                }
                 try {
                     if (encodeURL.indexOf('m3u8') == -1) {
+                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 8");
                         encodeURL = LXVUMCoAHJ(textEncode);
+                    }
+                }
+                catch (e) {
+                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 8");
+                }
+                try {
+                    if (encodeURL.indexOf('m3u8') == -1) {
+                        encodeURL = detdj7JHiK(textEncode);
                     }
                 }
                 catch (e) { }

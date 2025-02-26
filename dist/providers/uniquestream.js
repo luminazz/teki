@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -36,9 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, sourceData, iframeUrl, _i, sourceData_1, sourceItem, urlAjax, body, headers, resultAjax, embedUrl, parseEmbedUrl, _a, iframeUrl_1, iframeItem, hlsUrl, parseHls, directUrl;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var PROVIDER, DOMAIN, urlSearch, parseSearch, postID, urlEmbed, parseEmbed, iframeData, iframeUrl, htmlDirect, text, directUrl;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
                 PROVIDER = 'DUniqueStream';
                 DOMAIN = "https://uniquestream.net";
@@ -52,89 +52,50 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ urlSearch: urlSearch }, PROVIDER, 'URL SEARCH');
                 return [4, libs.request_get(urlSearch, {}, true)];
             case 1:
-                parseSearch = _b.sent();
-                sourceData = [];
-                libs.log({ length: parseSearch('ul#playeroptionsul > li').length }, PROVIDER, 'SEARCH LENGTH');
-                parseSearch('ul#playeroptionsul > li').each(function (key, item) {
-                    var id = parseSearch(item).attr('data-post');
-                    var nume = parseSearch(item).attr('data-nume');
-                    libs.log({ id: id, nume: nume }, PROVIDER, 'NUME');
-                    sourceData.push({
-                        id: id,
-                        nume: nume
-                    });
-                });
-                iframeUrl = [];
-                _i = 0, sourceData_1 = sourceData;
-                _b.label = 2;
+                parseSearch = _a.sent();
+                postID = parseSearch("input[name='postid']").val();
+                libs.log({ postID: postID }, PROVIDER, 'POST ID');
+                if (!postID) {
+                    return [2];
+                }
+                urlEmbed = "".concat(DOMAIN, "/wp-json/zetaplayer/v2/").concat(postID, "/").concat(movieInfo.type == 'tv' ? 'ep' : 'mv', "/1");
+                return [4, libs.request_get(urlEmbed)];
             case 2:
-                if (!(_i < sourceData_1.length)) return [3, 5];
-                sourceItem = sourceData_1[_i];
-                urlAjax = "".concat(DOMAIN, "/wp-admin/admin-ajax.php");
-                body = "action=zeta_player_ajax&post=".concat(sourceItem.id, "&nume=").concat(sourceItem.nume, "&type=").concat(movieInfo.type == 'movie' ? 'mv' : 'tv');
-                headers = {
-                    'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                    referer: DOMAIN,
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-                };
-                libs.log({ urlAjax: urlAjax, body: body, headers: headers }, PROVIDER, 'AJAX INFO');
-                return [4, libs.request_post(urlAjax, headers, body)];
-            case 3:
-                resultAjax = _b.sent();
-                libs.log({ resultAjax: resultAjax }, PROVIDER, 'RESULT AJAX');
-                embedUrl = resultAjax.embed_url;
-                if (!embedUrl) {
-                    return [3, 4];
-                }
-                parseEmbedUrl = embedUrl.match(/src\=\"([^\"]+)/i);
-                parseEmbedUrl = parseEmbedUrl ? parseEmbedUrl[1] : "";
-                libs.log({ parseEmbedUrl: parseEmbedUrl }, PROVIDER, 'PARSE EMBED URL');
-                if (!parseEmbedUrl) {
-                    return [3, 4];
-                }
-                if (_.startsWith(parseEmbedUrl, '/')) {
-                    parseEmbedUrl = "https:".concat(parseEmbedUrl);
-                }
-                iframeUrl.push(parseEmbedUrl);
-                _b.label = 4;
-            case 4:
-                _i++;
-                return [3, 2];
-            case 5:
+                parseEmbed = _a.sent();
+                libs.log({ urlEmbed: urlEmbed, parseEmbed: parseEmbed }, PROVIDER, 'EMBED INFO');
+                iframeData = parseEmbed.embed_url;
+                iframeUrl = iframeData.match(/src\=\"([^\"]+)/i);
+                iframeUrl = iframeUrl ? iframeUrl[1] : '';
                 libs.log({ iframeUrl: iframeUrl }, PROVIDER, 'IFRAME URL');
-                _a = 0, iframeUrl_1 = iframeUrl;
-                _b.label = 6;
-            case 6:
-                if (!(_a < iframeUrl_1.length)) return [3, 9];
-                iframeItem = iframeUrl_1[_a];
-                hlsUrl = iframeItem;
-                if (_.startsWith(hlsUrl, '/')) {
-                    hlsUrl = "https:".concat(hlsUrl);
+                if (!iframeUrl) {
+                    return [2];
                 }
-                libs.log({ hlsUrl: hlsUrl }, PROVIDER, 'HLS URL');
-                if (!(hlsUrl.indexOf('uniquestream') != -1)) return [3, 8];
-                return [4, libs.request_get(hlsUrl, {
-                        referer: "".concat(DOMAIN, "/"),
-                        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
+                if (_.startsWith(iframeUrl, '/')) {
+                    iframeUrl = "https:".concat(iframeUrl);
+                }
+                return [4, fetch(iframeUrl, {
+                        headers: {
+                            'referer': "".concat(DOMAIN, "/"),
+                            'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome"
+                        }
                     })];
-            case 7:
-                parseHls = _b.sent();
-                directUrl = parseHls.match(/let *url *\= *\'([^\']+)/i);
+            case 3:
+                htmlDirect = _a.sent();
+                return [4, htmlDirect.text()];
+            case 4:
+                text = _a.sent();
+                directUrl = text.match(/let *url *\= *\'([^\']+)/i);
                 directUrl = directUrl ? directUrl[1] : '';
-                directUrl = directUrl.replace("/master/", "/shared/");
                 libs.log({ directUrl: directUrl }, PROVIDER, 'DIRECT URL');
                 if (!directUrl) {
-                    return [3, 8];
+                    return [2];
                 }
-                libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'hls', callback, 1, [], [], {
-                    Referer: hlsUrl
+                libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'hls', callback, 1, [], [{ file: directUrl, quality: 1080 }], {
+                    Origin: "https://hls.uniquestream.net",
+                    Referer: "https://hls.uniquestream.net/",
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
                 });
-                _b.label = 8;
-            case 8:
-                _a++;
-                return [3, 6];
-            case 9: return [2, true];
+                return [2, true];
         }
     });
 }); };
