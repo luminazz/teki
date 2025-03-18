@@ -36,7 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, LINK_DETAIL, TV_LINK_DETAIL, flagTv, _loop_1, _i, TV_LINK_DETAIL_1, linkTvItem, filmId, serverIds, apiUrlEmbed, parseEmbedServer_1, apiUrlGetSeason, parseGetSeason_1, seasonId_1, apiUrlGetEpisode, episodeId_1, parseGetEpisode_1, urlGetEmbedTv, parseEmbedTv_1, apiGetLinkEmbed, _a, serverIds_1, serverIdItem, getLinkEmbedData;
+    var PROVIDER, DOMAIN, urlSearch, parseSearch, LINK_DETAIL, TV_LINK_DETAIL, flagTv, _loop_1, _i, TV_LINK_DETAIL_1, linkTvItem, filmId, serverIds, apiUrlEmbed, parseEmbedServer_1, apiUrlGetSeason, parseGetSeason_1, seasonId_1, apiUrlGetEpisode, episodeId_1, parseGetEpisode_1, urlGetEmbedTv, parseEmbedTv_1, extractDirect, apiGetLinkEmbed, _a, serverIds_1, serverIdItem, getLinkEmbedData;
+    var _this = this;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -200,26 +201,97 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 _b.label = 11;
             case 11:
                 libs.log({ serverIds: serverIds }, PROVIDER, 'SERVER IDS');
-                apiGetLinkEmbed = "".concat(DOMAIN, "/ajax/get_link/");
+                extractDirect = function (url) { return __awaiter(_this, void 0, void 0, function () {
+                    var dataRabbit, source3, parseTrack, tracks, _i, parseTrack_1, trackItem, lang, parseLang, rank, _a, source3_1, item, directSizes, patternSize, directQuality, _b, patternSize_1, patternItem, sizeQuality;
+                    return __generator(this, function (_c) {
+                        switch (_c.label) {
+                            case 0: return [4, libs.request_get("https://aquariumtv.app/rabbit?url_embed=".concat(libs.string_base64_encode(url)))];
+                            case 1:
+                                dataRabbit = _c.sent();
+                                libs.log({ dataRabbit: dataRabbit, url: url, encode: libs.string_base64_encode(url) }, PROVIDER, "DATA RABBIT");
+                                source3 = dataRabbit['sources'] || [];
+                                parseTrack = dataRabbit['tracks'] || [];
+                                tracks = [];
+                                for (_i = 0, parseTrack_1 = parseTrack; _i < parseTrack_1.length; _i++) {
+                                    trackItem = parseTrack_1[_i];
+                                    lang = trackItem.label;
+                                    if (!lang) {
+                                        continue;
+                                    }
+                                    libs.log({ lang: lang, trackItem: trackItem }, PROVIDER, "TRACK ITEM");
+                                    parseLang = lang.match(/([A-z0-9]+)/i);
+                                    parseLang = parseLang ? parseLang[1].trim() : '';
+                                    if (!parseLang) {
+                                        continue;
+                                    }
+                                    tracks.push({
+                                        file: trackItem.file,
+                                        kind: 'captions',
+                                        label: parseLang
+                                    });
+                                }
+                                libs.log({ source3: source3, tracks: tracks }, PROVIDER, 'SOURCES_TRACK');
+                                rank = 0;
+                                _a = 0, source3_1 = source3;
+                                _c.label = 2;
+                            case 2:
+                                if (!(_a < source3_1.length)) return [3, 5];
+                                item = source3_1[_a];
+                                if (!item.file) {
+                                    return [3, 4];
+                                }
+                                return [4, libs.request_get(item.file, {})];
+                            case 3:
+                                directSizes = _c.sent();
+                                patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
+                                if (!patternSize) {
+                                    libs.embed_callback(item.file, PROVIDER, PROVIDER, item.type, callback, ++rank, tracks);
+                                    return [3, 4];
+                                }
+                                directQuality = [];
+                                libs.log({ patternSize: patternSize }, PROVIDER, 'PATTERN SIZE');
+                                for (_b = 0, patternSize_1 = patternSize; _b < patternSize_1.length; _b++) {
+                                    patternItem = patternSize_1[_b];
+                                    sizeQuality = patternItem.match(/\/([0-9]+)\//i);
+                                    sizeQuality = sizeQuality ? Number(sizeQuality[1]) : 1080;
+                                    directQuality.push({
+                                        file: patternItem,
+                                        quality: sizeQuality
+                                    });
+                                }
+                                if (!directQuality.length) {
+                                    return [3, 4];
+                                }
+                                directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
+                                libs.log({ directQuality: directQuality }, PROVIDER, 'DIRECT QUALITY');
+                                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, ++rank, tracks, directQuality);
+                                _c.label = 4;
+                            case 4:
+                                _a++;
+                                return [3, 2];
+                            case 5: return [2];
+                        }
+                    });
+                }); };
+                apiGetLinkEmbed = "".concat(DOMAIN, "/ajax/episode/sources/");
                 _a = 0, serverIds_1 = serverIds;
                 _b.label = 12;
             case 12:
-                if (!(_a < serverIds_1.length)) return [3, 16];
+                if (!(_a < serverIds_1.length)) return [3, 15];
                 serverIdItem = serverIds_1[_a];
                 libs.log({ serverIdItem: serverIdItem }, PROVIDER, "SERVER ID ITEM");
                 return [4, libs.request_get(apiGetLinkEmbed + serverIdItem, {})];
             case 13:
                 getLinkEmbedData = _b.sent();
                 libs.log({ getLinkEmbedData: getLinkEmbedData }, PROVIDER, 'LINK EMBED DATA');
-                if (!(getLinkEmbedData && getLinkEmbedData.link)) return [3, 15];
-                return [4, libs.embed_redirect(getLinkEmbedData.link, '', movieInfo, PROVIDER, callback, '')];
+                if (getLinkEmbedData && getLinkEmbedData.link) {
+                    extractDirect(getLinkEmbedData.link);
+                }
+                _b.label = 14;
             case 14:
-                _b.sent();
-                _b.label = 15;
-            case 15:
                 _a++;
                 return [3, 12];
-            case 16: return [2, true];
+            case 15: return [2, true];
         }
     });
 }); };

@@ -37,7 +37,16 @@
     "version_build": 31,
     "is_force": false,
     "app_name": "Mediaon Player",
-    "is_ab_testing": false
+    "is_ab_testing": false,
+    "sleep_priority_links": 3000,
+    "priority_links": [
+      "SERVER F1",
+      "SERVER F2",
+      "SERVER C1",
+      "SERVER C2",
+      "SERVER A1",
+      "SERVER A2"
+    ]
   },
   "data": [
     {

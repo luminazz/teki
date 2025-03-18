@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    function parseM3U8(content) {
+    function parseM3U8(content, urlDirect) {
         var lines = content.split('\n').filter(function (line) { return line.trim() !== ''; });
         var result = [];
         for (var i = 0; i < lines.length; i++) {
@@ -48,20 +48,45 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     if (!file) {
                         continue;
                     }
+                    libs.log({ file: file, quality: quality }, PROVIDER, "PARSE M3U8 DATA");
                     if (file.indexOf(".m3u8") == -1) {
                         file += ".m3u8";
                     }
-                    result.push({
-                        file: file,
-                        quality: quality
-                    });
+                    if (file.indexOf("https://") != -1) {
+                        result.push({
+                            file: file,
+                            quality: quality
+                        });
+                    }
+                    else if (_.startsWith(file, '/')) {
+                        file = urlDirect.replace("/index.m3u8", file);
+                        result.push({
+                            file: file,
+                            quality: quality
+                        });
+                    }
+                    else if (_.startsWith(file, '.')) {
+                        file = file.replace('./', '/');
+                        file = urlDirect.replace("/index.m3u8", file);
+                        result.push({
+                            file: file,
+                            quality: quality
+                        });
+                    }
+                    else {
+                        file = urlDirect.replace("index.m3u8", file);
+                        result.push({
+                            file: file,
+                            quality: quality
+                        });
+                    }
                 }
                 i++;
             }
         }
         return result;
     }
-    var PROVIDER, DOMAIN, headers, urlSearch, domainAPI, parseSearch, tracks, _i, _a, item, parseDirect, textDirect, m3u8Data, e_1;
+    var PROVIDER, DOMAIN, headers, urlSearch, domainAPI, parseSearch, tracks, _i, _a, item, headerDirect, parseDirect, textDirect, m3u8Data, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -102,18 +127,26 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!parseSearch.videoSource) {
                     return [2];
                 }
-                return [4, fetch(parseSearch.videoSource)];
+                headerDirect = {
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+                    "Referer": "https://megacloud.store/",
+                    "Origin": "https://megacloud.store",
+                };
+                return [4, fetch(parseSearch.videoSource, {
+                        headers: headerDirect
+                    })];
             case 3:
                 parseDirect = _b.sent();
                 return [4, parseDirect.text()];
             case 4:
                 textDirect = _b.sent();
-                m3u8Data = parseM3U8(textDirect);
+                m3u8Data = parseM3U8(textDirect, parseSearch.videoSource);
                 libs.log({ m3u8Data: m3u8Data }, PROVIDER, "M3U8 DATA");
-                libs.embed_callback(m3u8Data[0].file, PROVIDER, PROVIDER, 'hls', callback, 1, tracks, m3u8Data, {
-                    Referer: parseSearch.videoSource,
-                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-                });
+                if (!m3u8Data.length) {
+                    libs.embed_callback(parseSearch.videoSource, PROVIDER, PROVIDER, 'hls', callback, 1, tracks, [{ file: parseSearch.videoSource, quality: 1080 }], headerDirect);
+                    return [2];
+                }
+                libs.embed_callback(m3u8Data[0].file, PROVIDER, PROVIDER, 'hls', callback, 1, tracks, m3u8Data, headerDirect);
                 return [3, 6];
             case 5:
                 e_1 = _b.sent();

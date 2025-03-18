@@ -222,7 +222,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         headers: {
                             'user-agent': userAgent,
                             referer: urlSearch
-                        }
+                        },
+                        redirect: "follow"
                     })];
             case 3:
                 requestFrame2 = _a.sent();
@@ -231,7 +232,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 parseFrame2 = _a.sent();
                 iframePro = parseFrame2.match(/src *\: *\'([^\']+)/i);
                 iframePro = iframePro ? iframePro[1] : "";
-                libs.log({ iframePro: iframePro }, PROVIDER, "IFRAME PRO");
+                libs.log({ iframePro: iframePro, parseFrame2: parseFrame2, parseIframe: parseIframe }, PROVIDER, "IFRAME PRO");
+                libs.log({ parseIframe: parseIframe }, PROVIDER, "PARSE IFRAME 2 DE");
                 if (!iframePro) {
                     return [2, false];
                 }

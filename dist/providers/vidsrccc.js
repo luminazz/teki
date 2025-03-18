@@ -71,7 +71,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                PROVIDER = 'QVidsrcCC';
+                PROVIDER = 'AVidsrcCC';
                 DOMAIN = "https://vidsrc.cc";
                 headers = {
                     'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -88,6 +88,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (movieInfo.type == 'tv') {
                     urlHash += "&season=".concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
                 }
+                libs.log({ vrf: vrf }, PROVIDER, "VRF");
                 return [4, libs.request_get(urlHash, headers)];
             case 3:
                 resHash = _b.sent();

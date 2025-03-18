@@ -1,0 +1,6 @@
+{
+	"providers": [	
+		"dist/providers/vidsrc.js"
+		
+	]
+}

@@ -36,7 +36,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, key, xorEncryptDecrypt_1, generateVRF, domainAPI, vrf, parseAPI, _i, _a, item, e_1;
+    function parseM3U8(content) {
+        var lines = content.split('\n').filter(function (line) { return line.trim() !== ''; });
+        var result = [];
+        for (var i = 0; i < lines.length; i++) {
+            if (lines[i].startsWith('#EXT-X-STREAM-INF:')) {
+                var resolutionMatch = lines[i].match(/RESOLUTION=(\d+)x(\d+)/);
+                if (resolutionMatch && lines[i + 1]) {
+                    var quality = parseInt(resolutionMatch[2]);
+                    var file = lines[i + 1];
+                    if (!file) {
+                        continue;
+                    }
+                    libs.log({ file: file, quality: quality }, PROVIDER, "PARSE M3U8 DATA");
+                    if (file.indexOf(".m3u8") == -1) {
+                        file += ".m3u8";
+                    }
+                    result.push({
+                        file: file,
+                        quality: quality
+                    });
+                }
+                i++;
+            }
+        }
+        return result;
+    }
+    var PROVIDER, DOMAIN, key, xorEncryptDecrypt_1, generateVRF, domainAPI, vrf, parseAPI, _i, _a, item, parseDirect, textDirect, m3u8Data, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -44,7 +70,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 DOMAIN = "https://watch.streamflix.one";
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 3, , 4]);
+                _b.trys.push([1, 8, , 9]);
                 key = "M6mV3KZOa4Kt53FsHijMMxdVBpMScfMv";
                 xorEncryptDecrypt_1 = function (r, t) {
                     var e = Array.from(r, function (n) { return n.charCodeAt(0); });
@@ -56,7 +82,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     var a = xorEncryptDecrypt_1(r, e);
                     return encodeURIComponent(libs.string_btoa(a));
                 };
-                domainAPI = "https://vidsrc.rip/api/source/streamflix/flixhq/".concat(movieInfo.tmdb_id);
+                domainAPI = "https://isut.streamflix.one/api/source/".concat(movieInfo.tmdb_id);
                 if (movieInfo.type == 'tv') {
                     domainAPI += "/".concat(movieInfo.season, "/").concat(movieInfo.episode);
                 }
@@ -70,19 +96,35 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!parseAPI.sources) {
                     return [2];
                 }
-                for (_i = 0, _a = parseAPI.sources; _i < _a.length; _i++) {
-                    item = _a[_i];
-                    if (!item.file) {
-                        continue;
-                    }
-                    libs.embed_callback(item.file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: item.file, quality: 1080 }]);
-                }
-                return [3, 4];
+                _i = 0, _a = parseAPI.sources;
+                _b.label = 3;
             case 3:
+                if (!(_i < _a.length)) return [3, 7];
+                item = _a[_i];
+                if (!item.file) {
+                    return [3, 6];
+                }
+                return [4, fetch(item.file)];
+            case 4:
+                parseDirect = _b.sent();
+                return [4, parseDirect.text()];
+            case 5:
+                textDirect = _b.sent();
+                m3u8Data = parseM3U8(textDirect);
+                libs.log({ m3u8Data: m3u8Data }, PROVIDER, 'PARSE M3U8');
+                libs.embed_callback(m3u8Data[0].file, PROVIDER, PROVIDER, 'hls', callback, 1, [], m3u8Data, {
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+                });
+                _b.label = 6;
+            case 6:
+                _i++;
+                return [3, 3];
+            case 7: return [3, 9];
+            case 8:
                 e_1 = _b.sent();
                 libs.log({ e: e_1 }, PROVIDER, 'ERROR');
-                return [3, 4];
-            case 4: return [2];
+                return [3, 9];
+            case 9: return [2];
         }
     });
 }); };

@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,7 +47,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, decryptjs, urlEmbed, parseEmbed_1, scripts_2, keyEndpoint, _i, scripts_1, item, scriptData, textData, matchEndpoint, hash, textHash, urlSearch, parseSearch, directUrl, tracks, _a, _b, item, type, directSizes, patternSize, directQuality, _c, patternSize_1, patternItem, sizeQuality, e_1;
+    function parseM3U8(content) {
+        var lines = content.split('\n').filter(function (line) { return line.trim() !== ''; });
+        var result = [];
+        for (var i = 0; i < lines.length; i++) {
+            if (lines[i].startsWith('#EXT-X-STREAM-INF:')) {
+                var resolutionMatch = lines[i].match(/RESOLUTION=(\d+)x(\d+)/);
+                if (resolutionMatch && lines[i + 1]) {
+                    var quality = parseInt(resolutionMatch[2]);
+                    var file = lines[i + 1];
+                    if (!file) {
+                        continue;
+                    }
+                    libs.log({ file: file, quality: quality }, PROVIDER, "PARSE M3U8 DATA");
+                    if (file.indexOf(".m3u8") == -1) {
+                        file += ".m3u8";
+                    }
+                    if (file.indexOf("https://") == -1) {
+                        continue;
+                    }
+                    result.push({
+                        file: file,
+                        quality: quality
+                    });
+                }
+                i++;
+            }
+        }
+        return result;
+    }
+    var PROVIDER, DOMAIN, headers, headerDirect, decryptjs, urlEmbed, parseEmbed_1, scripts_2, keyEndpoint, _i, scripts_1, item, scriptData, textData, matchEndpoint, hash, textHash, urlSearch, parseSearch, directUrl, tracks, _a, _b, item, type, directQuality_1, qualityIndex, q, qualityItem, proxyDirectUrl, parseDirecturl, parseDirectSize, textDirect, m3u8Data, directQuality_2, directSizes, patternSize, directQuality, _c, patternSize_1, patternItem, sizeQuality, e_1;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
@@ -47,9 +87,20 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     'Referer': "https://vidlink.pro/",
                     'Origin': DOMAIN,
                 };
+                headerDirect = {
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+                    "Referer": "https://vidlink.pro/",
+                    "Origin": "https://vidlink.pro",
+                    "Sec-Fetch-Site": "cross-site",
+                    "Sec-Fetch-Mode": "cors",
+                    "Sec-Fetch-Dest": "empty",
+                    "Accept": "*/*",
+                    "Accept-Encoding": "gzip, deflate, br, zstd",
+                    "Accept-Language": "en-US,en;q=0.9",
+                };
                 _d.label = 1;
             case 1:
-                _d.trys.push([1, 12, , 13]);
+                _d.trys.push([1, 14, , 15]);
                 decryptjs = function (e, t) {
                     var n = JSON.parse(e);
                     libs.log({ n: n }, PROVIDER, "N");
@@ -154,14 +205,69 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     });
                 }
                 if (!directUrl) {
+                    if (parseSearch.stream.qualities) {
+                        libs.log({ parseSearch: parseSearch.stream.qualities }, PROVIDER, "PARSE SEARCH INFO");
+                        directQuality_1 = [];
+                        for (qualityIndex in parseSearch.stream.qualities) {
+                            q = Number(qualityIndex);
+                            qualityItem = parseSearch.stream.qualities[qualityIndex];
+                            if (!qualityItem.url) {
+                                continue;
+                            }
+                            directQuality_1.push({
+                                file: qualityItem.url,
+                                quality: q,
+                            });
+                        }
+                        libs.log({ directQuality: directQuality_1 }, PROVIDER, "DIRECT QUALITY");
+                        if (!directQuality_1.length) {
+                            return [2];
+                        }
+                        directQuality_1 = _.orderBy(directQuality_1, ['quality'], ['desc']);
+                        libs.embed_callback(directQuality_1[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, directQuality_1, headerDirect, {
+                            type: "m3u8",
+                        });
+                        return [2];
+                    }
+                    else {
+                        return [2];
+                    }
+                }
+                proxyDirectUrl = directUrl.split("/proxy/");
+                if (proxyDirectUrl.length > 1) {
+                    directUrl = decodeURIComponent(proxyDirectUrl[1]);
+                }
+                parseDirecturl = directUrl.split("m3u8/{");
+                if (parseDirecturl.length > 1) {
+                    directUrl = parseDirecturl[0] + "m3u8";
+                    headerDirect = __assign(__assign({}, JSON.parse("{" + parseDirecturl[1])), { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" });
+                }
+                libs.log({ directUrl: directUrl, headerDirect: headerDirect }, PROVIDER, 'DIRECT URL');
+                return [4, fetch(directUrl)];
+            case 11:
+                parseDirectSize = _d.sent();
+                return [4, parseDirectSize.text()];
+            case 12:
+                textDirect = _d.sent();
+                m3u8Data = parseM3U8(textDirect);
+                libs.log({ m3u8Data: m3u8Data }, PROVIDER, 'PARSE M3U8');
+                if (m3u8Data.length) {
+                    directQuality_2 = _.orderBy(m3u8Data, ['quality'], ['desc']);
+                    libs.embed_callback(directQuality_2[0].file, PROVIDER, PROVIDER, 'hls', callback, 1, tracks, directQuality_2, headerDirect, {
+                        type: "m3u8",
+                    });
                     return [2];
                 }
-                return [4, libs.request_get(directUrl, {})];
-            case 11:
+                libs.log({ directUrl: directUrl, headerDirect: headerDirect }, PROVIDER, 'DIRECT URL');
+                libs.embed_callback(directUrl, PROVIDER, PROVIDER, "hls", callback, 1, tracks, [{ file: directUrl, quality: 1080 }], headerDirect, {
+                    type: "m3u8",
+                });
+                return [2];
+            case 13:
                 directSizes = _d.sent();
                 patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
                 if (!patternSize) {
-                    libs.embed_callback(directUrl, PROVIDER, PROVIDER, "hls", callback, 1, tracks);
+                    libs.embed_callback(directUrl, PROVIDER, PROVIDER, "hls", callback, 1, tracks, [{ file: directUrl, quality: 1080 }], headerDirect);
                     return [2];
                 }
                 directQuality = [];
@@ -179,14 +285,14 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
-                libs.log({ directQuality: directQuality }, PROVIDER, 'DIRECT QUALITY');
-                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, directQuality);
-                return [3, 13];
-            case 12:
+                libs.log({ directQuality: directQuality, headerDirect: headerDirect }, PROVIDER, 'DIRECT QUALITY');
+                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, directQuality, headerDirect);
+                return [3, 15];
+            case 14:
                 e_1 = _d.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
-                return [3, 13];
-            case 13: return [2];
+                return [3, 15];
+            case 15: return [2];
         }
     });
 }); };

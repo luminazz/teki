@@ -40,7 +40,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
-                PROVIDER = 'ZVidsrcPro';
+                PROVIDER = 'CVidsrcPro';
                 DOMAIN = "https://embed.su";
                 headers = {
                     'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",

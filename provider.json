@@ -1,22 +1,19 @@
 {
 	"providers": [
 
-"dist/providers/cineby.js",
+
+"dist/providers/vidlink.js",
+"dist/providers/fmovies.js",
 "dist/providers/vidsrc.js",
 "dist/providers/vidsrccc.js",
-"dist/providers/rivestream.js",
 "dist/providers/tomautoembed.js",
-"dist/providers/streamflix.js",
 "dist/providers/vidsrcpro.js",
 "dist/providers/ymovies.js",
 "dist/providers/yesmovies.js",
 "dist/providers/2embedcc.js",
 "dist/providers/vidsrcvip.js",
-"dist/providers/uniquestream.js",
 "dist/providers/ridomovie.js",
-"dist/providers/gomovies.js",
-"dist/providers/moviesapi.js",
-"dist/providers/catflix.js",
-"dist/providers/idflix.js"
+"dist/providers/catflix.js"
+
 	]
 }
