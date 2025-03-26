@@ -2,6 +2,7 @@
 	"providers": [
 
 
+"dist/providers/febbox.js",
 "dist/providers/vidlink.js",
 "dist/providers/fmovies.js",
 "dist/providers/vidsrc.js",
@@ -13,7 +14,7 @@
 "dist/providers/2embedcc.js",
 "dist/providers/vidsrcvip.js",
 "dist/providers/ridomovie.js",
-"dist/providers/catflix.js"
-
+"dist/providers/catflix.js",
+"dist/providers/zoechip.js"
 	]
 }

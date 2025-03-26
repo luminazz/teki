@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -36,43 +36,41 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, LINK_DETAIL_1, parseSearch_1, id, shareLink, parseShareLink, parseShareLink, shareId, febboxEmbed, parseFeb, fileList, parentId, _i, _a, item, sName, urlEpisode, parseEpisode, _b, _c, item, _d, fileList_1, item, ossID, directUrl, parseDirect, directQuality, qualityMatch, _e, qualityMatch_1, quality, q, e_1;
-    return __generator(this, function (_f) {
-        switch (_f.label) {
+    var PROVIDER, DOMAIN, headerFebbox, urlSearch, LINK_DETAIL, parseDetail, headingName, id, shareLink, parseShareLink, splitShareLink, shareID, parseFebbox, febboxId, seasonUrl, parseSeason_1, parseSeason, SEASON_ID_1, episodeUrl, parseEpisode_1, parseEpisode, EPISODE_ID_1, headerDirect, urlDirect, dataDirect, jsonDirect, parseDirect_1, directQuality_1, e_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
                 PROVIDER = 'WFebbox';
                 DOMAIN = "https://www.showbox.media";
-                _f.label = 1;
+                headerFebbox = {
+                    "Referer": "https://www.showbox.media/",
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
+                    "Origin": "https://www.showbox.media",
+                };
+                _a.label = 1;
             case 1:
-                _f.trys.push([1, 12, , 13]);
+                _a.trys.push([1, 11, , 12]);
                 urlSearch = "".concat(DOMAIN, "/search?keyword=").concat(libs.url_slug_search(movieInfo, '+'));
-                LINK_DETAIL_1 = "";
-                return [4, libs.request_get(urlSearch, {}, true)];
-            case 2:
-                parseSearch_1 = _f.sent();
-                parseSearch_1("div.film_list-wrap div.flw-item").each(function (key, item) {
-                    var href = parseSearch_1(item).find("h2.film-name a").attr("href");
-                    var title = parseSearch_1(item).find("h2.film-name a").text();
-                    var year = parseSearch_1(item).find("div.fd-infor > span:first-child").text();
-                    var type = parseSearch_1(item).find("div.fd-infor > span:last-child").text();
-                    libs.log({ href: href, title: title, year: year, type: type }, PROVIDER, "SEARCH_INFO");
-                    if (href && title && type && !LINK_DETAIL_1) {
-                        type = type.toLowerCase() == "movie" ? "movie" : "tv";
-                        if (libs.string_matching_title(movieInfo, title)) {
-                            if (movieInfo.type == 'tv' && type.toLowerCase() == 'tv') {
-                                LINK_DETAIL_1 = href;
-                            }
-                            if (movieInfo.type == 'movie' && type.toLowerCase() == 'movie' && movieInfo.year == year) {
-                                LINK_DETAIL_1 = href;
-                            }
-                        }
-                    }
-                });
-                libs.log({ LINK_DETAIL: LINK_DETAIL_1 }, PROVIDER, 'LINK_DETAIL');
-                if (!LINK_DETAIL_1) {
+                LINK_DETAIL = "";
+                if (movieInfo.type == 'movie') {
+                    LINK_DETAIL = "".concat(DOMAIN, "/movie/m-").concat(libs.url_slug_search(movieInfo, '-'), "-").concat(movieInfo.year);
+                }
+                else {
+                    LINK_DETAIL = "".concat(DOMAIN, "/tv/t-").concat(libs.url_slug_search(movieInfo, '-'), "-").concat(movieInfo.year);
+                }
+                libs.log({ LINK_DETAIL: LINK_DETAIL }, PROVIDER, 'LINK_DETAIL');
+                if (!LINK_DETAIL) {
                     return [2];
                 }
-                id = LINK_DETAIL_1.match(/detail\/([0-9]+)/i);
+                return [4, libs.request_get(LINK_DETAIL, {}, true)];
+            case 2:
+                parseDetail = _a.sent();
+                headingName = parseDetail('.heading-name a').attr('href');
+                libs.log({ headingName: headingName }, PROVIDER, 'HEADING NAME');
+                if (!headingName) {
+                    return [2];
+                }
+                id = headingName.match(/detail\/([0-9]+)/i);
                 id = id ? id[1] : '';
                 libs.log({ id: id }, PROVIDER, 'ID');
                 if (!id) {
@@ -81,125 +79,128 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 shareLink = "".concat(DOMAIN, "/index/share_link?id=").concat(id, "&type=").concat(movieInfo.type == "movie" ? "1" : "2");
                 return [4, libs.request_get(shareLink, {})];
             case 3:
-                parseShareLink = _f.sent();
+                parseShareLink = _a.sent();
                 libs.log({ parseShareLink: parseShareLink, shareLink: shareLink }, PROVIDER, 'PARSE SHARE LINK');
                 if (!parseShareLink || !parseShareLink.data || !parseShareLink.data.link) {
                     return [2];
                 }
-                parseShareLink = parseShareLink.data.link.split("/");
-                shareId = parseShareLink[parseShareLink.length - 1];
-                libs.log({ shareId: shareId }, PROVIDER, 'SHAREID');
-                if (!shareId) {
+                if (parseShareLink.data.link.indexOf("febbox") == -1) {
                     return [2];
                 }
-                febboxEmbed = "https://www.febbox.com/file/file_share_list?share_key=".concat(shareId);
-                return [4, libs.request_get(febboxEmbed)];
+                parseShareLink = parseShareLink.data.link;
+                splitShareLink = parseShareLink.split("/");
+                shareID = splitShareLink[splitShareLink.length - 1];
+                libs.log({ shareID: shareID }, PROVIDER, 'SHARE ID');
+                return [4, libs.request_get(parseShareLink, headerFebbox, true)];
             case 4:
-                parseFeb = _f.sent();
-                libs.log({ parseFeb: parseFeb }, PROVIDER, 'PARSE FEB');
-                if (!parseFeb || !parseFeb.data || !parseFeb.data.file_list) {
+                parseFebbox = _a.sent();
+                febboxId = parseFebbox(".file").attr("data-id");
+                libs.log({ febboxId: febboxId }, PROVIDER, 'FEBBOX ID');
+                if (!febboxId) {
                     return [2];
                 }
-                fileList = [];
-                if (!(movieInfo.type == 'movie')) return [3, 5];
-                fileList = parseFeb.data.file_list;
-                return [3, 7];
+                if (!(movieInfo.type == 'tv')) return [3, 7];
+                seasonUrl = "https://www.febbox.com/file/file_share_list?share_key=".concat(shareID, "&pwd=&is_html=1");
+                return [4, libs.request_get(seasonUrl, headerFebbox)];
             case 5:
-                parentId = "";
-                for (_i = 0, _a = parseFeb.data.file_list; _i < _a.length; _i++) {
-                    item = _a[_i];
-                    sName = item.file_name.match(/season *([0-9]+)/i);
-                    sName = sName ? sName[1] : 0;
-                    libs.log({ sName: sName }, PROVIDER, "SNAME");
-                    if (sName == movieInfo.season) {
-                        parentId = item.fid;
-                    }
-                }
-                libs.log({ parentId: parentId }, PROVIDER, 'PARENT ID');
-                if (!parentId) {
+                parseSeason_1 = _a.sent();
+                libs.log({ parseSeason: parseSeason_1, seasonUrl: seasonUrl }, PROVIDER, 'PARSE SEASON');
+                if (!parseSeason_1.html) {
                     return [2];
                 }
-                urlEpisode = "https://www.febbox.com/file/file_share_list?share_key=".concat(shareId, "&parent_id=").concat(parentId, "&page=1");
-                return [4, libs.request_get(urlEpisode)];
+                parseSeason_1 = cheerio.load(parseSeason_1.html);
+                SEASON_ID_1 = "";
+                parseSeason_1(".file").each(function (index, item) {
+                    var seasonID = parseSeason_1(item).attr("data-id");
+                    var season = parseSeason_1(item).find(".file_name").text();
+                    season = season.match(/season *([0-9]+)/i);
+                    season = season ? season[1] : 0;
+                    if (season == movieInfo.season && !SEASON_ID_1) {
+                        SEASON_ID_1 = seasonID;
+                    }
+                });
+                libs.log({ SEASON_ID: SEASON_ID_1 }, PROVIDER, 'SEASON ID');
+                if (!SEASON_ID_1) {
+                    return [2];
+                }
+                episodeUrl = "https://www.febbox.com/file/file_share_list?share_key=".concat(shareID, "&pwd=&parent_id=").concat(SEASON_ID_1, "&is_html=1");
+                return [4, libs.request_get(episodeUrl, headerFebbox)];
             case 6:
-                parseEpisode = _f.sent();
-                if (!parseEpisode || !parseEpisode.data || !parseEpisode.data.file_list) {
+                parseEpisode_1 = _a.sent();
+                libs.log({ parseEpisode: parseEpisode_1, episodeUrl: episodeUrl }, PROVIDER, 'PARSE EPISODE');
+                if (!parseEpisode_1.html) {
                     return [2];
                 }
-                for (_b = 0, _c = parseEpisode.data.file_list; _b < _c.length; _b++) {
-                    item = _c[_b];
-                    if (item.file_name.indexOf("s".concat(movieInfo.season < 10 ? "0".concat(movieInfo.season) : movieInfo.season, "e").concat(movieInfo.episode < 10 ? "0".concat(movieInfo.episode) : movieInfo.episode)) != -1) {
-                        fileList.push(item);
+                parseEpisode_1 = cheerio.load(parseEpisode_1.html);
+                EPISODE_ID_1 = "";
+                parseEpisode_1(".file").each(function (index, item) {
+                    var episodeID = parseEpisode_1(item).attr("data-id");
+                    var episode = parseEpisode_1(item).find(".file_name").text().toLowerCase();
+                    var episodePatterm = new RegExp("s".concat(movieInfo.season < 10 ? "0".concat(movieInfo.season) : movieInfo.season, "e").concat(movieInfo.episode < 10 ? "0".concat(movieInfo.episode) : movieInfo.episode));
+                    if (episodePatterm.test(episode)) {
+                        EPISODE_ID_1 = episodeID;
                     }
-                }
-                _f.label = 7;
-            case 7:
-                libs.log({ fileList: fileList }, PROVIDER, 'FILE LIST');
-                if (fileList.length == 0) {
+                });
+                libs.log({ EPISODE_ID: EPISODE_ID_1 }, PROVIDER, 'EPISODE ID');
+                if (!EPISODE_ID_1) {
                     return [2];
                 }
-                _d = 0, fileList_1 = fileList;
-                _f.label = 8;
+                febboxId = EPISODE_ID_1;
+                _a.label = 7;
+            case 7:
+                headerDirect = {
+                    "Referer": "https://www.febbox.com/",
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
+                    "Origin": "https://www.febbox.com",
+                    "Cookie": "ui=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NDIyOTMyMTQsIm5iZiI6MTc0MjI5MzIxNCwiZXhwIjoxNzczMzk3MjM0LCJkYXRhIjp7InVpZCI6MTU4NzMwLCJ0b2tlbiI6IjkxODdjNDRkNTg3OGYzMGZmMGViNGFkODdjN2ExNWMzIn19.mK7Q1BjxvFRo7IHY8wwI87P-QVvCMlcA8v5G4kGcYuo;"
+                };
+                return [4, libs.cookies_clearAll()];
             case 8:
-                if (!(_d < fileList_1.length)) return [3, 11];
-                item = fileList_1[_d];
-                ossID = item.oss_fid;
-                directUrl = "https://www.febbox.com/hls/main/".concat(ossID, ".m3u8");
-                libs.log({ directUrl: directUrl }, PROVIDER, 'DIRECT URL');
-                return [4, libs.request_get(directUrl)];
+                _a.sent();
+                urlDirect = "https://www.febbox.com/console/video_quality_list?fid=".concat(febboxId);
+                return [4, fetch(urlDirect, {
+                        headers: headerDirect,
+                        method: "GET",
+                        credentials: 'include',
+                    })];
             case 9:
-                parseDirect = _f.sent();
-                directQuality = [];
-                qualityMatch = parseDirect.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
-                libs.log({ qualityMatch: qualityMatch }, PROVIDER, 'QUALITY MATCH');
-                if (!qualityMatch) {
-                    return [3, 10];
+                dataDirect = _a.sent();
+                return [4, dataDirect.json()];
+            case 10:
+                jsonDirect = _a.sent();
+                libs.log({ jsonDirect: jsonDirect }, PROVIDER, 'PARSE DIRECT');
+                if (!jsonDirect.html) {
+                    return [2];
                 }
-                for (_e = 0, qualityMatch_1 = qualityMatch; _e < qualityMatch_1.length; _e++) {
-                    quality = qualityMatch_1[_e];
-                    q = quality.match(/quality\=([0-9A-z_]+)/i);
-                    q = q ? q[1] : "";
-                    if (!q) {
-                        q = 1080;
+                parseDirect_1 = cheerio.load(jsonDirect.html);
+                directQuality_1 = [];
+                parseDirect_1(".file_quality").each(function (index, element) {
+                    var file = parseDirect_1(element).attr("data-url");
+                    var quality = parseDirect_1(element).attr("data-quality");
+                    if (quality.indexOf("4K") != -1) {
+                        quality = "2160";
+                        directQuality_1.push({ file: file, quality: quality });
                     }
                     else {
-                        if (q.indexOf("4k") != -1) {
-                            q = 2160;
-                        }
-                        else if (q.indexOf("stereo") != -1) {
-                            q = 720;
-                        }
-                        else {
-                            q = Number(q);
+                        quality = quality.match(/[0-9]+/i);
+                        if (quality) {
+                            quality = Number(quality);
+                            directQuality_1.push({ file: file, quality: quality });
                         }
                     }
-                    if (isNaN(q)) {
-                        q = 1080;
-                    }
-                    if (q < 360) {
-                        q = 360;
-                    }
-                    directQuality.push({
-                        file: quality,
-                        quality: q
-                    });
-                }
-                libs.log({ directQuality: directQuality }, PROVIDER, 'DIRECT QUALITY');
-                if (!directQuality.length) {
+                });
+                libs.log({ directQuality: directQuality_1 }, PROVIDER, 'DIRECT URLS');
+                if (!directQuality_1.length) {
                     return [2];
                 }
-                directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
-                libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], directQuality);
-                _f.label = 10;
-            case 10:
-                _d++;
-                return [3, 8];
-            case 11: return [3, 13];
-            case 12:
-                e_1 = _f.sent();
+                directQuality_1 = _.orderBy(directQuality_1, ['quality'], ['desc']);
+                libs.embed_callback(directQuality_1[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], directQuality_1, headerDirect);
+                return [3, 12];
+            case 11:
+                e_1 = _a.sent();
                 libs.log(e_1, PROVIDER, 'ERROR');
-                return [3, 13];
-            case 13: return [2, true];
+                return [3, 12];
+            case 12: return [2, true];
         }
     });
 }); };

@@ -15,26 +15,26 @@
     "android_key": "8d6d91941230817f7807d643736e8a49"
   },
   "update_release": {
-    "version": "4.2",
-    "url": "https://github.com/hdoonline/hdonline/releases/download/v2.0.23/hdo-2.0.23.apk",
+    "version": "4.3",
+    "url": "https://github.com/hdoonline/hdonline/releases/download/v2.1.1/hdo-2.1.1.apk",
     "contents1": "Improvement and stability.",
     "contents2": "Update more source.",
     "contents3": "Update more subtitle",
-    "force_update": true,
+    "force_update": false,
     "isUpdate": true
   },
   "app_player_config": {
-    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.1.4/mediaon-1.1.4.apk",
-    "player_version_build": 31,
+    "player_apk_url": "https://github.com/hdoonline/player/releases/download/v1.1.6/mediaon-1.1.6.apk",
+    "player_version_build": 33,
     "player_is_install_force": false,
     "force_player": true
   },
   "switch_player_config": {
     "package_name": "com.mediaon.apt",
     "activity_name": "com.mediaon.apt.PlayerActivity",
-    "apk_url": "https://github.com/hdoonline/player/releases/download/v1.1.4/mediaon-1.1.4.apk",
+    "apk_url": "https://github.com/hdoonline/player/releases/download/v1.1.6/mediaon-1.1.6.apk",
     "store_url": "https://play.google.com/store/apps/details?id=com.mediaon.apt",
-    "version_build": 31,
+    "version_build": 33,
     "is_force": false,
     "app_name": "Mediaon Player",
     "is_ab_testing": false,
@@ -61,7 +61,7 @@
     {
       "package_name": "com.mediaon.apt",
       "activity_name": "com.mediaon.apt.PlayerActivity",
-      "apk_url": "https://github.com/hdoonline/player/releases/download/v1.0.17/mediaon-1.0.17.apk",
+      "apk_url": "https://github.com/hdoonline/player/releases/download/v1.1.6/mediaon-1.1.6.apk",
       "store_url": "https://play.google.com/store/apps/details?id=com.mediaon.apt",
       "version_build": 1,
       "is_force": false,

@@ -1,6 +1,6 @@
 {
 	"providers": [	
-		"dist/providers/vidsrc.js"
+		"dist/providers/febbox.js"
 		
 	]
 }

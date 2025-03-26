@@ -13,5 +13,9 @@
     "contents": "<p>Come and be a part of our Discord community. You can find the latest infomation and enjoy with friends.</p>",
     "show": true,
     "key": "NOTI_1.0"
-  }
+  },
+  "is_caption": true,
+  "is_ocr_image": true,
+  "is_ocr_scanner": true,
+  "is_ocr_image_ai": false
 }

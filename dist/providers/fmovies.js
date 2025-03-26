@@ -42,7 +42,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         switch (_b.label) {
             case 0:
                 PROVIDER = 'FMOVIES';
-                DOMAIN = "https://fmovies.ps";
+                DOMAIN = "https://hdtodayz.to";
                 urlSearch = "".concat(DOMAIN, "/search/").concat(libs.url_slug_search(movieInfo));
                 return [4, libs.request_get(urlSearch, {}, true)];
             case 1:
@@ -84,8 +84,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                             case 1:
                                 parseTvLinkDetail = _c.sent();
                                 yearTv = 0;
-                                libs.log({ length: parseTvLinkDetail('.m_i-d-content .elements .row-line').length }, PROVIDER, 'LENGTH TV');
-                                parseTvLinkDetail('.m_i-d-content .elements .row-line').each(function (keyTv, itemTv) {
+                                libs.log({ length: parseTvLinkDetail('.dp-i-c-right .elements .row-line').length }, PROVIDER, 'LENGTH TV');
+                                parseTvLinkDetail('.dp-i-c-right .elements .row-line').each(function (keyTv, itemTv) {
                                     var text = parseTvLinkDetail(itemTv).text();
                                     libs.log({ text: text }, PROVIDER, 'TEXT TV');
                                     if (text && text.toLowerCase().indexOf('released') != -1) {
@@ -127,22 +127,22 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 serverIds = [];
                 if (!(movieInfo.type == 'movie')) return [3, 7];
-                apiUrlEmbed = "".concat(DOMAIN, "/ajax/movie/episodes/").concat(filmId);
+                apiUrlEmbed = "".concat(DOMAIN, "/ajax/episode/list/").concat(filmId);
                 return [4, libs.request_get(apiUrlEmbed, {}, true)];
             case 6:
                 parseEmbedServer_1 = _b.sent();
                 libs.log({ apiUrlEmbed: apiUrlEmbed, length: parseEmbedServer_1('.link-item').length }, PROVIDER, "LENGTH LINK ITEM");
                 parseEmbedServer_1('.link-item').each(function (key, item) {
-                    var serverId = parseEmbedServer_1(item).attr('data-linkid');
+                    var serverId = parseEmbedServer_1(item).attr('data-id');
                     var serverName = parseEmbedServer_1(item).find('span').text();
-                    if (serverId && serverName.toLowerCase() == "vidcloud") {
+                    if (serverId && serverName.toLowerCase() == "megacloud") {
                         serverIds.push(serverId);
                     }
                 });
                 return [3, 11];
             case 7:
                 if (!(movieInfo.type == 'tv')) return [3, 11];
-                apiUrlGetSeason = "".concat(DOMAIN, "/ajax/v2/tv/seasons/").concat(filmId);
+                apiUrlGetSeason = "".concat(DOMAIN, "/ajax/season/list/").concat(filmId);
                 return [4, libs.request_get(apiUrlGetSeason, {}, true)];
             case 8:
                 parseGetSeason_1 = _b.sent();
@@ -163,7 +163,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!seasonId_1) {
                     return [2];
                 }
-                apiUrlGetEpisode = "".concat(DOMAIN, "/ajax/v2/season/episodes/").concat(seasonId_1);
+                apiUrlGetEpisode = "".concat(DOMAIN, "/ajax/season/episodes/").concat(seasonId_1);
                 episodeId_1 = 0;
                 return [4, libs.request_get(apiUrlGetEpisode, {}, true)];
             case 9:
@@ -186,7 +186,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!episodeId_1) {
                     return [2];
                 }
-                urlGetEmbedTv = "".concat(DOMAIN, "/ajax/v2/episode/servers/").concat(episodeId_1);
+                urlGetEmbedTv = "".concat(DOMAIN, "/ajax/episode/servers/").concat(episodeId_1);
                 return [4, libs.request_get(urlGetEmbedTv, {}, true)];
             case 10:
                 parseEmbedTv_1 = _b.sent();
@@ -194,7 +194,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 parseEmbedTv_1('.link-item').each(function (key, item) {
                     var serverId = parseEmbedTv_1(item).attr('data-id');
                     var serverName = parseEmbedTv_1(item).find('span').text();
-                    if (serverId && serverName.toLowerCase() == "vidcloud") {
+                    if (serverId && serverName.toLowerCase() == "megacloud") {
                         serverIds.push(serverId);
                     }
                 });
