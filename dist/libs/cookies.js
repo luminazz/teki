@@ -40,14 +40,14 @@ libs.cookies_clearAll = function () {
         try {
             cookieManagerS.clearAll().then(function (success) { return __awaiter(_this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
-                    console.log('clear_cookie', success);
+                    //console.log('clear_cookie', success);
                     rel(success);
                     return [2];
                 });
             }); });
         }
         catch (e) {
-            console.log({ e: e }, 'cookie_clearAll');
+            //console.log({ e: e }, 'cookie_clearAll');
             reject(e);
         }
     });
@@ -62,7 +62,7 @@ libs.cookies_get = function (url) {
             });
         }
         catch (e) {
-            console.log({ e: e }, 'cookies_get');
+            //console.log({ e: e }, 'cookies_get');
             reject(e);
         }
     });

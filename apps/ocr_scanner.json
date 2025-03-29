@@ -2,7 +2,6 @@
   "ads_config": {
     "init_ads": "admob"
   },
-  "is_old_version": false,
   "tmdb_apikey": {
     "ios_key": "3161de04ca660985f0b42e883eb49fef",
     "android_key": "3161de04ca660985f0b42e883eb49fef"
@@ -14,8 +13,5 @@
     "show": true,
     "key": "NOTI_1.0"
   },
-  "is_caption": false,
-  "is_ocr_image": true,
-  "is_ocr_scanner": true,
-  "is_ocr_image_ai": true
+  "is_ocr_scanner": false
 }

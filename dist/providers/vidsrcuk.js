@@ -109,7 +109,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         }
                     }
                     catch (e) {
-                        console.log(e, "ERROR");
+                        //console.log(e, "ERROR");
                     }
                 };
                 eval(script_1);

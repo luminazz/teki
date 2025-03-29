@@ -76,9 +76,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         }
         return result;
     }
-    var PROVIDER, DOMAIN, headers, headerDirect, decryptjs, urlEmbed, parseEmbed_1, scripts_2, keyEndpoint, _i, scripts_1, item, scriptData, textData, matchEndpoint, hash, textHash, urlSearch, parseSearch, directUrl, tracks, _a, _b, item, type, directQuality_1, qualityIndex, q, qualityItem, proxyDirectUrl, parseDirecturl, parseDirectSize, textDirect, m3u8Data, directQuality_2, directSizes, patternSize, directQuality, _c, patternSize_1, patternItem, sizeQuality, e_1;
-    return __generator(this, function (_d) {
-        switch (_d.label) {
+    var PROVIDER, DOMAIN, headers, headerDirect, decryptjs, urlEmbed, parseEmbed_1, scripts_2, keyEndpoint, _i, scripts_1, item, scriptData, textData, matchEndpoint, hash, textHash, urlSearch, parseSearch, directUrl, tracks, _a, _b, item, type, directQuality_1, qualityIndex, q, qualityItem, parseDirecturl, encodedPart, _c, encodedUrl, queryParams, decodedUrl, headersObj, host, params, _d, params_1, param, headersStr, parseDirectSize, textDirect, m3u8Data, directQuality_2, directSizes, patternSize, directQuality, _e, patternSize_1, patternItem, sizeQuality, e_1;
+    return __generator(this, function (_f) {
+        switch (_f.label) {
             case 0:
                 PROVIDER = 'MVidlink';
                 DOMAIN = "https://vidlink.pro";
@@ -98,9 +98,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     "Accept-Encoding": "gzip, deflate, br, zstd",
                     "Accept-Language": "en-US,en;q=0.9",
                 };
-                _d.label = 1;
+                _f.label = 1;
             case 1:
-                _d.trys.push([1, 14, , 15]);
+                _f.trys.push([1, 14, , 15]);
                 decryptjs = function (e, t) {
                     var n = JSON.parse(e);
                     libs.log({ n: n }, PROVIDER, "N");
@@ -132,7 +132,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ urlEmbed: urlEmbed }, PROVIDER, 'URL EMBED');
                 return [4, libs.request_get(urlEmbed, {}, true)];
             case 2:
-                parseEmbed_1 = _d.sent();
+                parseEmbed_1 = _f.sent();
                 scripts_2 = [];
                 parseEmbed_1("script").each(function (key, item) {
                     var scriptData = parseEmbed_1(item).attr("src");
@@ -143,22 +143,22 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ scripts: scripts_2 }, PROVIDER, "SCRIPT");
                 keyEndpoint = "";
                 _i = 0, scripts_1 = scripts_2;
-                _d.label = 3;
+                _f.label = 3;
             case 3:
                 if (!(_i < scripts_1.length)) return [3, 7];
                 item = scripts_1[_i];
                 return [4, fetch(item)];
             case 4:
-                scriptData = _d.sent();
+                scriptData = _f.sent();
                 return [4, scriptData.text()];
             case 5:
-                textData = _d.sent();
+                textData = _f.sent();
                 matchEndpoint = textData.match(/\/api\/([A-z]+)\/[A-z]+\//i);
                 matchEndpoint = matchEndpoint ? matchEndpoint[1] : "";
                 if (matchEndpoint) {
                     keyEndpoint = matchEndpoint;
                 }
-                _d.label = 6;
+                _f.label = 6;
             case 6:
                 _i++;
                 return [3, 3];
@@ -169,10 +169,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 return [4, fetch("https://aquariumtv.app/vlinktoken?id=".concat(movieInfo.tmdb_id))];
             case 8:
-                hash = _d.sent();
+                hash = _f.sent();
                 return [4, hash.text()];
             case 9:
-                textHash = _d.sent();
+                textHash = _f.sent();
                 libs.log({ textHash: textHash }, PROVIDER, "HASH");
                 if (!textHash) {
                     return [2];
@@ -187,7 +187,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ urlSearch: urlSearch }, PROVIDER, 'URLSEARCH');
                 return [4, libs.request_get(urlSearch, {}, false)];
             case 10:
-                parseSearch = _d.sent();
+                parseSearch = _f.sent();
                 libs.log({ parseSearch: parseSearch }, PROVIDER, "PARSE SEARCH");
                 directUrl = parseSearch.stream.playlist;
                 tracks = [];
@@ -233,22 +233,49 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         return [2];
                     }
                 }
-                proxyDirectUrl = directUrl.split("/proxy/");
-                if (proxyDirectUrl.length > 1) {
-                    directUrl = decodeURIComponent(proxyDirectUrl[1]);
-                }
                 parseDirecturl = directUrl.split("m3u8/{");
                 if (parseDirecturl.length > 1) {
                     directUrl = parseDirecturl[0] + "m3u8";
                     headerDirect = __assign(__assign({}, JSON.parse("{" + parseDirecturl[1])), { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" });
                 }
-                libs.log({ directUrl: directUrl, headerDirect: headerDirect }, PROVIDER, 'DIRECT URL');
+                if (directUrl.includes('vidlvod.store/proxy/')) {
+                    try {
+                        encodedPart = directUrl.split('/proxy/')[1];
+                        _c = encodedPart.split('?'), encodedUrl = _c[0], queryParams = _c[1];
+                        libs.log({ encodedUrl: encodedUrl, queryParams: queryParams }, PROVIDER, "ENCODED URL");
+                        decodedUrl = decodeURIComponent(encodedUrl);
+                        headersObj = {};
+                        host = '';
+                        if (queryParams) {
+                            params = queryParams.split('&');
+                            for (_d = 0, params_1 = params; _d < params_1.length; _d++) {
+                                param = params_1[_d];
+                                if (param.startsWith('headers=')) {
+                                    headersStr = param.substring('headers='.length);
+                                    headersObj = JSON.parse(headersStr);
+                                }
+                                else if (param.startsWith('host=')) {
+                                    host = decodeURIComponent(param.substring('host='.length));
+                                }
+                            }
+                        }
+                        if (host && Object.keys(headersObj).length > 0) {
+                            directUrl = host + '/' + decodedUrl;
+                            headerDirect = __assign(__assign({}, headersObj), { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" });
+                            libs.log({ newDirectUrl: directUrl, newHeaders: headerDirect }, PROVIDER, 'PROXY URL TRANSFORMED');
+                        }
+                    }
+                    catch (error) {
+                        libs.log({ error: error }, PROVIDER, 'ERROR PARSING PROXY URL');
+                    }
+                }
+                libs.log({ directUrl: directUrl, headerDirect: headerDirect }, PROVIDER, 'DIRECT URL DATA');
                 return [4, fetch(directUrl)];
             case 11:
-                parseDirectSize = _d.sent();
+                parseDirectSize = _f.sent();
                 return [4, parseDirectSize.text()];
             case 12:
-                textDirect = _d.sent();
+                textDirect = _f.sent();
                 m3u8Data = parseM3U8(textDirect);
                 libs.log({ m3u8Data: m3u8Data }, PROVIDER, 'PARSE M3U8');
                 if (m3u8Data.length) {
@@ -264,7 +291,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 });
                 return [2];
             case 13:
-                directSizes = _d.sent();
+                directSizes = _f.sent();
                 patternSize = directSizes.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
                 if (!patternSize) {
                     libs.embed_callback(directUrl, PROVIDER, PROVIDER, "hls", callback, 1, tracks, [{ file: directUrl, quality: 1080 }], headerDirect);
@@ -272,8 +299,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 directQuality = [];
                 libs.log({ patternSize: patternSize, tracks: tracks }, PROVIDER, 'PATTERN SIZE');
-                for (_c = 0, patternSize_1 = patternSize; _c < patternSize_1.length; _c++) {
-                    patternItem = patternSize_1[_c];
+                for (_e = 0, patternSize_1 = patternSize; _e < patternSize_1.length; _e++) {
+                    patternItem = patternSize_1[_e];
                     sizeQuality = patternItem.match(/\/([0-9]+)\//i);
                     sizeQuality = sizeQuality ? Number(sizeQuality[1]) : 1080;
                     directQuality.push({
@@ -289,7 +316,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, directQuality, headerDirect);
                 return [3, 15];
             case 14:
-                e_1 = _d.sent();
+                e_1 = _f.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
                 return [3, 15];
             case 15: return [2];

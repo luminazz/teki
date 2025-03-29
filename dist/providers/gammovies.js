@@ -128,7 +128,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 return [3, 9];
             case 8:
                 error_1 = _a.sent();
-                console.log(error_1, 'ERROR GAM');
+                //console.log(error_1, 'ERROR GAM');
                 return [3, 9];
             case 9: return [2, true];
         }

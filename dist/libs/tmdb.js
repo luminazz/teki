@@ -65,7 +65,7 @@ libs.tmdb_tv_info = function (id, lang) { return __awaiter(_this, void 0, void 0
                 return [4, libs.request_get(url)];
             case 2:
                 result = _a.sent();
-                console.log({ result: result }, 'tmdb_tv_info');
+                //console.log({ result: result }, 'tmdb_tv_info');
                 return [2, {
                         title: result.name,
                     }];

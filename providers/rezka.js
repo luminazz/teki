@@ -83,7 +83,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                             return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
                         }).join(""));
                     }
-                    console.log({ a: a }, 'DECODE');
+                    ////console.log({ a: a }, 'DECODE');
                     return a;
                 };
                 lang = 'ru';
