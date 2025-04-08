@@ -142,10 +142,10 @@ hosts["mzzcloud"] = function (url, movieInfo, provider, config, callback) { retu
             });
         }); };
         ws.onerror = function (e) {
-            //console.log(e, 'socket_error');
+            console.log(e, 'socket_error');
         };
         ws.onclose = function (e) {
-            //console.log(e.code, e.reason, 'socket_close');
+            console.log(e.code, e.reason, 'socket_close');
         };
         return [2];
     });

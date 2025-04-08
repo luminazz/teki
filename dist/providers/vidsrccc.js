@@ -67,59 +67,87 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         var key = "BCwZFCsLYWbz2ONSzAYN";
         return libs.string_btoa(libs.string_btoa(rc4(key, input)));
     }
-    var PROVIDER, DOMAIN, headers, vrf, urlHash, resHash, _i, _a, item, urlDirect, resDirect, e_1;
+    var PROVIDER, DOMAIN, headers, urlEmbed, dataEmbed, htmlEmbed, userID, vrf, urlHash, resHash, _i, _a, item, urlDirect, resDirect, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 PROVIDER = 'AVidsrcCC';
                 DOMAIN = "https://vidsrc.cc";
                 headers = {
-                    'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                    'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
                     'Referer': "https://vidsrc.cc/",
                     'Origin': DOMAIN,
                 };
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 8, , 9]);
-                return [4, libs.request_get("https://aquariumtv.app/vidsrccc?id=".concat(movieInfo.tmdb_id))];
+                _b.trys.push([1, 11, , 12]);
+                urlEmbed = "https://vidsrc.cc/v2/embed/movie/".concat(movieInfo.tmdb_id, "?autoPlay=false");
+                if (movieInfo.type == 'tv') {
+                    urlEmbed = "https://vidsrc.cc/v2/embed/tv/".concat(movieInfo.tmdb_id, "/").concat(movieInfo.season, "/").concat(movieInfo.episode, "?autoPlay=false");
+                }
+                return [4, fetch(urlEmbed, {
+                        headers: {
+                            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+                        }
+                    })];
             case 2:
+                dataEmbed = _b.sent();
+                return [4, dataEmbed.text()];
+            case 3:
+                htmlEmbed = _b.sent();
+                userID = htmlEmbed.match(/userId *\= *\"([^\"]+)/)[1];
+                libs.log({ userID: userID }, PROVIDER, "USER ID");
+                if (!userID) {
+                    return [2];
+                }
+                return [4, libs.request_get("https://aquariumtv.app/vidsrccc?id=".concat(movieInfo.tmdb_id, "&user_id=").concat(userID))];
+            case 4:
                 vrf = _b.sent();
                 urlHash = "".concat(DOMAIN, "/api/").concat(movieInfo.tmdb_id, "/servers?id=").concat(movieInfo.tmdb_id, "&type=").concat(movieInfo.type, "&vrf=").concat(vrf);
                 if (movieInfo.type == 'tv') {
                     urlHash += "&season=".concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
                 }
                 libs.log({ vrf: vrf }, PROVIDER, "VRF");
-                return [4, libs.request_get(urlHash, headers)];
-            case 3:
+                return [4, fetch(urlHash, {
+                        method: "GET",
+                        headers: {
+                            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+                        },
+                        redirect: "follow"
+                    })];
+            case 5:
                 resHash = _b.sent();
                 libs.log({ urlHash: urlHash, resHash: resHash, vrf: vrf }, PROVIDER, 'RES HASH');
+                return [4, resHash.json()];
+            case 6:
+                resHash = _b.sent();
                 if (!resHash || !resHash.data || resHash.data.length == 0) {
                     return [2];
                 }
                 _i = 0, _a = resHash.data;
-                _b.label = 4;
-            case 4:
-                if (!(_i < _a.length)) return [3, 7];
+                _b.label = 7;
+            case 7:
+                if (!(_i < _a.length)) return [3, 10];
                 item = _a[_i];
                 urlDirect = "".concat(DOMAIN, "/api/source/").concat(item.hash, "?t=1735063337497");
                 return [4, libs.request_get(urlDirect, headers)];
-            case 5:
+            case 8:
                 resDirect = _b.sent();
                 libs.log({ resDirect: resDirect }, PROVIDER, 'RES DIRECT');
                 if (!resDirect || !resDirect.data || !resDirect.data.source) {
-                    return [3, 6];
+                    return [3, 9];
                 }
                 libs.embed_callback(resDirect.data.source, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: resDirect.data.source, quality: 1080 }], headers);
-                _b.label = 6;
-            case 6:
+                _b.label = 9;
+            case 9:
                 _i++;
-                return [3, 4];
-            case 7: return [3, 9];
-            case 8:
+                return [3, 7];
+            case 10: return [3, 12];
+            case 11:
                 e_1 = _b.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
-                return [3, 9];
-            case 9: return [2];
+                return [3, 12];
+            case 12: return [2];
         }
     });
 }); };

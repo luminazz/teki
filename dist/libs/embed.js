@@ -134,7 +134,7 @@ libs.embed_callback = function (urlDirect, provider, host, quality, callback, ra
                 type: type,
             });
         }
-        //console.log({ subs: subs }, "SUBDATAPARSE");
+        console.log({ subs: subs }, "SUBDATAPARSE");
     }
     callback(__assign({ file: urlDirect, quality: quality, host: host, source: provider, provider: libs.string_provider(provider, rank), subs: parseSubs, direct_quality: direct_quality, headers: headers }, options));
 };

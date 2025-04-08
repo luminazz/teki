@@ -42,10 +42,10 @@
     "priority_links": [
       "SERVER F1",
       "SERVER F2",
-      "SERVER C1",
-      "SERVER C2",
       "SERVER A1",
-      "SERVER A2"
+      "SERVER A2",
+      "SERVER C1",
+      "SERVER C2"
     ]
   },
   "data": [

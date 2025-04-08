@@ -28,6 +28,7 @@
 	"dist/hosts/fstream365.js",
 	"dist/hosts/turbovid.js",
 	"dist/hosts/moviplus.js",
-	"dist/hosts/smashystream.js"
+	"dist/hosts/smashystream.js",
+	"dist/hosts/streamwish.js"
 	]
 }

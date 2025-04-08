@@ -222,7 +222,7 @@ subs.getResource = function (movieInfo, config, callback) {
           return [4, response.json()];
         case 3:
           data = _b.sent();
-          //console.log("openSubtitles", data);
+          console.log("openSubtitles", data);
           parseData = __spreadArray([], data, true);
           (_i = 0), (subLanguageIds_1 = subLanguageIds);
           _b.label = 4;

@@ -17,5 +17,28 @@
   "is_caption": false,
   "is_ocr_image": true,
   "is_ocr_scanner": true,
-  "is_ocr_image_ai": true
+  "is_ocr_image_ai": true,
+  "is_ocr_image_ai_v2": true,
+  "admob_config": {
+    "detail_start": {
+      "enable_admob": false,
+      "enable_applovin": false,
+      "count_show": 2
+    },
+    "player_start": {
+      "enable_admob": true,
+      "enable_applovin": true,
+      "count_show": 0
+    },
+    "player_back": {
+      "enable_admob": true,
+      "enable_applovin": true,
+      "count_show": 0
+    },
+    "player_next_episode": {
+      "enable_admob": true,
+      "enable_applovin": true,
+      "count_show": 0
+    }
+  }
 }

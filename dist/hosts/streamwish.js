@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -35,35 +35,50 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-libs.cookies_clearAll = function () {
-    return new Promise(function (rel, reject) {
-        try {
-            cookieManagerS.clearAll().then(function (success) { return __awaiter(_this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    console.log('clear_cookie', success);
-                    rel(success);
-                    return [2];
+hosts["hlsflex"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+    var DOMAIN, HOST, headers, parseDetail_1, SCRIPT_1, unpacker, file, e_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                DOMAIN = 'https://hlsflex.com';
+                HOST = 'Hlsflex';
+                headers = {
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                    "Referer": "".concat(url, "/"),
+                    "Origin": "".concat(url)
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4, libs.request_get(url, headers, true)];
+            case 2:
+                parseDetail_1 = _a.sent();
+                SCRIPT_1 = "";
+                parseDetail_1("script").each(function (index, element) {
+                    var s = parseDetail_1(element).text();
+                    if (s.indexOf("eval(") != -1) {
+                        SCRIPT_1 = s;
+                    }
                 });
-            }); });
-        }
-        catch (e) {
-            console.log({ e: e }, 'cookie_clearAll');
-            reject(e);
+                libs.log(SCRIPT_1, HOST, 'SCRIPT');
+                if (!SCRIPT_1) {
+                    return [2];
+                }
+                unpacker = libs.string_unpacker_v2(SCRIPT_1);
+                libs.log({ unpacker: unpacker }, HOST, 'Unpacker');
+                file = unpacker.match(/file *\: *\"([^\"]+)/i);
+                file = file ? file[1] : '';
+                libs.log({ file: file }, HOST, 'FILE');
+                if (!file) {
+                    return [2];
+                }
+                libs.embed_callback(file, provider, provider, 'Hls', callback, 1, [], [{ file: file, quality: 1080 }], headers);
+                return [3, 4];
+            case 3:
+                e_1 = _a.sent();
+                libs.log({ e: e_1 }, HOST, "ERROR");
+                return [3, 4];
+            case 4: return [2];
         }
     });
-};
-libs.cookies_get = function (url) {
-    return new Promise(function (rel, reject) {
-        try {
-            cookieManagerS.get(url).then(function (cookies) {
-                rel(cookies);
-            }).catch(function (error) {
-                reject(error);
-            });
-        }
-        catch (e) {
-            console.log({ e: e }, 'cookies_get');
-            reject(e);
-        }
-    });
-};
+}); };

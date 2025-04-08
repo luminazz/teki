@@ -36,62 +36,67 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, C, B, A, D, urlovo, formattedString, reversedString, firstBase64, secondBase64, response, json, firstSource, e_1;
+    var DOMAIN, PROVIDER, t, urlSearch, dataSearch, headerHexa, dataHexa, headerAqua, dataAqua, item, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                PROVIDER = 'XVidsrcVip';
-                DOMAIN = "https://vidsrc.vip";
-                headers = {
-                    'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    'referer': "https://vidsrc.vip/"
-                };
+                DOMAIN = "https://heartbeat.hexa.watch";
+                PROVIDER = 'XHexaWatch';
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 4, , 5]);
-                C = movieInfo.tmdb_id
-                    .toString()
-                    .split("")
-                    .map(function (digit) {
-                    var encoding = "abcdefghij";
-                    return encoding[parseInt(digit)];
-                })
-                    .join("");
-                B = C.split("").reverse().join("");
-                A = libs.string_btoa(B);
-                D = libs.string_btoa(A);
-                urlovo = "https://api.vid3c.site/allmvse2.php?id=".concat(D);
+                _a.trys.push([1, 5, , 6]);
+                t = Date.now();
+                urlSearch = "https://aquariumtv.app/hexae?media_type=movie&tmdb_id=".concat(movieInfo.tmdb_id, "&timestamp=").concat(t);
                 if (movieInfo.type == 'tv') {
-                    formattedString = "".concat(movieInfo.tmdb_id, "-").concat(movieInfo.season, "-").concat(movieInfo.episode);
-                    reversedString = formattedString.split('').reverse().join('');
-                    firstBase64 = libs.string_btoa(reversedString);
-                    secondBase64 = libs.string_btoa(firstBase64);
-                    urlovo = "https://api.vid3c.site/alltvse2.php?id=".concat(secondBase64);
+                    urlSearch = "https://aquariumtv.app/hexae?media_type=tv&tmdb_id=".concat(movieInfo.tmdb_id, "&season_id=").concat(movieInfo.season, "&episode_id=").concat(movieInfo.episode, "&timestamp=").concat(t);
                 }
-                return [4, fetch(urlovo)];
+                return [4, libs.request_get(urlSearch)];
             case 2:
-                response = _a.sent();
-                if (!response.ok) {
+                dataSearch = _a.sent();
+                libs.log({ dataSearch: dataSearch }, PROVIDER, 'SEARCH');
+                if (!dataSearch) {
                     return [2];
                 }
-                return [4, response.json()];
+                headerHexa = {
+                    "content-type": "application/json",
+                    "Referer": "https://hexa.watch/",
+                    "Origin": "https://hexa.watch",
+                    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+                };
+                return [4, libs.request_post(DOMAIN, headerHexa, dataSearch)];
             case 3:
-                json = _a.sent();
-                libs.log({ json: json }, PROVIDER, "JSON");
-                firstSource = json["source1"];
-                if (!firstSource.url) {
+                dataHexa = _a.sent();
+                libs.log({ dataHexa: dataHexa }, PROVIDER, 'HEXA');
+                if (!dataHexa) {
                     return [2];
                 }
-                if (firstSource.language != "English") {
-                    return [2];
-                }
-                libs.embed_callback(firstSource.url, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: firstSource.url, quality: 1080 }], headers);
-                return [3, 5];
+                headerAqua = {
+                    "content-type": "application/json",
+                    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+                };
+                return [4, libs.request_post("https://aquariumtv.app/hexad", headerAqua, dataHexa)];
             case 4:
+                dataAqua = _a.sent();
+                libs.log({ dataAqua: dataAqua }, PROVIDER, 'AQUA');
+                if (!dataAqua) {
+                    return [2];
+                }
+                for (item in dataAqua.sources) {
+                    if (!dataAqua.sources[item].file) {
+                        continue;
+                    }
+                    libs.embed_callback(dataAqua.sources[item].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: dataAqua.sources[item].file, quality: 1080 }], {
+                        "Referer": "https://hexa.watch/",
+                        "Origin": "https://hexa.watch",
+                        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+                    });
+                }
+                return [3, 6];
+            case 5:
                 e_1 = _a.sent();
-                libs.log({ e: e_1 }, PROVIDER, "ERROR");
-                return [3, 5];
-            case 5: return [2];
+                libs.log(e_1, PROVIDER, 'ERROR');
+                return [3, 6];
+            case 6: return [2, true];
         }
     });
 }); };
