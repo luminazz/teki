@@ -1,8 +1,10 @@
 {
 	"providers": [
 
-		"dist/providers/aoneroom.js",
-		"dist/providers/idflix.js",
+
+"dist/providers/vidfast.js",
+"dist/providers/aoneroom.js",
+"dist/providers/idflix.js",
 "dist/providers/vidsrccc.js",
 "dist/providers/vidlink.js",
 "dist/providers/fmovies.js",
