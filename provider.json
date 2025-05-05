@@ -2,6 +2,8 @@
 	"providers": [
 
 
+"dist/providers/uniquestream.js",
+"dist/providers/2embedcc.js",
 "dist/providers/vidfast.js",
 "dist/providers/aoneroom.js",
 "dist/providers/idflix.js",

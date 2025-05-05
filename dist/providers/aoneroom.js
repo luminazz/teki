@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, urlSearch, headers_1, body, dataSearch, ID, _i, _a, item, title, urlDirect, dataDirect, streamQuality, _b, _c, item, HlsQuality, _d, _e, item, e_1;
+    var PROVIDER, DOMAIN, headers, urlSearch, headers_1, body, dataSearch, ID, DETAIL_PATH, _i, _a, item, title, urlDirect, dataDirect, streamQuality, _b, _c, item, HlsQuality, _d, _e, item, e_1;
     return __generator(this, function (_f) {
         switch (_f.label) {
             case 0:
@@ -69,11 +69,13 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 ID = "";
+                DETAIL_PATH = "";
                 for (_i = 0, _a = dataSearch.data.items; _i < _a.length; _i++) {
                     item = _a[_i];
                     title = item.title;
                     if (item && item.subjectId && libs.string_matching_title(movieInfo, title)) {
                         ID = item.subjectId;
+                        DETAIL_PATH = item.detailPath;
                         break;
                     }
                 }
@@ -82,7 +84,11 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                 }
                 urlDirect = "".concat(DOMAIN, "/wefeed-h5-bff/web/subject/play?subjectId=").concat(ID, "&se=").concat(movieInfo.season || 0, "&ep=").concat(movieInfo.episode || 0);
-                return [4, libs.request_get(urlDirect, headers_1)];
+                return [4, libs.request_get(urlDirect, {
+                        "Content-Type": "application/json",
+                        'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                        'referer': "".concat(DOMAIN, "/movies/").concat(DETAIL_PATH)
+                    })];
             case 3:
                 dataDirect = _f.sent();
                 libs.log({ dataDirect: dataDirect }, PROVIDER, "DATA DIRECT");

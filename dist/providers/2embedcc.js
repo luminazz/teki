@@ -95,9 +95,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 unpacker = libs.string_unpacker_v2(evalData);
                 libs.log({ unpacker: unpacker }, PROVIDER, 'UNPACKER');
-                fileDirect = unpacker.match(/file *\: *\"([^\"]+)/i);
+                fileDirect = unpacker.match(/hls2 *\" *\: *\"([^\"]+)/i);
                 fileDirect = fileDirect ? fileDirect[1] : "";
                 libs.log({ fileDirect: fileDirect }, PROVIDER, 'FILE DIRECT');
+                if (fileDirect.indexOf("https://") == -1) {
+                    return [2];
+                }
                 if (!fileDirect) {
                     return [2];
                 }
