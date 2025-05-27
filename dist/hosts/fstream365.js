@@ -36,7 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 hosts["fstream365"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var DOMAIN, HOST, headers, CryptoJSAesJson, _0x20e478, _0x1fe5e1, headers_1, parseDetail, textDetail, id, hash, mid, f, encrypted, headerAPI, urlDirect, dataDirect, parseDirect, parseSource, _i, parseSource_1, item, e_1;
+    function _0x1af068(_0x565cab) {
+        var _0x52f12f = "";
+        for (var _0x1bfbf9 = 0; _0x1bfbf9 < _0x565cab.length; _0x1bfbf9++) {
+            _0x52f12f += "" + _0x565cab.charCodeAt(_0x1bfbf9).toString(16);
+        }
+        return _0x52f12f;
+    }
+    var DOMAIN, HOST, headers, CryptoJSAesJson, _0x1fe5e1, headers_1, parseDetail, textDetail, id, hash, mid, f, encrypted, headerAPI, urlDirect, dataDirect, parseDirect, parseSource, _i, parseSource_1, item, e_1;
     var _this = this;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -77,13 +84,6 @@ hosts["fstream365"] = function (url, movieInfo, provider, config, callback) { re
                         return _0x44cb90;
                     }
                 };
-                _0x20e478 = function (_0x597fed) {
-                    var _0x28942b = "";
-                    for (var _0x582d43 = 0; _0x582d43 < _0x597fed.length; _0x582d43++) {
-                        _0x28942b += "" + _0x597fed.charCodeAt(_0x582d43).toString(16);
-                    }
-                    return _0x28942b;
-                };
                 _0x1fe5e1 = function (_0x357637, _0x35e041, _0x14c179, _0x37e7dd) { return __awaiter(_this, void 0, void 0, function () {
                     var _0x34bf15, _0x3f465b, _0x83ff06;
                     return __generator(this, function (_a) {
@@ -102,8 +102,20 @@ hosts["fstream365"] = function (url, movieInfo, provider, config, callback) { re
                     });
                 }); };
                 headers_1 = {
-                    "Referer": "https://ww.ymovies.vip/",
-                    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+                    "Referer": DOMAIN,
+                    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+                    "Cookie": "player_popup=1",
+                    "Accept-Language": "en-US,en;q=0.9,vi-VN;q=0.8,vi;q=0.7",
+                    "Sec-Fetch-Dest": 'document',
+                    "Sec-Fetch-User": "?1",
+                    "Sec-Fetch-Mode": "navigate",
+                    "Sec-Fetch-Site": "same-origin",
+                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                    "sec-ch-ua": '"Google Chrome";v="136", "Not)A;Brand";v="99", "Chromium";v="136"',
+                    "sec-ch-ua-mobile": "?0",
+                    "sec-ch-ua-platform": '"macOS"',
+                    "Upgrade-Insecure-Requests": "1",
+                    "DNT": "1"
                 };
                 return [4, fetch(url, {
                         headers: headers_1
@@ -117,8 +129,7 @@ hosts["fstream365"] = function (url, movieInfo, provider, config, callback) { re
                 id = id ? id[1] : "";
                 hash = textDetail.match(/\"hash\" *\: *\"([^\"]+)/i);
                 hash = hash ? hash[1] : "";
-                mid = textDetail.match(/\"mid\" *\: *\"([^\"]+)/i);
-                mid = mid ? mid[1] : "";
+                mid = id.split("/")[0];
                 libs.log({ id: id, hash: hash, mid: mid }, HOST, "TOKEN ID");
                 if (!id || !mid || !hash) {
                     return [2];
@@ -126,16 +137,16 @@ hosts["fstream365"] = function (url, movieInfo, provider, config, callback) { re
                 f = {
                     format: CryptoJSAesJson
                 };
-                encrypted = JSON.parse(cryptoS.AES.encrypt(JSON.stringify(id + "/" + "movie" + "?srv=1"), hash, f).toString());
+                encrypted = JSON.parse(cryptoS.AES.encrypt(JSON.stringify(mid + "/movie" + "?srv=1"), hash, f).toString());
                 libs.log({ encrypted: encrypted }, HOST, 'ENCRYPT');
                 if (!encrypted) {
                     return [2];
                 }
                 headerAPI = {
                     "Referer": DOMAIN,
-                    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36'
                 };
-                urlDirect = "".concat(DOMAIN, "/ajax/getSources/?id=").concat(_0x20e478(encrypted.ct), "&h=").concat(_0x20e478(hash), "&a=").concat(encrypted.iv, "&t=").concat(encrypted.s);
+                urlDirect = "".concat(DOMAIN, "/ajax/getSources/?id=").concat(_0x1af068(encrypted.ct), "&h=").concat(_0x1af068(hash), "&a=").concat(encrypted.iv, "&t=").concat(encrypted.s);
                 return [4, fetch(urlDirect, {
                         headers: headerAPI,
                         method: "GET"

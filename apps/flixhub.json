@@ -19,6 +19,7 @@
   "is_ocr_scanner": true,
   "is_ocr_image_ai": true,
   "is_ocr_image_ai_v2": true,
+  "is_text_to_video": false,
   "admob_config": {
     "detail_start": {
       "enable_admob": false,

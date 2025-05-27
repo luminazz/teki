@@ -55,7 +55,7 @@ hosts["turbovid"] = function (url, movieInfo, provider, config, callback) { retu
         var _0x42f18c = _0x5f4c1b;
         return xorDecrypt(_0x4b088e, _0x42f18c);
     }
-    var DOMAIN, HOST, headers, parseDetail, htmlDetail, apkey, xxid, parseKey, juice, urlParseEmbed, parseEmbed, encryptData, decryptData, e_1;
+    var DOMAIN, HOST, headers, parseDetail, htmlDetail, apkey, xxid, headerCustom, parseKey, juice, urlParseEmbed, parseEmbed, encryptData, decryptData, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -82,18 +82,24 @@ hosts["turbovid"] = function (url, movieInfo, provider, config, callback) { retu
                 xxid = htmlDetail.match(/xxid *\= *\"([^\"]+)/i);
                 xxid = xxid ? xxid[1] : "";
                 libs.log({ apkey: apkey, xxid: xxid }, HOST, 'APKEY');
-                return [4, libs.request_get("https://turbovid.eu/api/cucked/juice_key", headers, false)];
+                headerCustom = {
+                    'content-type': 'application/json;charset=UTF-8',
+                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
+                    "referer": url,
+                    "X-Turbo": "TurboVidClient"
+                };
+                return [4, libs.request_get("https://turbovid.eu/api/cucked/juice_key", headerCustom, false)];
             case 4:
                 parseKey = _a.sent();
                 libs.log({ parseKey: parseKey }, HOST, 'PARSE KEY');
                 juice = parseKey.juice;
-                urlParseEmbed = "https://turbovid.eu/api/cucked/the_juice/?" + apkey + "=" + xxid;
-                return [4, libs.request_get(urlParseEmbed, headers, false)];
+                urlParseEmbed = "https://turbovid.eu/api/cucked/the_juice_v2/?" + apkey + "=" + xxid;
+                return [4, libs.request_get(urlParseEmbed, headerCustom, false)];
             case 5:
                 parseEmbed = _a.sent();
                 libs.log({ parseEmbed: parseEmbed, urlParseEmbed: urlParseEmbed }, HOST, 'PARSE EMBED');
                 encryptData = parseEmbed.data;
-                decryptData = decryptHexWithKey(encryptData, juice);
+                decryptData = decryptHexWithKey(encryptData, libs.string_atob(juice));
                 libs.log({ decryptData: decryptData }, HOST, 'DECRYPT DATA');
                 if (!decryptData) {
                     return [2];
