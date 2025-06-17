@@ -36,15 +36,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseIframe_1, LINK_DETAIL_1, id, embedUrl, headerEmbed, parseEmbed_1, ScriptEval_1, evalData, evalData, unpacker, fileDirect, e_1;
+    var PROVIDER, DOMAIN, urlSearch, parseIframe_1, LINK_DETAIL_1, LINK_IDS_2, parseDetail_1, _loop_1, _i, LINK_IDS_1, id, state_1, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 PROVIDER = 'PTOWEMBEDCC';
-                DOMAIN = "https://2embed.cc";
+                DOMAIN = "https://www.2embed.cc";
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 4, , 5]);
+                _a.trys.push([1, 8, , 9]);
                 urlSearch = "".concat(DOMAIN, "/embed/").concat(movieInfo.tmdb_id);
                 if (movieInfo.type == "tv") {
                     urlSearch = "".concat(DOMAIN, "/embedtv/").concat(movieInfo.tmdb_id, "&s=").concat(movieInfo.season, "&e=").concat(movieInfo.episode);
@@ -53,64 +53,100 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 2:
                 parseIframe_1 = _a.sent();
                 LINK_DETAIL_1 = "";
-                parseIframe_1("iframe").each(function (key, item) {
-                    var src = parseIframe_1(item).attr('data-src');
+                LINK_IDS_2 = [];
+                parseIframe_1("#myDropdown a").each(function (key, item) {
+                    var src = parseIframe_1(item).attr('onclick');
                     libs.log({ src: src }, PROVIDER, 'DATA-SRC');
-                    if (src && src.indexOf("swish") != -1) {
-                        LINK_DETAIL_1 = src;
+                    if (src && src.indexOf("player4u") != -1) {
+                        var pSrc = src.match(/go\(\'([^\']+)/i);
+                        if (pSrc) {
+                            LINK_DETAIL_1 = pSrc[1].replace(/\s/g, '%20');
+                        }
                     }
                 });
-                libs.log({ LINK_DETAIL: LINK_DETAIL_1 });
+                libs.log({ LINK_DETAIL: LINK_DETAIL_1 }, PROVIDER, "LINK DETAIL");
                 if (!LINK_DETAIL_1) {
                     return [2];
                 }
-                id = LINK_DETAIL_1.match(/id\=([A-z0-9]+)/i);
-                id = id ? id[1] : "";
-                libs.log({ id: id }, PROVIDER, 'ID');
-                if (!id) {
-                    return [2];
-                }
-                embedUrl = "https://uqloads.xyz/e/".concat(id);
-                headerEmbed = {
-                    Referer: "https://streamsrcs.2embed.cc/"
-                };
-                return [4, libs.request_get(embedUrl, headerEmbed, true)];
+                return [4, libs.request_get(LINK_DETAIL_1, {}, true)];
             case 3:
-                parseEmbed_1 = _a.sent();
-                ScriptEval_1 = "";
-                parseEmbed_1("script").each(function (key, item) {
-                    var s = parseEmbed_1(item).text();
-                    if (s.indexOf("eval") != -1) {
-                        ScriptEval_1 = s;
+                parseDetail_1 = _a.sent();
+                parseDetail_1(".playbtnx").each(function (key, item) {
+                    var src = parseDetail_1(item).attr('onclick');
+                    libs.log({ src: src }, PROVIDER, 'DETAIL SRC');
+                    if (src) {
+                        var pID = src.match(/\/swp\/\?id\=([^\&]+)/i);
+                        if (pID) {
+                            LINK_IDS_2.push(pID[1]);
+                        }
                     }
                 });
-                libs.log({ ScriptEval: ScriptEval_1 }, PROVIDER, 'SCRIPT EVAL');
-                if (!ScriptEval_1) {
+                libs.log({ LINK_IDS: LINK_IDS_2 }, PROVIDER, 'LINK IDS');
+                if (!LINK_IDS_2.length) {
                     return [2];
                 }
-                evalData = ScriptEval_1.match(/eval\(function\(p,a,c,k,e,.*\)\)/i);
-                evalData = evalData ? evalData[0] : '';
-                if (!evalData) {
-                    return [2];
-                }
-                unpacker = libs.string_unpacker_v2(evalData);
-                libs.log({ unpacker: unpacker }, PROVIDER, 'UNPACKER');
-                fileDirect = unpacker.match(/hls2 *\" *\: *\"([^\"]+)/i);
-                fileDirect = fileDirect ? fileDirect[1] : "";
-                libs.log({ fileDirect: fileDirect }, PROVIDER, 'FILE DIRECT');
-                if (fileDirect.indexOf("https://") == -1) {
-                    return [2];
-                }
-                if (!fileDirect) {
-                    return [2];
-                }
-                libs.embed_callback(fileDirect, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ "file": fileDirect, "quality": 1080 }]);
-                return [3, 5];
+                _loop_1 = function (id) {
+                    var embedUrl, headerEmbed, parseEmbed, ScriptEval, evalData, evalData, unpacker, fileDirect;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0:
+                                embedUrl = "https://uqloads.xyz/e/".concat(id);
+                                headerEmbed = {
+                                    Referer: "https://streamsrcs.2embed.cc/"
+                                };
+                                return [4, libs.request_get(embedUrl, headerEmbed, true)];
+                            case 1:
+                                parseEmbed = _b.sent();
+                                ScriptEval = "";
+                                parseEmbed("script").each(function (key, item) {
+                                    var s = parseEmbed(item).text();
+                                    if (s.indexOf("eval") != -1) {
+                                        ScriptEval = s;
+                                    }
+                                });
+                                if (!ScriptEval) {
+                                    return [2, { value: void 0 }];
+                                }
+                                evalData = ScriptEval.match(/eval\(function\(p,a,c,k,e,.*\)\)/i);
+                                evalData = evalData ? evalData[0] : '';
+                                if (!evalData) {
+                                    return [2, { value: void 0 }];
+                                }
+                                unpacker = libs.string_unpacker_v2(evalData);
+                                fileDirect = unpacker.match(/hls2 *\" *\: *\"([^\"]+)/i);
+                                fileDirect = fileDirect ? fileDirect[1] : "";
+                                libs.log({ fileDirect: fileDirect }, PROVIDER, 'FILE DIRECT');
+                                if (!fileDirect) {
+                                    return [2, { value: void 0 }];
+                                }
+                                if (fileDirect.indexOf("https://") == -1) {
+                                    return [2, { value: void 0 }];
+                                }
+                                libs.embed_callback(fileDirect, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ "file": fileDirect, "quality": 1080 }]);
+                                return [2];
+                        }
+                    });
+                };
+                _i = 0, LINK_IDS_1 = LINK_IDS_2;
+                _a.label = 4;
             case 4:
+                if (!(_i < LINK_IDS_1.length)) return [3, 7];
+                id = LINK_IDS_1[_i];
+                return [5, _loop_1(id)];
+            case 5:
+                state_1 = _a.sent();
+                if (typeof state_1 === "object")
+                    return [2, state_1.value];
+                _a.label = 6;
+            case 6:
+                _i++;
+                return [3, 4];
+            case 7: return [3, 9];
+            case 8:
                 e_1 = _a.sent();
                 libs.log({ e: e_1 }, PROVIDER, 'ERROR');
-                return [3, 5];
-            case 5: return [2, true];
+                return [3, 9];
+            case 9: return [2, true];
         }
     });
 }); };

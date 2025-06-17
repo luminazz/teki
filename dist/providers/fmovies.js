@@ -36,13 +36,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseSearch, LINK_DETAIL, TV_LINK_DETAIL, flagTv, _loop_1, _i, TV_LINK_DETAIL_1, linkTvItem, filmId, serverIds, apiUrlEmbed, parseEmbedServer_1, apiUrlGetSeason, parseGetSeason_1, seasonId_1, apiUrlGetEpisode, episodeId_1, parseGetEpisode_1, urlGetEmbedTv, parseEmbedTv_1, extractDirect, apiGetLinkEmbed, _a, serverIds_1, serverIdItem, getLinkEmbedData;
+    var PROVIDER, DOMAIN, urlSearch, parseSearch, LINK_DETAIL, TV_LINK_DETAIL, flagTv, _loop_1, _i, TV_LINK_DETAIL_1, linkTvItem, filmId, serverIds, apiUrlEmbed, parseEmbedServer_1, apiUrlGetSeason, parseGetSeason_1, seasonId_1, apiUrlGetEpisode, episodeId_1, parseGetEpisode_1, urlGetEmbedTv, parseEmbedTv_1, extractDirect, opensslKeyIv, decryptOpenssl, extractDirectV2, apiGetLinkEmbed, _a, serverIds_1, serverIdItem, getLinkEmbedData;
     var _this = this;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 PROVIDER = 'FMOVIES';
-                DOMAIN = "https://hdtodayz.to";
+                DOMAIN = "https://fmovies.ps";
                 urlSearch = "".concat(DOMAIN, "/search/").concat(libs.url_slug_search(movieInfo));
                 return [4, libs.request_get(urlSearch, {}, true)];
             case 1:
@@ -84,8 +84,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                             case 1:
                                 parseTvLinkDetail = _c.sent();
                                 yearTv = 0;
-                                libs.log({ length: parseTvLinkDetail('.dp-i-c-right .elements .row-line').length }, PROVIDER, 'LENGTH TV');
-                                parseTvLinkDetail('.dp-i-c-right .elements .row-line').each(function (keyTv, itemTv) {
+                                libs.log({ length: parseTvLinkDetail('.m_i-d-content .elements .row-line').length }, PROVIDER, 'LENGTH TV');
+                                parseTvLinkDetail('.m_i-d-content .elements .row-line').each(function (keyTv, itemTv) {
                                     var text = parseTvLinkDetail(itemTv).text();
                                     libs.log({ text: text }, PROVIDER, 'TEXT TV');
                                     if (text && text.toLowerCase().indexOf('released') != -1) {
@@ -131,11 +131,11 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 return [4, libs.request_get(apiUrlEmbed, {}, true)];
             case 6:
                 parseEmbedServer_1 = _b.sent();
-                libs.log({ apiUrlEmbed: apiUrlEmbed, length: parseEmbedServer_1('.link-item').length }, PROVIDER, "LENGTH LINK ITEM");
-                parseEmbedServer_1('.link-item').each(function (key, item) {
-                    var serverId = parseEmbedServer_1(item).attr('data-id');
+                libs.log({ apiUrlEmbed: apiUrlEmbed, length: parseEmbedServer_1('.nav-link').length }, PROVIDER, "LENGTH LINK ITEM");
+                parseEmbedServer_1('.nav-link').each(function (key, item) {
+                    var serverId = parseEmbedServer_1(item).attr('data-linkid');
                     var serverName = parseEmbedServer_1(item).find('span').text();
-                    if (serverId && serverName.toLowerCase() == "megacloud") {
+                    if (serverId) {
                         serverIds.push(serverId);
                     }
                 });
@@ -190,11 +190,11 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 return [4, libs.request_get(urlGetEmbedTv, {}, true)];
             case 10:
                 parseEmbedTv_1 = _b.sent();
-                libs.log({ urlGetEmbedTv: urlGetEmbedTv, length: parseEmbedTv_1('.link-item').length }, PROVIDER, 'EMBED INFO');
-                parseEmbedTv_1('.link-item').each(function (key, item) {
+                libs.log({ urlGetEmbedTv: urlGetEmbedTv, length: parseEmbedTv_1('.nav-link').length }, PROVIDER, 'EMBED INFO');
+                parseEmbedTv_1('.nav-link').each(function (key, item) {
                     var serverId = parseEmbedTv_1(item).attr('data-id');
                     var serverName = parseEmbedTv_1(item).find('span').text();
-                    if (serverId && serverName.toLowerCase() == "megacloud") {
+                    if (serverId) {
                         serverIds.push(serverId);
                     }
                 });
@@ -273,6 +273,134 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         }
                     });
                 }); };
+                opensslKeyIv = function (password, salt, keyLen, ivLen) {
+                    if (keyLen === void 0) { keyLen = 32; }
+                    if (ivLen === void 0) { ivLen = 16; }
+                    var targetLen = keyLen + ivLen;
+                    var derived = cryptoS.lib.WordArray.create();
+                    var currentHash = cryptoS.lib.WordArray.create();
+                    var passwordWA = (typeof password === 'string')
+                        ? cryptoS.enc.Utf8.parse(password)
+                        : password;
+                    while (derived.sigBytes < targetLen) {
+                        var hashInput = currentHash.clone().concat(passwordWA).concat(salt);
+                        currentHash = cryptoS.MD5(hashInput);
+                        derived = derived.concat(currentHash);
+                    }
+                    var key = cryptoS.lib.WordArray.create(derived.words.slice(0, keyLen / 4), keyLen);
+                    var iv = cryptoS.lib.WordArray.create(derived.words.slice(keyLen / 4, (keyLen + ivLen) / 4), ivLen);
+                    return { key: key, iv: iv };
+                };
+                decryptOpenssl = function (encBase64, password) {
+                    try {
+                        var encryptedData = cryptoS.enc.Base64.parse(encBase64);
+                        var prefixWords = encryptedData.words.slice(0, 2);
+                        var prefixBytes = cryptoS.lib.WordArray.create(prefixWords, 8);
+                        var prefixString = cryptoS.enc.Latin1.stringify(prefixBytes);
+                        if (prefixString !== "Salted__") {
+                            return "";
+                        }
+                        var saltWords = encryptedData.words.slice(2, 4);
+                        var salt = cryptoS.lib.WordArray.create(saltWords, 8);
+                        var ciphertextWords = encryptedData.words.slice(4);
+                        var ciphertext = cryptoS.lib.WordArray.create(ciphertextWords, encryptedData.sigBytes - 16);
+                        var _a = opensslKeyIv(password, salt, 32, 16), key = _a.key, iv = _a.iv;
+                        var cipherParams = cryptoS.lib.CipherParams.create({
+                            ciphertext: ciphertext
+                        });
+                        var decrypted = cryptoS.AES.decrypt(cipherParams, key, {
+                            iv: iv,
+                            mode: cryptoS.mode.CBC,
+                            padding: cryptoS.pad.Pkcs7
+                        });
+                        var plaintext = decrypted.toString(cryptoS.enc.Utf8);
+                        if (!plaintext) {
+                            return "";
+                        }
+                        return plaintext;
+                    }
+                    catch (error) {
+                        libs.log({ error: error }, PROVIDER, 'ERROR DE');
+                        return "";
+                    }
+                };
+                extractDirectV2 = function (linkV2) { return __awaiter(_this, void 0, void 0, function () {
+                    var id, domain, apiUrlGetLinkEmbed, parseGetLinkEmbed, sources, parseTrack, isEncrypted, tracks, _i, parseTrack_2, trackItem, lang, parseLang, key, pKey, deSource, parseDesource, rank, _a, parseDesource_1, item;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0:
+                                id = linkV2.match(/e\-1\/([A-z0-9]+)/i);
+                                id = id ? id[1] : '';
+                                libs.log({ id: id }, PROVIDER, 'ID');
+                                if (!id) {
+                                    return [2];
+                                }
+                                domain = libs.url_extractHostname(linkV2);
+                                libs.log({ domain: domain }, PROVIDER, "DOMAIN");
+                                apiUrlGetLinkEmbed = "https://".concat(domain, "/embed-1/v2/e-1/getSources?id=").concat(id);
+                                return [4, libs.request_get(apiUrlGetLinkEmbed, {
+                                        "Referer": linkV2,
+                                        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+                                        "X-Requested-With": "XMLHttpRequest"
+                                    })];
+                            case 1:
+                                parseGetLinkEmbed = _b.sent();
+                                libs.log({ parseGetLinkEmbed: parseGetLinkEmbed }, PROVIDER, 'PARSE GET LINK EMBED');
+                                sources = parseGetLinkEmbed.sources;
+                                parseTrack = parseGetLinkEmbed.tracks;
+                                isEncrypted = parseGetLinkEmbed.encrypted;
+                                tracks = [];
+                                for (_i = 0, parseTrack_2 = parseTrack; _i < parseTrack_2.length; _i++) {
+                                    trackItem = parseTrack_2[_i];
+                                    lang = trackItem.label;
+                                    if (!lang) {
+                                        continue;
+                                    }
+                                    libs.log({ lang: lang, trackItem: trackItem }, PROVIDER, "TRACK ITEM");
+                                    parseLang = lang.match(/([A-z0-9]+)/i);
+                                    parseLang = parseLang ? parseLang[1].trim() : '';
+                                    if (!parseLang) {
+                                        continue;
+                                    }
+                                    tracks.push({
+                                        file: trackItem.file,
+                                        kind: 'captions',
+                                        label: parseLang
+                                    });
+                                }
+                                return [4, libs.request_get("https://raw.githubusercontent.com/lulunnqqq/mvapi/refs/heads/key/extracted_arrays.json")];
+                            case 2:
+                                key = _b.sent();
+                                pKey = key.decryptionKey;
+                                deSource = sources;
+                                parseDesource = [];
+                                if (isEncrypted) {
+                                    deSource = decryptOpenssl(sources, pKey);
+                                    if (!deSource) {
+                                        return [2];
+                                    }
+                                    libs.log({ deSource: deSource }, PROVIDER, 'DE SOURCE');
+                                    parseDesource = JSON.parse(deSource);
+                                }
+                                else {
+                                    parseDesource = sources;
+                                }
+                                rank = 0;
+                                for (_a = 0, parseDesource_1 = parseDesource; _a < parseDesource_1.length; _a++) {
+                                    item = parseDesource_1[_a];
+                                    if (!item.file) {
+                                        continue;
+                                    }
+                                    libs.embed_callback(item.file, PROVIDER, PROVIDER, 'Hls', callback, ++rank, tracks, [{ "file": item.file, "quality": 1080 }], {
+                                        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+                                        "referer": "https://".concat(domain, "/"),
+                                        "origin": "https://".concat(domain),
+                                    });
+                                }
+                                return [2];
+                        }
+                    });
+                }); };
                 apiGetLinkEmbed = "".concat(DOMAIN, "/ajax/episode/sources/");
                 _a = 0, serverIds_1 = serverIds;
                 _b.label = 12;
@@ -285,7 +413,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 getLinkEmbedData = _b.sent();
                 libs.log({ getLinkEmbedData: getLinkEmbedData }, PROVIDER, 'LINK EMBED DATA');
                 if (getLinkEmbedData && getLinkEmbedData.link) {
-                    extractDirect(getLinkEmbedData.link);
+                    try {
+                        extractDirectV2(getLinkEmbedData.link);
+                    }
+                    catch (errDe) { }
                 }
                 _b.label = 14;
             case 14:
