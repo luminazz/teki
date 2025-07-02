@@ -368,10 +368,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                         label: parseLang
                                     });
                                 }
-                                return [4, libs.request_get("https://raw.githubusercontent.com/lulunnqqq/mvapi/refs/heads/key/extracted_arrays.json")];
+                                return [4, libs.request_get("https://raw.githubusercontent.com/yogesh-hacker/MegacloudKeys/refs/heads/main/keys.json")];
                             case 2:
                                 key = _b.sent();
-                                pKey = key.decryptionKey;
+                                pKey = key.rabbit;
                                 deSource = sources;
                                 parseDesource = [];
                                 if (isEncrypted) {

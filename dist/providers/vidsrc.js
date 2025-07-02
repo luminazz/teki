@@ -187,22 +187,22 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         }
         return _0x3239f9;
     }
-    var PROVIDER, DOMAIN, userAgent, urlSearch, parseSearch, parseIframe, requestFrame2, parseFrame2, iframePro, host, requestFrame3, textFrame3, parseFrame3, id, textEncode, encodeURL, e_1;
+    var PROVIDER, DOMAIN, userAgent, urlSearch, parseSearch, parseIframe, requestFrame2, parseFrame2, iframePro, host, requestFrame3, textFrame3, parseFrame3, encodeURL, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 PROVIDER = 'RVIDSRC';
-                DOMAIN = "https://vidsrc.net";
+                DOMAIN = "https://vidsrc.xyz";
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 7, , 8]);
                 userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36";
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
-                    urlSearch = "".concat(DOMAIN, "/embed/tv?tmdb=").concat(movieInfo.tmdb_id, "&season=").concat(movieInfo.season, "&episode=").concat(movieInfo.episode);
+                    urlSearch = "".concat(DOMAIN, "/embed/tv/").concat(movieInfo.tmdb_id, "/").concat(movieInfo.season, "-").concat(movieInfo.episode);
                 }
                 else {
-                    urlSearch = "".concat(DOMAIN, "/embed/movie?tmdb=").concat(movieInfo.tmdb_id);
+                    urlSearch = "".concat(DOMAIN, "/embed/").concat(movieInfo.tmdb_id);
                 }
                 return [4, libs.request_get(urlSearch, {
                         'user-agent': userAgent,
@@ -258,94 +258,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 6:
                 textFrame3 = _a.sent();
                 parseFrame3 = cheerio.load(textFrame3);
-                id = textFrame3.match(/player\_parent\" *\, *file\: *([A-z0-9+]+) /i);
-                id = id ? id[1] : "";
-                libs.log({ id: id }, PROVIDER, "ID");
-                if (!id) {
+                encodeURL = textFrame3.match(/player\_parent\" *\, *file\: *\'([^\']+)/i);
+                encodeURL = encodeURL ? encodeURL[1] : "";
+                libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE URL");
+                if (!encodeURL) {
                     return [2];
                 }
-                textEncode = parseFrame3("#".concat(id)).text();
-                libs.log({ textEncode: textEncode }, PROVIDER, "TEXT ENCODE");
-                if (!textEncode) {
-                    return [2];
-                }
-                encodeURL = "";
-                try {
-                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 1");
-                    encodeURL = Iry9MQXnLs(textEncode);
-                }
-                catch (e) {
-                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 1");
-                }
-                try {
-                    if (encodeURL.indexOf('m3u8') == -1) {
-                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 2");
-                        encodeURL = IGLImMhWrI(textEncode);
-                    }
-                }
-                catch (e) {
-                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 2");
-                }
-                try {
-                    if (encodeURL.indexOf('m3u8') == -1) {
-                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 3");
-                        encodeURL = GTAxQyTyBx(textEncode);
-                    }
-                }
-                catch (e) {
-                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 3");
-                }
-                try {
-                    if (encodeURL.indexOf('m3u8') == -1) {
-                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 4");
-                        encodeURL = MyL1IRSfHe(textEncode);
-                    }
-                }
-                catch (e) {
-                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 4");
-                }
-                try {
-                    if (encodeURL.indexOf('m3u8') == -1) {
-                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 5");
-                        encodeURL = nZlUnj2VSo(textEncode);
-                    }
-                }
-                catch (e) {
-                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 5");
-                }
-                try {
-                    if (encodeURL.indexOf('m3u8') == -1) {
-                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 6");
-                        encodeURL = laM1dAi3vO(textEncode);
-                    }
-                }
-                catch (e) {
-                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 6");
-                }
-                try {
-                    if (encodeURL.indexOf('https') == -1) {
-                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 7");
-                        encodeURL = GuxKGDsA2T(textEncode);
-                    }
-                }
-                catch (e) {
-                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 7");
-                }
-                try {
-                    if (encodeURL.indexOf('m3u8') == -1) {
-                        libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE 8");
-                        encodeURL = LXVUMCoAHJ(textEncode);
-                    }
-                }
-                catch (e) {
-                    libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE ERROR 8");
-                }
-                try {
-                    if (encodeURL.indexOf('m3u8') == -1) {
-                        encodeURL = detdj7JHiK(textEncode);
-                    }
-                }
-                catch (e) { }
                 if (encodeURL.indexOf('m3u8') == -1) {
                     return [2];
                 }

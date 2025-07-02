@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, url, dataDetail, htmlDetail, ID, deID, urlSource, headerSources, dataSources, _i, dataSources_1, item, urlDirect, headerDirect, dataDirect, tracks, _a, _b, trackItem, e_1;
+    var PROVIDER, DOMAIN, headers, fixID, url, dataDetail, htmlDetail, ID, deID, urlSource, headerSources, dataSources, _i, dataSources_1, item, urlDirect, headerDirect, dataDirect, tracks, _a, _b, trackItem, e_1;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
@@ -47,6 +47,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     'referer': "".concat(DOMAIN, "/"),
                     "origin": "".concat(DOMAIN)
                 };
+                fixID = "/79198daa-820c-5b08-ae46-f7391a4cb4dc/APA91XB-tqjXq06x1tMAywlhBwZoXF6FQV1ytGGPiOlCKlVRNnQ5Gm9GfHEO62TBFQbKi9FmQxIsxYuEZDgVwV1nwEzvGANC19MEE7mz_0TKror9KYtgeLtoh4cJiuPV9IJCV-XV7R2A0F0CRzfQKqr--OLVvrDgspSOiGGJEVYHu6BqaLB7xes/4c12dad1e1340c2fa8d5df7a54e1afbdb55f8011/4a5bf14f8b528581e81c89a761a8068bd049c0f86219d9dba62335155f00e04b/sewlujom/";
                 _c.label = 1;
             case 1:
                 _c.trys.push([1, 10, , 11]);
@@ -74,13 +75,14 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ deID: deID }, PROVIDER, 'DE ID');
                 if (!deID) {
                     return [2];
+                    z;
                 }
-                urlSource = "".concat(DOMAIN, "/he/20d11827-f529-5383-a1d6-a3080212d24e/APA916qimcHD7WH8DxkU8i5aOa2pH6KMjb8y0_0cA6XU0zYRHeEsNTSk-7ZtIrzsF6-rRLKW31ibthrXP1mQLt_NJQpLf0P_SwkFEN511q87n5UP0qvaUD30YLbPajKQWz29WUupqiCSo4TNR5qpbkHL0jX_KOZbULMTh-T4o4wTb1_0b3XM_92/f15e41055649bce34cf0b709011dee2cbebc6259/3YpJdj9D/").concat(deID);
+                urlSource = "".concat(DOMAIN).concat(fixID, "YDGUTEY/").concat(deID);
                 headerSources = {
                     referer: url,
                     'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    "content-type": "application/x-www-form-urlencoded"
                 };
+                libs.log({ urlSource: urlSource, headerSources: headerSources }, PROVIDER, 'URL SOURCE');
                 return [4, libs.request_post(urlSource, headerSources, {})];
             case 5:
                 dataSources = _c.sent();
@@ -93,7 +95,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 6:
                 if (!(_i < dataSources_1.length)) return [3, 9];
                 item = dataSources_1[_i];
-                urlDirect = "".concat(DOMAIN, "/he/20d11827-f529-5383-a1d6-a3080212d24e/APA916qimcHD7WH8DxkU8i5aOa2pH6KMjb8y0_0cA6XU0zYRHeEsNTSk-7ZtIrzsF6-rRLKW31ibthrXP1mQLt_NJQpLf0P_SwkFEN511q87n5UP0qvaUD30YLbPajKQWz29WUupqiCSo4TNR5qpbkHL0jX_KOZbULMTh-T4o4wTb1_0b3XM_92/f15e41055649bce34cf0b709011dee2cbebc6259/C-BrgxRt0A/").concat(item.data);
+                urlDirect = "".concat(DOMAIN).concat(fixID, "xo8XtbY-sVen/").concat(item.data);
                 headerDirect = {
                     referer: url,
                     'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -104,6 +106,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 dataDirect = _c.sent();
                 libs.log({ dataDirect: dataDirect }, PROVIDER, 'DATA DIRECT');
                 if (!dataDirect || !dataDirect.url) {
+                    return [3, 8];
+                }
+                if (dataDirect.url.indexOf(".m3u8") == -1 || dataDirect.url.indexOf("feltrixfire11") != -1) {
+                    return [3, 8];
+                }
+                if (dataDirect.url.indexOf("fleurixsun") == -1) {
                     return [3, 8];
                 }
                 tracks = [];
