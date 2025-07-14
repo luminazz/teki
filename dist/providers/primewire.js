@@ -428,7 +428,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 dataRedirect = _a.sent();
                 redirectUrl = dataRedirect.url;
                 libs.log(redirectUrl, PROVIDER, 'REDIRECT URL');
-                if (redirectUrl && redirectUrl.indexOf("hlsflex") != -1) {
+                if (redirectUrl && redirectUrl.indexOf("hgplaycdn") != -1) {
                     libs.log(redirectUrl, PROVIDER, 'REDIRECT URL');
                     libs.embed_redirect(redirectUrl, '', movieInfo, PROVIDER, callback, undefined, []);
                 }

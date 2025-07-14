@@ -1,5 +1,7 @@
 {
 	"providers": [
+"dist/providers/vidfast.js",
+"dist/providers/m4ufree.js",
 "dist/providers/uniquestream.js",
 "dist/providers/2embedcc.js",
 "dist/providers/aoneroom.js",
@@ -13,6 +15,7 @@
 "dist/providers/ymovies.js",
 "dist/providers/yesmovies.js",
 "dist/providers/ridomovie.js",
-"dist/providers/catflix.js"
+"dist/providers/catflix.js",
+"dist/providers/primewire.js"
 	]
 }

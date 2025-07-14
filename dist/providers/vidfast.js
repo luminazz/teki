@@ -47,7 +47,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     'referer': "".concat(DOMAIN, "/"),
                     "origin": "".concat(DOMAIN)
                 };
-                fixID = "/79198daa-820c-5b08-ae46-f7391a4cb4dc/APA91XB-tqjXq06x1tMAywlhBwZoXF6FQV1ytGGPiOlCKlVRNnQ5Gm9GfHEO62TBFQbKi9FmQxIsxYuEZDgVwV1nwEzvGANC19MEE7mz_0TKror9KYtgeLtoh4cJiuPV9IJCV-XV7R2A0F0CRzfQKqr--OLVvrDgspSOiGGJEVYHu6BqaLB7xes/4c12dad1e1340c2fa8d5df7a54e1afbdb55f8011/4a5bf14f8b528581e81c89a761a8068bd049c0f86219d9dba62335155f00e04b/sewlujom/";
+                fixID = "/e6f92d89-a2ca-5dbb-8d6e-bd815a61ee39/fi/r/bee2170a919418b62088945aeb36d6fae820ab70/APA91ucLnQa-rMM6imkOD8-YIFqEiLoxb-BR2AwQ79wfxrXe69VFTDAwlT2PBwml5huoVA9AoZHkBjt6PcbOohlKj6hVA66lLs3fWrOZXBPba7I2VI9FHQYExb8rltIM0TsLkg-qxoMpL0jq-AHAv2LSWiWJZncrNsSW57wS06vVmOYijxGqee5/cf9fffb937bed2d0f2d4921d86f50f182229460cd808f6aec8039dc8911b267a/beledo/b84e9f0e/";
                 _c.label = 1;
             case 1:
                 _c.trys.push([1, 10, , 11]);
@@ -77,10 +77,24 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [2];
                     z;
                 }
-                urlSource = "".concat(DOMAIN).concat(fixID, "YDGUTEY/").concat(deID);
+                urlSource = "".concat(DOMAIN).concat(fixID, "pC8vgkEb9w/").concat(deID);
                 headerSources = {
-                    referer: url,
-                    'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                    "Accept": "*/*",
+                    "Accept-Language": "en-US,en;q=0.9,vi-VN;q=0.8,vi;q=0.7",
+                    "Connection": "keep-alive",
+                    "Content-Length": "0",
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "DNT": "1",
+                    "Origin": "https://www.vidfast.pro",
+                    "Referer": "https://www.vidfast.pro/",
+                    "Sec-Fetch-Dest": "empty",
+                    "Sec-Fetch-Mode": "cors",
+                    "Sec-Fetch-Site": "same-origin",
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+                    "sec-ch-ua-mobile": "?0",
+                    "sec-ch-ua-platform": "\"macOS\""
                 };
                 libs.log({ urlSource: urlSource, headerSources: headerSources }, PROVIDER, 'URL SOURCE');
                 return [4, libs.request_post(urlSource, headerSources, {})];
@@ -95,11 +109,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 6:
                 if (!(_i < dataSources_1.length)) return [3, 9];
                 item = dataSources_1[_i];
-                urlDirect = "".concat(DOMAIN).concat(fixID, "xo8XtbY-sVen/").concat(item.data);
+                urlDirect = "".concat(DOMAIN).concat(fixID, "s2aqGYpfscE0-g/").concat(item.data);
                 headerDirect = {
                     referer: url,
                     'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    "content-type": "application/x-www-form-urlencoded"
+                    "content-type": "application/x-www-form-urlencoded",
+                    "X-Requested-With": "XMLHttpRequest",
                 };
                 return [4, libs.request_post(urlDirect, headerDirect, {})];
             case 7:
@@ -109,9 +124,6 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     return [3, 8];
                 }
                 if (dataDirect.url.indexOf(".m3u8") == -1 || dataDirect.url.indexOf("feltrixfire11") != -1) {
-                    return [3, 8];
-                }
-                if (dataDirect.url.indexOf("fleurixsun") == -1) {
                     return [3, 8];
                 }
                 tracks = [];
@@ -125,7 +137,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 libs.log({ tracks: tracks }, PROVIDER, 'TRACKS');
                 libs.embed_callback(dataDirect.url, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, [{ file: dataDirect.url, quality: 1080 }], headers);
-                _c.label = 8;
+                return [2];
             case 8:
                 _i++;
                 return [3, 6];

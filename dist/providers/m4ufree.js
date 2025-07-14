@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -36,12 +36,32 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, userAgent, pureheaders, headers, urlSearch, cookieData, laravel_session, xsrf, cookie, parseSearch_1, LINK_DETAIL_1, LINK_TV_1, episodeIdMatching_1, parseTvDetail_1, hasLinkTv_1, singlemv_1, filmToken, filmCookie, htmlMovie, _token, cookieMovie, laravel_session_movie, xsrf_movie, parseCookieMovie_1, parseMovie_1, htmlTv, cookieTv, _token, laravel_session_tv, xsrf_tv, parseCookieTv, domainDetailTv, body, parseDetailTv_1, cookieDetailTv, laravel_session_movie, xsrf_movie, parseCookieMovie_2, ajaxIframeUrl, tempCookie, i, bodyIframe, headerAjax, parseIframe, cookieMovie, laravel_session_movie, xsrf_movie, parseCookieMovie, iframeUrl, e_1;
+    function f0001(_0x3f90c2, _0x1b80b5) {
+        var _0x49e0af = cryptoS.AES.encrypt(_0x3f90c2, _0x1b80b5).toString();
+        var _0x2e5b8c = cryptoS.enc.Base64.parse(_0x49e0af);
+        _0x49e0af = _0x2e5b8c.toString(cryptoS.enc.Hex);
+        return _0x49e0af;
+    }
+    function f0002(_0x110358, _0xdc15f3) {
+        var _0x5580e5;
+        try {
+            var _0x3587e7 = cryptoS.enc.Hex.parse(_0x110358);
+            var _0x1a2aa2 = _0x3587e7.toString(cryptoS.enc.Base64);
+            _0x5580e5 = cryptoS.AES.decrypt(_0x1a2aa2, _0xdc15f3);
+            _0x5580e5 = _0x5580e5.toString(cryptoS.enc.Utf8);
+        }
+        catch (_0xae9527) {
+            console.log("Error decrypting data: " + _0xae9527);
+        }
+        return _0x5580e5;
+    }
+    var PROVIDER, DOMAIN, userAgent, pureheaders, headers, urlSearch, parseSearch_1, cookieData, laravel_session, xsrf, cookie, LINK_DETAIL_1, LINK_TV, episodeIdMatching_1, parseTvDetail_1, hasLinkTv, singlemv_1, filmToken, filmCookie, htmlMovie, _token, cookieMovie, laravel_session_movie, xsrf_movie, parseCookieMovie_1, parseMovie_1, htmlTv, cookieTv, _token, laravel_session_tv, xsrf_tv, parseCookieTv, domainDetailTv, body, parseDetailTv_1, cookieDetailTv, laravel_session_movie, xsrf_movie, parseCookieMovie_2, ajaxIframeUrl, embedDirectYtb, tempCookie, i, bodyIframe, headerAjax, parseIframe, cookieMovie, laravel_session_movie, xsrf_movie, parseCookieMovie, iframeUrl, e_1;
+    var _this = this;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                PROVIDER = 'M4UFREE';
-                DOMAIN = "https://ww1.m4ufree.tv";
+                PROVIDER = 'LM4UFREE';
+                DOMAIN = "https://streamm4u.com.co";
                 userAgent = libs.request_getRandomUserAgent();
                 pureheaders = {
                     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.14',
@@ -50,7 +70,6 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     'Sec-Fetch-Mode': 'navigate',
                     'Sec-Fetch-User': '?1',
                     'Sec-Fetch-Dest': 'document',
-                    'Host': 'ww1.m4ufree.tv',
                     'sec-ch-ua': '"Microsoft Edge";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
                     'Upgrade-Insecure-Requests': 1,
                     'Connection': 'keep-alive',
@@ -65,7 +84,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     'Sec-Fetch-Mode': 'navigate',
                     'Sec-Fetch-User': '?1',
                     'Sec-Fetch-Dest': 'document',
-                    'Host': 'ww1.m4ufree.tv',
+                    'Host': 'streamm4u.com.co',
                     'sec-ch-ua': '"Microsoft Edge";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
                     'Upgrade-Insecure-Requests': 1,
                     'Connection': 'keep-alive',
@@ -75,31 +94,26 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 };
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 28, , 29]);
-                urlSearch = "".concat(DOMAIN, "/search/").concat(libs.url_slug_search(movieInfo, '-', true, 2), ".html");
-                return [4, libs.cookies_clearAll()];
+                _a.trys.push([1, 26, , 27]);
+                urlSearch = "".concat(DOMAIN, "/search/").concat(libs.url_slug_search(movieInfo, '-', true, 2));
+                libs.log({ urlSearch: urlSearch }, PROVIDER, "URL SEARCH");
+                return [4, libs.request_get(urlSearch, headers, true)];
             case 2:
-                _a.sent();
-                return [4, libs.request_get("".concat(DOMAIN, "/"), headers)];
+                parseSearch_1 = _a.sent();
+                return [4, libs.cookies_get(urlSearch)];
             case 3:
-                _a.sent();
-                return [4, libs.cookies_get(DOMAIN)];
-            case 4:
                 cookieData = _a.sent();
                 return [4, libs.cookies_clearAll()];
-            case 5:
+            case 4:
                 _a.sent();
-                libs.log({ cookieData: cookieData }, PROVIDER, 'COOKIE DATA');
+                libs.log({
+                    length: parseSearch_1('.row .item').length,
+                    cookieData: cookieData
+                }, PROVIDER, 'SEARCH LENGTH');
                 laravel_session = cookieData['laravel_session']['value'];
                 xsrf = cookieData['XSRF-TOKEN']['value'];
                 cookie = "laravel_session=".concat(laravel_session, "; XSRF-TOKEN=").concat(xsrf);
                 headers['cookie'] = cookie;
-                return [4, libs.request_get(urlSearch, headers, true)];
-            case 6:
-                parseSearch_1 = _a.sent();
-                libs.log({
-                    length: parseSearch_1('.row .item').length
-                }, PROVIDER, 'SEARCH LENGTH');
                 LINK_DETAIL_1 = '';
                 parseSearch_1('.row .item').each(function (key, item) {
                     var tipTitle = parseSearch_1(item).find('.tiptitle').text();
@@ -121,52 +135,49 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!LINK_DETAIL_1) {
                     return [2];
                 }
-                LINK_TV_1 = '';
+                LINK_TV = '';
                 episodeIdMatching_1 = '';
-                if (!(movieInfo.type == "tv")) return [3, 8];
+                if (!(movieInfo.type == "tv")) return [3, 6];
                 return [4, libs.request_get(LINK_DETAIL_1, headers, true)];
-            case 7:
+            case 5:
                 parseTvDetail_1 = _a.sent();
-                hasLinkTv_1 = false;
+                hasLinkTv = false;
                 libs.log({ length: parseTvDetail_1('.episode').length }, PROVIDER, "TV LENGTH");
                 parseTvDetail_1('.episode').each(function (key, item) {
                     var id = parseTvDetail_1(item).attr('idepisode');
-                    var epiLInk = parseTvDetail_1(item).attr('epilink');
-                    var season = parseTvDetail_1(item).attr('season');
-                    var episode = parseTvDetail_1(item).attr('episode');
-                    var rowname = parseTvDetail_1(item).attr('rowname');
-                    libs.log({ id: id, epiLInk: epiLInk, season: season, episode: episode, rowname: rowname }, PROVIDER, 'TVSHOW MATCHING');
+                    var tvText = parseTvDetail_1(item).text();
+                    var season = tvText.match(/S([0-9]+)/i);
+                    season = season ? Number(season[1]) : 0;
+                    var episode = tvText.match(/S[0-9]+\-E([0-9]+)/i);
+                    episode = episode ? Number(episode[1]) : 0;
+                    libs.log({ id: id, season: season, episode: episode, tvText: tvText }, PROVIDER, 'TVSHOW MATCHING');
                     if (season == movieInfo.season && episode == movieInfo.episode) {
-                        LINK_TV_1 = "".concat(DOMAIN, "/tvshow/").concat(rowname, "-season-").concat(season, "-episode-").concat(episode, "-").concat(epiLInk, ".html");
-                        libs.log(LINK_TV_1, PROVIDER, 'LINK TV DETAIL');
-                        hasLinkTv_1 = true;
                         episodeIdMatching_1 = id;
                     }
                 });
-                libs.log({ hasLinkTv: hasLinkTv_1, LINK_TV: LINK_TV_1 }, PROVIDER, "LINK TV");
-                if (!hasLinkTv_1) {
+                libs.log({ episodeIdMatching: episodeIdMatching_1 }, PROVIDER, "episodeIdMatching");
+                if (!episodeIdMatching_1) {
                     return [2];
                 }
-                LINK_DETAIL_1 = LINK_TV_1;
-                _a.label = 8;
-            case 8:
+                _a.label = 6;
+            case 6:
                 libs.log({ LINK_DETAIL: LINK_DETAIL_1 }, PROVIDER, 'LINK DETAIL END');
                 singlemv_1 = [];
                 filmToken = '';
                 filmCookie = '';
-                if (!(movieInfo.type == 'movie')) return [3, 12];
-                return [4, libs.request_get(LINK_DETAIL_1, pureheaders, false)];
-            case 9:
+                if (!(movieInfo.type == 'movie')) return [3, 10];
+                return [4, libs.request_get(LINK_DETAIL_1, headers, false)];
+            case 7:
                 htmlMovie = _a.sent();
                 _token = htmlMovie.match(/_token *\: *\'([^\']+)/i);
                 _token = _token ? _token[1] : '';
                 filmToken = _token;
                 libs.log({ filmToken: filmToken }, PROVIDER, 'FILM TOKEN');
                 return [4, libs.cookies_get(LINK_DETAIL_1)];
-            case 10:
+            case 8:
                 cookieMovie = _a.sent();
                 return [4, libs.cookies_clearAll()];
-            case 11:
+            case 9:
                 _a.sent();
                 laravel_session_movie = cookieMovie['laravel_session']['value'];
                 xsrf_movie = cookieMovie['XSRF-TOKEN']['value'];
@@ -182,18 +193,18 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         });
                     }
                 });
-                return [3, 20];
-            case 12: return [4, libs.cookies_clearAll()];
-            case 13:
+                return [3, 18];
+            case 10: return [4, libs.cookies_clearAll()];
+            case 11:
                 _a.sent();
                 return [4, libs.request_get(LINK_DETAIL_1, headers)];
-            case 14:
+            case 12:
                 htmlTv = _a.sent();
                 return [4, libs.cookies_get(LINK_DETAIL_1)];
-            case 15:
+            case 13:
                 cookieTv = _a.sent();
                 return [4, libs.cookies_clearAll()];
-            case 16:
+            case 14:
                 _a.sent();
                 _token = htmlTv.match(/_token *\: *\'([^\']+)/i);
                 _token = _token ? _token[1] : '';
@@ -228,14 +239,14 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         'sec-ch-ua-platform': '"macOS"',
                         'Accept-Language': 'en-US,en;q=0.9'
                     }, body, true)];
-            case 17:
+            case 15:
                 parseDetailTv_1 = _a.sent();
                 libs.log({ length: parseDetailTv_1('.singlemv').length }, PROVIDER, "SINGLEMV");
                 return [4, libs.cookies_get(domainDetailTv)];
-            case 18:
+            case 16:
                 cookieDetailTv = _a.sent();
                 return [4, libs.cookies_clearAll()];
-            case 19:
+            case 17:
                 _a.sent();
                 libs.log({ cookieDetailTv: cookieDetailTv }, PROVIDER, 'COOKIE DETAIL TV');
                 laravel_session_movie = cookieDetailTv['laravel_session']['value'];
@@ -250,20 +261,89 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         });
                     }
                 });
-                _a.label = 20;
-            case 20:
+                _a.label = 18;
+            case 18:
                 libs.log({ singlemv: singlemv_1, filmCookie: filmCookie, filmToken: filmToken }, PROVIDER, 'singlemv');
                 if (singlemv_1.length == 0) {
                     return [2];
                 }
                 ajaxIframeUrl = "".concat(DOMAIN, "/ajax");
+                embedDirectYtb = function (embedUrl) { return __awaiter(_this, void 0, void 0, function () {
+                    var dataEmbedDirect, htmlEmbedDirect, DomainDirect, idFile, idUser, _0x32b828, _0x972dd1, _0x30ca8c, headerAjaxDirect, body, dataDirect, decryptData;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4, fetch(embedUrl, {
+                                    headers: pureheaders,
+                                })];
+                            case 1:
+                                dataEmbedDirect = _a.sent();
+                                return [4, dataEmbedDirect.text()];
+                            case 2:
+                                htmlEmbedDirect = _a.sent();
+                                DomainDirect = htmlEmbedDirect.match(/const *DOMAIN\_API *\= *\'([^\']+)/i);
+                                DomainDirect = DomainDirect ? DomainDirect[1] : "";
+                                libs.log({ DomainDirect: DomainDirect }, PROVIDER, "DOMAIN DIRECT");
+                                if (!DomainDirect) {
+                                    return [2];
+                                }
+                                DomainDirect = "".concat(DomainDirect, "/playiframe");
+                                idFile = htmlEmbedDirect.match(/const *idfile\_enc *\= *\"([^\"]+)/);
+                                idFile = idFile ? idFile[1] : "";
+                                idUser = htmlEmbedDirect.match(/const *idUser\_enc *\= *"([^\"]+)/i);
+                                idUser = idUser ? idUser[1] : "";
+                                libs.log({ idFile: idFile, idUser: idUser }, PROVIDER, "ID INFO");
+                                if (!idFile || !idUser) {
+                                    return [2];
+                                }
+                                _0x32b828 = {
+                                    idfile: f0002(idFile, "jcLycoRJT6OWjoWspgLMOZwS3aSS0lEn"),
+                                    iduser: f0002(idUser, "PZZ3J3LDbLT0GY7qSA5wW5vchqgpO36O"),
+                                    domain_play: "https://streamm4u.com.co",
+                                    platform: "MacIntel",
+                                    hlsSupport: true,
+                                    jwplayer: { "jwplayer": { "Browser": { "androidNative": false, "chrome": true, "edge": false, "facebook": false, "firefox": false, "ie": false, "msie": false, "safari": false, "version": { "version": "138.0.0.0", "major": 138, "minor": 0 } }, "OS": { "android": false, "iOS": false, "mobile": false, "mac": true, "iPad": false, "iPhone": false, "windows": false, "tizen": false, "tizenApp": false, "version": { "version": "10_15_7", "major": 10, "minor": 15 } }, "Features": { "iframe": false, "passiveEvents": true, "backgroundLoading": true } } }
+                                };
+                                _0x972dd1 = f0001(JSON.stringify(_0x32b828), "vlVbUQhkOhoSfyteyzGeeDzU0BHoeTyZ");
+                                _0x30ca8c = cryptoS.MD5(_0x972dd1 + "KRWN3AdgmxEMcd2vLN1ju9qKe8Feco5h").toString();
+                                headerAjaxDirect = {
+                                    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                                    "Referer": "https://if9.ppzj-youtube.cfd/",
+                                    "Origin": "https://if9.ppzj-youtube.cfd",
+                                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.14',
+                                };
+                                body = qs.stringify({
+                                    data: _0x972dd1 + "|" + _0x30ca8c
+                                });
+                                return [4, libs.request_post(DomainDirect, headerAjaxDirect, body)];
+                            case 3:
+                                dataDirect = _a.sent();
+                                libs.log({ dataDirect: dataDirect }, PROVIDER, "DATA DIRECT");
+                                if (dataDirect.status != 1 || dataDirect.type != "url-m3u8-encv1") {
+                                    return [2];
+                                }
+                                decryptData = f0002(dataDirect.data, "oJwmvmVBajMaRCTklxbfjavpQO7SZpsL");
+                                libs.log({ decryptData: decryptData }, PROVIDER, "decryptData");
+                                if (!decryptData) {
+                                    return [2];
+                                }
+                                libs.embed_callback(decryptData, PROVIDER, PROVIDER, 'hls', callback, 1, [], [{ file: decryptData, quality: 1080 }], {
+                                    "Referer": "https://if9.ppzj-youtube.cfd/",
+                                    "Origin": "https://if9.ppzj-youtube.cfd",
+                                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.14',
+                                }, {
+                                    type: "m3u8"
+                                });
+                                return [2];
+                        }
+                    });
+                }); };
                 tempCookie = '';
                 i = 0;
-                _a.label = 21;
-            case 21:
-                if (!(i <= singlemv_1.length)) return [3, 27];
+                _a.label = 19;
+            case 19:
+                if (!(i <= singlemv_1.length)) return [3, 25];
                 return [4, libs.cookies_clearAll()];
-            case 22:
+            case 20:
                 _a.sent();
                 bodyIframe = qs.stringify({
                     _token: filmToken,
@@ -292,14 +372,13 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     headerAjax['cookie'] = tempCookie;
                 }
                 return [4, libs.request_post(ajaxIframeUrl, headerAjax, bodyIframe, true)];
-            case 23:
+            case 21:
                 parseIframe = _a.sent();
-                libs.log({ parseIframe: parseIframe }, PROVIDER, "parseIframe");
                 return [4, libs.cookies_get(ajaxIframeUrl)];
-            case 24:
+            case 22:
                 cookieMovie = _a.sent();
                 return [4, libs.cookies_clearAll()];
-            case 25:
+            case 23:
                 _a.sent();
                 laravel_session_movie = cookieMovie['laravel_session']['value'];
                 xsrf_movie = cookieMovie['XSRF-TOKEN']['value'];
@@ -307,23 +386,24 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 libs.log({ parseCookieMovie: parseCookieMovie }, PROVIDER, "tempCookie");
                 tempCookie = parseCookieMovie;
                 iframeUrl = parseIframe('iframe').attr('src');
+                libs.log({ iframeUrl: iframeUrl }, PROVIDER, "iframeUrl");
                 iframeUrl = iframeUrl.replace(/\\r/im, '');
                 iframeUrl = iframeUrl.replace(/\\n/im, '');
                 iframeUrl = iframeUrl.trim();
                 libs.log({ iframeUrl: iframeUrl }, PROVIDER, 'IFRAME URL');
-                libs.embed_redirect(iframeUrl, '', movieInfo, PROVIDER, callback, "", [], {
-                    link_detail: LINK_DETAIL_1
-                });
-                _a.label = 26;
-            case 26:
+                if (iframeUrl.indexOf("ppzj-youtube") != -1) {
+                    embedDirectYtb(iframeUrl);
+                }
+                _a.label = 24;
+            case 24:
                 i++;
-                return [3, 21];
-            case 27: return [3, 29];
-            case 28:
+                return [3, 19];
+            case 25: return [3, 27];
+            case 26:
                 e_1 = _a.sent();
                 libs.log({ e: e_1 }, PROVIDER, 'ERROR M4UFREE');
-                return [3, 29];
-            case 29: return [2];
+                return [3, 27];
+            case 27: return [2];
         }
     });
 }); };

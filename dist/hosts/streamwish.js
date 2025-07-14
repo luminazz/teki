@@ -35,12 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-hosts["hlsflex"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
+hosts["hgplaycdn"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
     var DOMAIN, HOST, headers, parseDetail_1, SCRIPT_1, unpacker, file, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                DOMAIN = 'https://hlsflex.com';
+                DOMAIN = 'https://hgplaycdn.com';
                 HOST = 'Hlsflex';
                 headers = {
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -60,13 +60,11 @@ hosts["hlsflex"] = function (url, movieInfo, provider, config, callback) { retur
                         SCRIPT_1 = s;
                     }
                 });
-                libs.log(SCRIPT_1, HOST, 'SCRIPT');
                 if (!SCRIPT_1) {
                     return [2];
                 }
                 unpacker = libs.string_unpacker_v2(SCRIPT_1);
-                libs.log({ unpacker: unpacker }, HOST, 'Unpacker');
-                file = unpacker.match(/file *\: *\"([^\"]+)/i);
+                file = unpacker.match(/hls2 *\" *\: *\"([^\"]+)/i);
                 file = file ? file[1] : '';
                 libs.log({ file: file }, HOST, 'FILE');
                 if (!file) {

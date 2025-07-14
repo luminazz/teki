@@ -60,13 +60,13 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 B = C.split("").reverse().join("");
                 A = libs.string_btoa(B);
                 D = libs.string_btoa(A);
-                urlovo = "https://api.vid3c.site/allmvse2.php?id=".concat(D);
+                urlovo = "https://api2.vidsrc.vip/movie/".concat(D);
                 if (movieInfo.type == 'tv') {
                     formattedString = "".concat(movieInfo.tmdb_id, "-").concat(movieInfo.season, "-").concat(movieInfo.episode);
                     reversedString = formattedString.split('').reverse().join('');
                     firstBase64 = libs.string_btoa(reversedString);
                     secondBase64 = libs.string_btoa(firstBase64);
-                    urlovo = "https://api.vid3c.site/alltvse2.php?id=".concat(secondBase64);
+                    urlovo = "https://api2.vidsrc.vip/tv/".concat(secondBase64);
                 }
                 return [4, fetch(urlovo)];
             case 2:
