@@ -325,7 +325,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                 };
                 extractDirectV2 = function (linkV2) { return __awaiter(_this, void 0, void 0, function () {
-                    var id, domain, apiUrlGetLinkEmbed, parseGetLinkEmbed, sources, parseTrack, isEncrypted, tracks, _i, parseTrack_2, trackItem, lang, parseLang, key, pKey, deSource, parseDesource, rank, _a, parseDesource_1, item;
+                    var id, domain, dataEmbed, htmlEmbed, k, apiUrlGetLinkEmbed, parseGetLinkEmbed, sources, parseTrack, isEncrypted, tracks, _i, parseTrack_2, trackItem, lang, parseLang, key, pKey, deSource, parseDesource, rank, _a, parseDesource_1, item;
                     return __generator(this, function (_b) {
                         switch (_b.label) {
                             case 0:
@@ -337,17 +337,54 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                 }
                                 domain = libs.url_extractHostname(linkV2);
                                 libs.log({ domain: domain }, PROVIDER, "DOMAIN");
-                                apiUrlGetLinkEmbed = "https://".concat(domain, "/embed-1/v2/e-1/getSources?id=").concat(id);
+                                return [4, fetch(linkV2, {
+                                        headers: {
+                                            "Referer": linkV2,
+                                            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+                                        }
+                                    })];
+                            case 1:
+                                dataEmbed = _b.sent();
+                                return [4, dataEmbed.text()];
+                            case 2:
+                                htmlEmbed = _b.sent();
+                                k = htmlEmbed.match(/nonce\=\"([^\"]+)/i);
+                                if (!k) {
+                                    k = htmlEmbed.match(/\_gg\_fb\" *content\=\"([^\"])/i);
+                                }
+                                if (!k) {
+                                    k = htmlEmbed.match(/\_xy\_ws *\= *\"([^\"]+)/i);
+                                }
+                                if (!k) {
+                                    k = htmlEmbed.match(/data-dpi\=\"([^\"]+)/i);
+                                }
+                                if (!k) {
+                                    k = htmlEmbed.match(/\_is\_th *\: *([A-z0-9]+)/i);
+                                }
+                                if (k) {
+                                    k = k ? k[1] : '';
+                                }
+                                if (!k) {
+                                    k = htmlEmbed.match(/\_lk\_db *\= *\{x\: *\"([^\"]+)\"\, *y\: *\"([^\"]+)\"\, *z\: *\"([^\"]+)/i);
+                                    if (k) {
+                                        k = k[1] + k[2] + k[3];
+                                    }
+                                }
+                                libs.log({ k: k }, PROVIDER, 'K');
+                                if (!k) {
+                                    return [2];
+                                }
+                                apiUrlGetLinkEmbed = "https://".concat(domain, "/embed-1/v3/e-1/getSources?id=").concat(id, "&_k=").concat(k);
                                 return [4, libs.request_get(apiUrlGetLinkEmbed, {
                                         "Referer": linkV2,
                                         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
                                         "X-Requested-With": "XMLHttpRequest"
                                     })];
-                            case 1:
+                            case 3:
                                 parseGetLinkEmbed = _b.sent();
                                 libs.log({ parseGetLinkEmbed: parseGetLinkEmbed }, PROVIDER, 'PARSE GET LINK EMBED');
                                 sources = parseGetLinkEmbed.sources;
-                                parseTrack = parseGetLinkEmbed.tracks;
+                                parseTrack = parseGetLinkEmbed.tracks || [];
                                 isEncrypted = parseGetLinkEmbed.encrypted;
                                 tracks = [];
                                 for (_i = 0, parseTrack_2 = parseTrack; _i < parseTrack_2.length; _i++) {
@@ -369,13 +406,18 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                     });
                                 }
                                 return [4, libs.request_get("https://raw.githubusercontent.com/yogesh-hacker/MegacloudKeys/refs/heads/main/keys.json")];
-                            case 2:
+                            case 4:
                                 key = _b.sent();
                                 pKey = key.rabbit;
+                                libs.log({ pKey: pKey }, PROVIDER, "PKEY");
+                                if (!pKey) {
+                                    return [2];
+                                }
                                 deSource = sources;
                                 parseDesource = [];
                                 if (isEncrypted) {
                                     deSource = decryptOpenssl(sources, pKey);
+                                    libs.log({ deSource: deSource }, PROVIDER, "DESOURCE 1");
                                     if (!deSource) {
                                         return [2];
                                     }
@@ -385,6 +427,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                 else {
                                     parseDesource = sources;
                                 }
+                                libs.log({ deSource: deSource }, PROVIDER, "deSource");
                                 rank = 0;
                                 for (_a = 0, parseDesource_1 = parseDesource; _a < parseDesource_1.length; _a++) {
                                     item = parseDesource_1[_a];
@@ -416,7 +459,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     try {
                         extractDirectV2(getLinkEmbedData.link);
                     }
-                    catch (errDe) { }
+                    catch (errDe) {
+                        libs.log({ errDe: errDe }, PROVIDER, "ERR DE");
+                    }
                 }
                 _b.label = 14;
             case 14:

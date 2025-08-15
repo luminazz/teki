@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, urlSearch, parseIframe_1, LINK_DETAIL_1, LINK_IDS_2, parseDetail_1, _loop_1, _i, LINK_IDS_1, id, state_1, e_1;
+    var PROVIDER, DOMAIN, urlSearch, parseIframe_1, LINK_DETAIL_1, LINK_IDS, ID_DETAIL, _loop_1, _i, LINK_IDS_1, id, state_1, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -44,7 +44,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 DOMAIN = "https://www.2embed.cc";
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 8, , 9]);
+                _a.trys.push([1, 7, , 8]);
                 urlSearch = "".concat(DOMAIN, "/embed/").concat(movieInfo.tmdb_id);
                 if (movieInfo.type == "tv") {
                     urlSearch = "".concat(DOMAIN, "/embedtv/").concat(movieInfo.tmdb_id, "&s=").concat(movieInfo.season, "&e=").concat(movieInfo.episode);
@@ -53,11 +53,11 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 2:
                 parseIframe_1 = _a.sent();
                 LINK_DETAIL_1 = "";
-                LINK_IDS_2 = [];
+                LINK_IDS = [];
                 parseIframe_1("#myDropdown a").each(function (key, item) {
                     var src = parseIframe_1(item).attr('onclick');
                     libs.log({ src: src }, PROVIDER, 'DATA-SRC');
-                    if (src && src.indexOf("player4u") != -1) {
+                    if (src && src.indexOf("streamsrcs.2embed.cc/swish?id=") != -1) {
                         var pSrc = src.match(/go\(\'([^\']+)/i);
                         if (pSrc) {
                             LINK_DETAIL_1 = pSrc[1].replace(/\s/g, '%20');
@@ -68,35 +68,30 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!LINK_DETAIL_1) {
                     return [2];
                 }
-                return [4, libs.request_get(LINK_DETAIL_1, {}, true)];
-            case 3:
-                parseDetail_1 = _a.sent();
-                parseDetail_1(".playbtnx").each(function (key, item) {
-                    var src = parseDetail_1(item).attr('onclick');
-                    libs.log({ src: src }, PROVIDER, 'DETAIL SRC');
-                    if (src) {
-                        var pID = src.match(/\/swp\/\?id\=([^\&]+)/i);
-                        if (pID) {
-                            LINK_IDS_2.push(pID[1]);
-                        }
-                    }
-                });
-                libs.log({ LINK_IDS: LINK_IDS_2 }, PROVIDER, 'LINK IDS');
-                if (!LINK_IDS_2.length) {
+                ID_DETAIL = LINK_DETAIL_1.match(/id\=([A-z0-9]+)/i);
+                ID_DETAIL = ID_DETAIL ? ID_DETAIL[1] : "";
+                libs.log({ ID_DETAIL: ID_DETAIL }, PROVIDER, 'ID DETAIL');
+                if (!ID_DETAIL) {
+                    return [2];
+                }
+                LINK_IDS.push(ID_DETAIL);
+                libs.log({ LINK_IDS: LINK_IDS }, PROVIDER, 'LINK IDS');
+                if (!LINK_IDS.length) {
                     return [2];
                 }
                 _loop_1 = function (id) {
-                    var embedUrl, headerEmbed, parseEmbed, ScriptEval, evalData, evalData, unpacker, fileDirect;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
+                    var embedUrl, headerEmbed, parseEmbed, ScriptEval, evalData, evalData, unpacker, datasDirect, fileDirect1, fileDirect2, _b, datasDirect_1, fileDirect;
+                    return __generator(this, function (_c) {
+                        switch (_c.label) {
                             case 0:
-                                embedUrl = "https://uqloads.xyz/e/".concat(id);
+                                embedUrl = "https://yesmovies.baby/e/".concat(id);
                                 headerEmbed = {
-                                    Referer: "https://streamsrcs.2embed.cc/"
+                                    Referer: "https://streamsrcs.2embed.cc/",
+                                    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
                                 };
                                 return [4, libs.request_get(embedUrl, headerEmbed, true)];
                             case 1:
-                                parseEmbed = _b.sent();
+                                parseEmbed = _c.sent();
                                 ScriptEval = "";
                                 parseEmbed("script").each(function (key, item) {
                                     var s = parseEmbed(item).text();
@@ -113,40 +108,63 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                     return [2, { value: void 0 }];
                                 }
                                 unpacker = libs.string_unpacker_v2(evalData);
-                                fileDirect = unpacker.match(/hls2 *\" *\: *\"([^\"]+)/i);
-                                fileDirect = fileDirect ? fileDirect[1] : "";
-                                libs.log({ fileDirect: fileDirect }, PROVIDER, 'FILE DIRECT');
-                                if (!fileDirect) {
+                                datasDirect = [];
+                                fileDirect1 = unpacker.match(/hls4 *\" *\: *\"([^\"]+)/i);
+                                fileDirect1 = fileDirect1 ? fileDirect1[1] : "";
+                                libs.log({ fileDirect1: fileDirect1 }, PROVIDER, 'FILE DIRECT');
+                                if (fileDirect1) {
+                                    if (_.startsWith(fileDirect1, "/")) {
+                                        fileDirect1 = "https://yesmovies.baby" + fileDirect1;
+                                        datasDirect.push(fileDirect1);
+                                    }
+                                }
+                                fileDirect2 = unpacker.match(/hls2 *\" *\: *\"([^\"]+)/i);
+                                fileDirect2 = fileDirect2 ? fileDirect2[1] : "";
+                                libs.log({ fileDirect2: fileDirect2 }, PROVIDER, 'FILE DIRECT');
+                                if (fileDirect2) {
+                                    if (_.startsWith(fileDirect2, "/")) {
+                                        fileDirect2 = "https://yesmovies.baby" + fileDirect2;
+                                        datasDirect.push(fileDirect2);
+                                    }
+                                }
+                                libs.log({ datasDirect: datasDirect }, PROVIDER, 'DATAS DIRECT');
+                                if (!datasDirect.length) {
                                     return [2, { value: void 0 }];
                                 }
-                                if (fileDirect.indexOf("https://") == -1) {
-                                    return [2, { value: void 0 }];
+                                for (_b = 0, datasDirect_1 = datasDirect; _b < datasDirect_1.length; _b++) {
+                                    fileDirect = datasDirect_1[_b];
+                                    libs.embed_callback(fileDirect, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ "file": fileDirect, "quality": 1080 }], {
+                                        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+                                        "referer": "https://yesmovies.baby/",
+                                        "origin": "https://yesmovies.baby"
+                                    }, {
+                                        "type": "m3u8"
+                                    });
                                 }
-                                libs.embed_callback(fileDirect, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ "file": fileDirect, "quality": 1080 }]);
                                 return [2];
                         }
                     });
                 };
-                _i = 0, LINK_IDS_1 = LINK_IDS_2;
-                _a.label = 4;
-            case 4:
-                if (!(_i < LINK_IDS_1.length)) return [3, 7];
+                _i = 0, LINK_IDS_1 = LINK_IDS;
+                _a.label = 3;
+            case 3:
+                if (!(_i < LINK_IDS_1.length)) return [3, 6];
                 id = LINK_IDS_1[_i];
                 return [5, _loop_1(id)];
-            case 5:
+            case 4:
                 state_1 = _a.sent();
                 if (typeof state_1 === "object")
                     return [2, state_1.value];
-                _a.label = 6;
-            case 6:
+                _a.label = 5;
+            case 5:
                 _i++;
-                return [3, 4];
-            case 7: return [3, 9];
-            case 8:
+                return [3, 3];
+            case 6: return [3, 8];
+            case 7:
                 e_1 = _a.sent();
                 libs.log({ e: e_1 }, PROVIDER, 'ERROR');
-                return [3, 9];
-            case 9: return [2, true];
+                return [3, 8];
+            case 8: return [2, true];
         }
     });
 }); };

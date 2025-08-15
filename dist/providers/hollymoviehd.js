@@ -117,16 +117,15 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     if (!item.file) {
                         continue;
                     }
-                    if (item.file.indexOf("streamsvr") == -1) {
+                    if (item.file.indexOf("/pl/") == -1) {
                         continue;
                     }
-                    if (_.startsWith(item.file, "/")) {
-                        directUrl = "https://gstream.hollymoviehd.cc".concat(item.file);
-                        libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: directUrl, quality: 1080 }], {}, {
-                            type: "m3u8",
-                        });
-                        continue;
-                    }
+                    directUrl = item.file;
+                    libs.log({ directUrl: directUrl }, PROVIDER, 'DIRECT URL');
+                    libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: directUrl, quality: 1080 }], {}, {
+                        type: "m3u8",
+                    });
+                    continue;
                 }
                 return [3, 8];
             case 7:

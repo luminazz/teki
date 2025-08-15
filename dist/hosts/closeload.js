@@ -36,11 +36,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 hosts["closeload"] = function (url, movieInfo, provider, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    function dc_hello(_0x37934e) {
-        var _0x574858 = libs.string_atob(_0x37934e), _0x26fd7a = _0x574858["split"]("")["reverse"]()["join"](""), _0x4099d3 = libs.string_atob(_0x26fd7a), _0xa4155d = _0x4099d3["split"]("|")[0x1];
-        return _0xa4155d;
+    function dc_o55npDX9dLL(value_parts) {
+        var value = value_parts.join('');
+        var result = value;
+        result = libs.string_atob(result);
+        result = result.replace(/[a-zA-Z]/g, function (c) {
+            return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+        });
+        result = result.split('').reverse().join('');
+        var unmix = '';
+        for (var i = 0; i < result.length; i++) {
+            var charCode = result.charCodeAt(i);
+            charCode = (charCode - (399756995 % (i + 5)) + 256) % 256;
+            unmix += String.fromCharCode(charCode);
+        }
+        return unmix;
     }
-    var DOMAIN, HOST, parseDetail_1, script_1, unpacker, varName, parseDirect, e_1;
+    var DOMAIN, HOST, parseDetail_1, script_1, unpacker, getKey, keyName, varName, parseDirect, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -66,13 +78,18 @@ hosts["closeload"] = function (url, movieInfo, provider, config, callback) { ret
                     return [2];
                 }
                 unpacker = libs.string_unpacker_v2(script_1);
-                varName = unpacker.match(/dc_hello\(\"([^\"]+)/i);
+                getKey = unpacker.match(/src\:([^\,]+)\,type\:/i);
+                getKey = getKey ? getKey[1] : '';
+                libs.log({ getKey: getKey }, provider, 'GetKey');
+                keyName = getKey.replace(/[\s'"]/g, '');
+                varName = unpacker.match(new RegExp(keyName + '\\=[A-z0-9]+\\(([^\\)]*)\\)', 'i'));
                 varName = varName ? varName[1] : '';
+                varName = JSON.parse(varName);
                 libs.log({ varName: varName }, provider, 'VarName_1');
                 if (!varName) {
                     return [2];
                 }
-                parseDirect = dc_hello(varName);
+                parseDirect = dc_o55npDX9dLL(varName);
                 libs.log({ parseDirect: parseDirect }, provider, 'ParseDirect');
                 if (!parseDirect) {
                     return [2];

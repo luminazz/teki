@@ -44,7 +44,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 DOMAIN = "https://vidsrc.vip";
                 headers = {
                     'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    'referer': "https://vidsrc.vip/"
+                    'referer': "https://vidsrc.vip/",
+                    'origin': "https://vidsrc.vip"
                 };
                 _a.label = 1;
             case 1:
@@ -85,7 +86,9 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (firstSource.language != "English") {
                     return [2];
                 }
-                libs.embed_callback(firstSource.url, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: firstSource.url, quality: 1080 }], headers);
+                libs.embed_callback(firstSource.url, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: firstSource.url, quality: 1080 }], headers, {
+                    type: "m3u8"
+                });
                 return [3, 5];
             case 4:
                 e_1 = _a.sent();

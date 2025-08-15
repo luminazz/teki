@@ -41,7 +41,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         switch (_b.label) {
             case 0:
                 PROVIDER = 'TomAutoEmbed';
-                DOMAIN = "https://player.autoembed.cc";
+                DOMAIN = "https://test.autoembed.cc";
                 headers = {
                     'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
                     'Referer': "".concat(DOMAIN, "/"),
@@ -69,7 +69,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                     return JSON.parse(s);
                 };
-                _i = 0, _a = [1, 2, 3, 4, 5, 6];
+                _i = 0, _a = [1, 2, 3, 4];
                 _b.label = 2;
             case 2:
                 if (!(_i < _a.length)) return [3, 5];

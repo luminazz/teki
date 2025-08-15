@@ -64,33 +64,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 DOMAIN = "https://streamm4u.com.co";
                 userAgent = libs.request_getRandomUserAgent();
                 pureheaders = {
-                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.14',
+                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
                     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                    'Sec-Fetch-Site': 'none',
-                    'Sec-Fetch-Mode': 'navigate',
-                    'Sec-Fetch-User': '?1',
-                    'Sec-Fetch-Dest': 'document',
-                    'sec-ch-ua': '"Microsoft Edge";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
-                    'Upgrade-Insecure-Requests': 1,
-                    'Connection': 'keep-alive',
-                    'sec-ch-ua-mobile': '?0',
-                    'sec-ch-ua-platform': '"macOS"',
-                    'Accept-Language': 'en-US,en;q=0.9'
                 };
                 headers = {
-                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.14',
+                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
                     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                    'Sec-Fetch-Site': 'none',
-                    'Sec-Fetch-Mode': 'navigate',
-                    'Sec-Fetch-User': '?1',
-                    'Sec-Fetch-Dest': 'document',
-                    'Host': 'streamm4u.com.co',
-                    'sec-ch-ua': '"Microsoft Edge";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
-                    'Upgrade-Insecure-Requests': 1,
-                    'Connection': 'keep-alive',
-                    'sec-ch-ua-mobile': '?0',
-                    'sec-ch-ua-platform': '"macOS"',
-                    'Accept-Language': 'en-US,en;q=0.9'
                 };
                 _a.label = 1;
             case 1:
@@ -221,7 +200,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 });
                 filmToken = _token;
                 return [4, libs.request_post(domainDetailTv, {
-                        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.14',
+                        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
                         'Accept': '*/*',
                         cookie: parseCookieTv,
                         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -309,7 +288,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                     "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                                     "Referer": "https://if9.ppzj-youtube.cfd/",
                                     "Origin": "https://if9.ppzj-youtube.cfd",
-                                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.14',
+                                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
                                 };
                                 body = qs.stringify({
                                     data: _0x972dd1 + "|" + _0x30ca8c
@@ -329,7 +308,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                                 libs.embed_callback(decryptData, PROVIDER, PROVIDER, 'hls', callback, 1, [], [{ file: decryptData, quality: 1080 }], {
                                     "Referer": "https://if9.ppzj-youtube.cfd/",
                                     "Origin": "https://if9.ppzj-youtube.cfd",
-                                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.14',
+                                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
                                 }, {
                                     type: "m3u8"
                                 });
@@ -350,7 +329,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     m4u: singlemv_1[i].token,
                 });
                 headerAjax = {
-                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.14',
+                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
                     'Accept': '*/*',
                     cookie: singlemv_1[i].film_cookie,
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
