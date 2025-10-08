@@ -42,7 +42,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         switch (_b.label) {
             case 0:
                 PROVIDER = 'FMOVIES';
-                DOMAIN = "https://fmovies.ps";
+                DOMAIN = "https://fmovies.ro";
                 urlSearch = "".concat(DOMAIN, "/search/").concat(libs.url_slug_search(movieInfo));
                 return [4, libs.request_get(urlSearch, {}, true)];
             case 1:

@@ -41,11 +41,11 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         switch (_a.label) {
             case 0:
                 PROVIDER = 'XVidsrcVip';
-                DOMAIN = "https://vidsrc.vip";
+                DOMAIN = "https://vidrock.net";
                 headers = {
                     'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    'referer': "https://vidsrc.vip/",
-                    'origin': "https://vidsrc.vip"
+                    'referer': "https://vidrock.net/",
+                    'origin': "https://vidrock.net"
                 };
                 _a.label = 1;
             case 1:
@@ -61,13 +61,13 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 B = C.split("").reverse().join("");
                 A = libs.string_btoa(B);
                 D = libs.string_btoa(A);
-                urlovo = "https://api2.vidsrc.vip/movie/".concat(D);
+                urlovo = "".concat(DOMAIN, "/api/movie/").concat(D);
                 if (movieInfo.type == 'tv') {
                     formattedString = "".concat(movieInfo.tmdb_id, "-").concat(movieInfo.season, "-").concat(movieInfo.episode);
                     reversedString = formattedString.split('').reverse().join('');
                     firstBase64 = libs.string_btoa(reversedString);
                     secondBase64 = libs.string_btoa(firstBase64);
-                    urlovo = "https://api2.vidsrc.vip/tv/".concat(secondBase64);
+                    urlovo = "".concat(DOMAIN, "/api/tv/").concat(secondBase64);
                 }
                 return [4, fetch(urlovo)];
             case 2:
@@ -79,7 +79,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             case 3:
                 json = _a.sent();
                 libs.log({ json: json }, PROVIDER, "JSON");
-                firstSource = json["source1"];
+                firstSource = json["source1"] && json["source1"].url ? json["source1"] : json["source2"];
                 if (!firstSource.url) {
                     return [2];
                 }

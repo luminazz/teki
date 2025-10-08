@@ -48,7 +48,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             return decryptedData;
         }
     }
-    var pArray, sBox0, sBox1, sBox2, sBox3, Blowfish, PROVIDER, DOMAIN, KEY, headers, urlSearch, dataSearch, urlDetail, parseDetail, userData, links, embeds, _i, links_1, linkItem, urlEmbed, dataRedirect, redirectUrl, e_1;
+    var pArray, sBox0, sBox1, sBox2, sBox3, Blowfish, PROVIDER, DOMAIN, KEY, headers, urlSearch, dataSearch, urlDetail, parseDetail, userData, links, embeds, _i, links_1, linkItem, urlEmbed, dataRedirect, embedDirect, redirectUrl, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -381,7 +381,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     };
                     return Blowfish;
                 }());
-                PROVIDER = 'Primewire';
+                PROVIDER = 'ZPrimewire';
                 DOMAIN = "https://www.primewire.tf";
                 KEY = "lzQPsXSKcG";
                 headers = {
@@ -389,7 +389,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 };
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 8, , 9]);
+                _a.trys.push([1, 9, , 10]);
                 urlSearch = "".concat(DOMAIN, "/api/v1/show/?key=").concat(KEY, "&imdb_id=").concat(movieInfo.imdb_id);
                 return [4, libs.request_get(urlSearch, headers)];
             case 2:
@@ -416,32 +416,34 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 _i = 0, links_1 = links;
                 _a.label = 4;
             case 4:
-                if (!(_i < links_1.length)) return [3, 7];
+                if (!(_i < links_1.length)) return [3, 8];
                 linkItem = links_1[_i];
                 urlEmbed = "".concat(DOMAIN, "/links/go/").concat(linkItem);
                 return [4, fetch(urlEmbed, {
-                        method: "HEAD",
+                        method: "GET",
                         headers: headers,
-                        redirect: "manual"
                     })];
             case 5:
                 dataRedirect = _a.sent();
-                redirectUrl = dataRedirect.url;
-                libs.log(redirectUrl, PROVIDER, 'REDIRECT URL');
-                if (redirectUrl && redirectUrl.indexOf("hgplaycdn") != -1) {
+                return [4, dataRedirect.json()];
+            case 6:
+                embedDirect = _a.sent();
+                redirectUrl = embedDirect.link;
+                libs.log(embedDirect, PROVIDER, 'REDIRECT URL');
+                if (redirectUrl && redirectUrl.indexOf("streamwish") != -1) {
                     libs.log(redirectUrl, PROVIDER, 'REDIRECT URL');
                     libs.embed_redirect(redirectUrl, '', movieInfo, PROVIDER, callback, undefined, []);
                 }
-                _a.label = 6;
-            case 6:
+                _a.label = 7;
+            case 7:
                 _i++;
                 return [3, 4];
-            case 7: return [3, 9];
-            case 8:
+            case 8: return [3, 10];
+            case 9:
                 e_1 = _a.sent();
                 libs.log(e_1, PROVIDER, 'ERROR');
-                return [3, 9];
-            case 9: return [2, true];
+                return [3, 10];
+            case 10: return [2, true];
         }
     });
 }); };

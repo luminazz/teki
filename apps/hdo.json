@@ -11,8 +11,8 @@
     "init_ads": "admob"
   },
   "tmdb_apikey": {
-    "ios_key": "8d6d91941230817f7807d643736e8a49",
-    "android_key": "8d6d91941230817f7807d643736e8a49"
+    "ios_key": "63cbd7bb8ca53a31817a418b2cfb7e6a",
+    "android_key": "63cbd7bb8ca53a31817a418b2cfb7e6a"
   },
   "update_release": {
     "version": "4.3",

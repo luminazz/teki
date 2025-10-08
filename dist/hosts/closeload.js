@@ -39,11 +39,11 @@ hosts["closeload"] = function (url, movieInfo, provider, config, callback) { ret
     function dc_o55npDX9dLL(value_parts) {
         var value = value_parts.join('');
         var result = value;
-        result = libs.string_atob(result);
+        result = result.split('').reverse().join('');
         result = result.replace(/[a-zA-Z]/g, function (c) {
             return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
         });
-        result = result.split('').reverse().join('');
+        result = libs.string_atob(result);
         var unmix = '';
         for (var i = 0; i < result.length; i++) {
             var charCode = result.charCodeAt(i);

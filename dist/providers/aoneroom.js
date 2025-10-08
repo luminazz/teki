@@ -36,12 +36,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, urlSearch, headers_1, body, dataSearch, ID, DETAIL_PATH, _i, _a, item, title, urlDirect, dataDirect, streamQuality, _b, _c, item, HlsQuality, _d, _e, item, e_1;
+    var PROVIDER, DOMAIN, headers, urlSearch, headers_1, body, dataSearch, ID, DETAIL_PATH, _i, _a, item, title, releaseDate, year, urlDirect, dataDirect, streamQuality, _b, _c, item, HlsQuality, _d, _e, item, e_1;
     return __generator(this, function (_f) {
         switch (_f.label) {
             case 0:
                 PROVIDER = 'CAoneroom';
-                DOMAIN = "https://h5.aoneroom.com";
+                DOMAIN = "https://fmoviesunblocked.net";
                 headers = {
                     'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
                     'referer': "hhttps://h5.aoneroom.com/"
@@ -74,12 +74,24 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     item = _a[_i];
                     title = item.title;
                     if (item && item.subjectId && libs.string_matching_title(movieInfo, title)) {
-                        ID = item.subjectId;
-                        DETAIL_PATH = item.detailPath;
-                        break;
+                        if (movieInfo.type == 'movie') {
+                            releaseDate = item.releaseDate;
+                            year = releaseDate.split('-')[0];
+                            libs.log({ year: year, title: title, item: item }, PROVIDER, "YEAR INFO");
+                            if (movieInfo.year == year) {
+                                ID = item.subjectId;
+                                DETAIL_PATH = item.detailPath;
+                                break;
+                            }
+                        }
+                        else {
+                            ID = item.subjectId;
+                            DETAIL_PATH = item.detailPath;
+                            break;
+                        }
                     }
                 }
-                libs.log({ ID: ID }, PROVIDER, "ID");
+                libs.log({ ID: ID, DETAIL_PATH: DETAIL_PATH }, PROVIDER, "ID");
                 if (!ID) {
                     return [2];
                 }

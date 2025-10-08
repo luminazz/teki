@@ -36,9 +36,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, hashData, dataParse, key, hash, domain, res, tracks, _i, _a, item, lang, parseLang, directUrl, e_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    function _0x35fb63(_0x2bbed3, _0x58fa9b) {
+        var _0x20e08e = [];
+        var _0x3b4750 = 0;
+        var _0x29527d;
+        var _0xc68cb0 = "";
+        var _0x344511;
+        for (_0x344511 = 0; _0x344511 < 256; _0x344511++) {
+            _0x20e08e[_0x344511] = _0x344511;
+        }
+        for (_0x344511 = 0; _0x344511 < 256; _0x344511++) {
+            _0x3b4750 = (_0x3b4750 + _0x20e08e[_0x344511] + _0x58fa9b.charCodeAt(_0x344511 % _0x58fa9b.length)) % 256;
+            _0x29527d = _0x20e08e[_0x344511];
+            _0x20e08e[_0x344511] = _0x20e08e[_0x3b4750];
+            _0x20e08e[_0x3b4750] = _0x29527d;
+        }
+        _0x344511 = 0;
+        _0x3b4750 = 0;
+        for (var _0x35d1b8 = 0; _0x35d1b8 < _0x2bbed3.length; _0x35d1b8++) {
+            _0x344511 = (_0x344511 + 1) % 256;
+            _0x3b4750 = (_0x3b4750 + _0x20e08e[_0x344511]) % 256;
+            _0x29527d = _0x20e08e[_0x344511];
+            _0x20e08e[_0x344511] = _0x20e08e[_0x3b4750];
+            _0x20e08e[_0x3b4750] = _0x29527d;
+            _0xc68cb0 += String.fromCharCode(_0x2bbed3.charCodeAt(_0x35d1b8) ^ _0x20e08e[(_0x20e08e[_0x344511] + _0x20e08e[_0x3b4750]) % 256]);
+        }
+        return _0xc68cb0;
+    }
+    function _0x2dc7d6(_0x288bb5) {
+        var _0xd5131b = libs.string_btoa(_0x288bb5);
+        return _0xd5131b.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+    var PROVIDER, DOMAIN, headers, urlDetail, dataDetail, textDetail, userID, v, vrf, apiIDUrl, srcIds, _i, _a, item, directUrl, res, tracks, _b, _c, item_1, lang, parseLang, e_1;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0:
                 PROVIDER = 'VidsrcCC';
                 DOMAIN = "https://vidsrc.cc";
@@ -47,64 +78,91 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     'Referer': "https://vidsrc.cc/",
                     'Origin': DOMAIN,
                 };
-                _b.label = 1;
+                _d.label = 1;
             case 1:
-                _b.trys.push([1, 3, , 4]);
-                hashData = {
-                    tmdb: movieInfo.tmdb_id,
-                    imdb: movieInfo.imdb_id,
-                    year: movieInfo.year,
-                    title: movieInfo.title
-                };
+                _d.trys.push([1, 9, , 10]);
+                urlDetail = "".concat(DOMAIN, "/v2/embed/movie/").concat(movieInfo.tmdb_id, "?autoPlay=false");
                 if (movieInfo.type == 'tv') {
-                    hashData.season = movieInfo.season;
-                    hashData.episode = movieInfo.episode;
+                    urlDetail = "".concat(DOMAIN, "/v2/embed/tv/").concat(movieInfo.tmdb_id, "/").concat(movieInfo.season, "/").concat(movieInfo.episode, "?autoPlay=false");
                 }
-                libs.log({ hashData: hashData }, PROVIDER, 'HASH DATA');
-                dataParse = JSON.stringify(hashData);
-                key = cryptoS.enc.Utf8.parse("FMwmgDBDszBnnAso");
-                hash = cryptoS.RC4.encrypt(dataParse, key).toString().replace(/\//g, "-");
-                libs.log({ hash: hash }, PROVIDER, 'HASH');
-                domain = "".concat(DOMAIN, "/api/vidplay/sources?hash=").concat(encodeURIComponent(hash));
-                return [4, libs.request_get(domain, headers)];
+                return [4, fetch(urlDetail, {
+                        headers: headers
+                    })];
             case 2:
-                res = _b.sent();
-                libs.log({ res: res }, PROVIDER, 'RES');
-                if (!res || !res.data) {
+                dataDetail = _d.sent();
+                return [4, dataDetail.text()];
+            case 3:
+                textDetail = _d.sent();
+                userID = textDetail.match(/userId *\= *\"([^\"]+)/i);
+                userID = userID ? userID[1] : '';
+                libs.log({ userID: userID }, PROVIDER, "USER ID");
+                if (!userID) {
                     return [2];
                 }
+                v = textDetail.match(/var *v *\= *\"([^\"]+)/i);
+                v = v ? v[1] : '';
+                libs.log({ v: v }, PROVIDER, "V");
+                if (!v) {
+                    return [2];
+                }
+                vrf = _0x2dc7d6(_0x35fb63(String(movieInfo.tmdb_id), userID));
+                libs.log({ vrf: vrf }, PROVIDER, "VRF");
+                apiIDUrl = "".concat(DOMAIN, "/api/").concat(movieInfo.tmdb_id, "/servers?id=").concat(movieInfo.tmdb_id, "&type=movie&v=").concat(v, "&vrf=").concat(vrf, "&imdbId=").concat(movieInfo.imdb_id);
+                return [4, libs.request_get(apiIDUrl, headers)];
+            case 4:
+                srcIds = _d.sent();
+                libs.log({ srcIds: srcIds }, PROVIDER, "SRC IDS");
+                if (!srcIds || !srcIds.data || !srcIds.data.length) {
+                    return [2];
+                }
+                _i = 0, _a = srcIds.data;
+                _d.label = 5;
+            case 5:
+                if (!(_i < _a.length)) return [3, 8];
+                item = _a[_i];
+                directUrl = "".concat(DOMAIN, "/api/source/").concat(item.hash);
+                return [4, libs.request_get(directUrl, headers)];
+            case 6:
+                res = _d.sent();
+                libs.log({ res: res }, PROVIDER, 'RES FINAL');
+                if (!res || !res.data) {
+                    return [3, 7];
+                }
                 tracks = [];
-                for (_i = 0, _a = res.data.subtitles || []; _i < _a.length; _i++) {
-                    item = _a[_i];
-                    lang = item.label;
+                for (_b = 0, _c = res.data.subtitles || []; _b < _c.length; _b++) {
+                    item_1 = _c[_b];
+                    lang = item_1.label;
                     if (!lang) {
                         continue;
                     }
-                    libs.log({ lang: lang, item: item }, PROVIDER, "TRACK ITEM");
+                    libs.log({ lang: lang, item: item_1 }, PROVIDER, "TRACK ITEM");
                     parseLang = lang.match(/([A-z0-9]+)/i);
                     parseLang = parseLang ? parseLang[1].trim() : '';
                     if (!parseLang) {
                         continue;
                     }
                     tracks.push({
-                        file: item.file,
+                        file: item_1.file,
                         kind: 'captions',
                         label: parseLang
                     });
                 }
-                directUrl = res.data.stream;
-                if (!directUrl) {
-                    return [2];
+                if (!res.data.source) {
+                    return [3, 7];
                 }
-                libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, [{ "file": directUrl, "quality": 1080 }], headers, {
+                libs.embed_callback(res.data.source, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, [{ "file": res.data.source, "quality": 1080 }], headers, {
                     type: "m3u8"
                 });
-                return [3, 4];
-            case 3:
-                e_1 = _b.sent();
+                _d.label = 7;
+            case 7:
+                _i++;
+                return [3, 5];
+            case 8: return [3, 10];
+            case 9:
+                e_1 = _d.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
-                return [3, 4];
-            case 4: return [2];
+                return [3, 10];
+            case 10: return [2];
         }
     });
 }); };
