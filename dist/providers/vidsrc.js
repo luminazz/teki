@@ -36,36 +36,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    function Iry9MQXnLs(hexInput) {
-        var key = "pWB9V)[*4I`nJpp?ozyB~dbr9yt!*n4u";
-        var hexDecoded = hexInput.match(/.{1,2}/g)
-            .map(function (hex) { return String.fromCharCode(parseInt(hex, 16)); })
-            .join("");
-        var xorResult = "";
-        for (var i = 0; i < hexDecoded.length; i++) {
-            xorResult += String.fromCharCode(hexDecoded.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+    function Iry9MQXnLs(_0x4abb1c) {
+        var _0x611579 = "pWB9V)[*4I`nJpp?ozyB~dbr9yt!_n4u";
+        var _0x31e7e2 = "";
+        var _0x2680b0 = _0x4abb1c.match(/.{1,2}/g).map(function (_0x356804) { return String.fromCharCode(parseInt(_0x356804, 16)); }).join("");
+        for (var _0xffe351 = 0; _0xffe351 < _0x2680b0.length; _0xffe351++) {
+            _0x31e7e2 += String.fromCharCode(_0x2680b0.charCodeAt(_0xffe351) ^ _0x611579.charCodeAt(_0xffe351 % _0x611579.length));
         }
-        var shiftResult = "";
-        for (var i = 0; i < xorResult.length; i++) {
-            shiftResult += String.fromCharCode(xorResult.charCodeAt(i) - 3);
+        var _0x5e9147 = "";
+        for (var _0x57e5e6 = 0; _0x57e5e6 < _0x31e7e2.length; _0x57e5e6++) {
+            _0x5e9147 += String.fromCharCode(_0x31e7e2.charCodeAt(_0x57e5e6) - 3);
         }
-        return libs.string_atob(shiftResult);
+        return libs.string_atob(_0x5e9147);
     }
-    function IGLImMhWrI(input) {
-        var reversed = input.split("").reverse().join("");
-        var rot13Applied = reversed.replace(/[a-zA-Z]/g, function (char) {
-            return String.fromCharCode(char.charCodeAt(0) + (char.toLowerCase() < "n" ? 13 : -13));
+    function IGLImMhWrI(_0x2ab3bb) {
+        var _0x2173f6 = _0x2ab3bb.split("").reverse().join("");
+        var _0x9b9638 = _0x2173f6.replace(/[a-zA-Z]/g, function (_0x3e4ab8) {
+            return String.fromCharCode(_0x3e4ab8.charCodeAt(0) + (_0x3e4ab8.toLowerCase() < "n" ? 13 : -13));
         });
-        var finalReversed = rot13Applied.split("").reverse().join("");
-        return libs.string_atob(finalReversed);
+        var _0x16f7f1 = _0x9b9638.split("").reverse().join("");
+        return libs.string_atob(_0x16f7f1);
     }
-    function GTAxQyTyBx(input) {
-        var reversed = input.split("").reverse().join("");
-        var evenCharsOnly = "";
-        for (var i = 0; i < reversed.length; i += 2) {
-            evenCharsOnly += reversed[i];
+    function GTAxQyTyBx(_0x33dfa4) {
+        var _0x1457ba = _0x33dfa4.split("").reverse().join("");
+        var _0x49a8fe = "";
+        for (var _0x8bc703 = 0; _0x8bc703 < _0x1457ba.length; _0x8bc703 += 2) {
+            _0x49a8fe += _0x1457ba[_0x8bc703];
         }
-        return libs.string_atob(evenCharsOnly);
+        return libs.string_atob(_0x49a8fe);
     }
     function MyL1IRSfHe(_0xa54f5f) {
         var _0x2b197e = _0xa54f5f.split("").reverse().join("");
@@ -79,21 +77,16 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         }
         return _0x5e7210;
     }
-    function detdj7JHiK(encodedInput) {
-        var trimmedInput = encodedInput.slice(10, -16);
-        var xorKey = "3SAY~#%Y(V%>5d/Yg\"$G[Lh1rK4a;7ok";
-        var base64Decoded = libs.string_atob(trimmedInput);
-        var repeatedKey = "";
-        var keyLength = xorKey.length;
-        var neededLength = base64Decoded.length;
-        for (var i = 0; i < neededLength; i++) {
-            repeatedKey += xorKey[i % keyLength];
+    function detdj7JHiK(_0x46ddbf) {
+        var _0x4fd99c = _0x46ddbf.slice(10, -16);
+        var _0x1effe6 = "3SAY~#%Y(V%>5d/Yg\"$G[Lh1rK4a;7ok";
+        var _0x411fd5 = libs.string_atob(_0x4fd99c);
+        var _0x1b9ca3 = _0x1effe6.repeat(Math.ceil(_0x411fd5.length / _0x1effe6.length)).substring(0, _0x411fd5.length);
+        var _0x5062ac = "";
+        for (var _0x47adac = 0; _0x47adac < _0x411fd5.length; _0x47adac++) {
+            _0x5062ac += String.fromCharCode(_0x411fd5.charCodeAt(_0x47adac) ^ _0x1b9ca3.charCodeAt(_0x47adac));
         }
-        var result = "";
-        for (var i = 0; i < base64Decoded.length; i++) {
-            result += String.fromCharCode(base64Decoded.charCodeAt(i) ^ repeatedKey.charCodeAt(i));
-        }
-        return result;
+        return _0x5062ac;
     }
     function nZlUnj2VSo(_0x132a77) {
         var _0x4577d0 = {
@@ -187,15 +180,15 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         }
         return _0x3239f9;
     }
-    var PROVIDER, DOMAIN, userAgent, urlSearch, parseSearch, parseIframe, requestFrame2, parseFrame2, iframePro, host, requestFrame3, textFrame3, parseFrame3, encodeURL, e_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var PROVIDER, DOMAIN, userAgent, urlSearch, parseSearch, parseIframe, requestFrame2, parseFrame2, iframePro, host, requestFrame3, textFrame3, parseFrame3, encodeID, encodeData, dataDecoded, decodeFunc, _i, decodeFunc_1, item, result, parseDecodeData, _a, parseDecodeData_1, item, directUrl, e_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
                 PROVIDER = 'RVIDSRC';
                 DOMAIN = "https://vidsrc.xyz";
-                _a.label = 1;
+                _b.label = 1;
             case 1:
-                _a.trys.push([1, 7, , 8]);
+                _b.trys.push([1, 7, , 8]);
                 userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36";
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
@@ -209,7 +202,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
                     }, true)];
             case 2:
-                parseSearch = _a.sent();
+                parseSearch = _b.sent();
                 parseIframe = parseSearch("#player_iframe").attr("src");
                 libs.log({ parseIframe: parseIframe }, PROVIDER, "PARSE IFRAME");
                 if (!parseIframe) {
@@ -226,10 +219,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         redirect: "follow"
                     })];
             case 3:
-                requestFrame2 = _a.sent();
+                requestFrame2 = _b.sent();
                 return [4, requestFrame2.text()];
             case 4:
-                parseFrame2 = _a.sent();
+                parseFrame2 = _b.sent();
                 iframePro = parseFrame2.match(/src *\: *\'([^\']+)/i);
                 iframePro = iframePro ? iframePro[1] : "";
                 libs.log({ iframePro: iframePro, parseFrame2: parseFrame2, parseIframe: parseIframe }, PROVIDER, "IFRAME PRO");
@@ -253,29 +246,68 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         }
                     })];
             case 5:
-                requestFrame3 = _a.sent();
+                requestFrame3 = _b.sent();
                 return [4, requestFrame3.text()];
             case 6:
-                textFrame3 = _a.sent();
+                textFrame3 = _b.sent();
                 parseFrame3 = cheerio.load(textFrame3);
-                encodeURL = textFrame3.match(/player\_parent\" *\, *file\: *\'([^\']+)/i);
-                encodeURL = encodeURL ? encodeURL[1] : "";
-                libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE URL");
-                if (!encodeURL) {
+                encodeID = textFrame3.match(/player\_parent\" *\, *file *\: *([A-z0-9]+)/i);
+                encodeID = encodeID ? encodeID[1] : "";
+                libs.log({ encodeID: encodeID }, PROVIDER, "ENCODE ID");
+                if (!encodeID) {
                     return [2];
                 }
-                if (encodeURL.indexOf('m3u8') == -1) {
+                encodeData = parseFrame3("#".concat(encodeID)).text();
+                libs.log({ encodeData: encodeData }, PROVIDER, "ENCODE DATA");
+                if (!encodeData) {
                     return [2];
                 }
-                libs.log({ encodeURL: encodeURL }, PROVIDER, "ENCODE URL");
-                libs.embed_callback(encodeURL, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: encodeURL, quality: 1080 }], {
-                    'User-Agent': userAgent,
-                    referer: "https://".concat(host, "/"),
-                    Origin: "https://".concat(host)
-                });
-                return [2, true];
+                dataDecoded = "";
+                decodeFunc = [Iry9MQXnLs, IGLImMhWrI, GTAxQyTyBx, MyL1IRSfHe, nZlUnj2VSo, laM1dAi3vO, GuxKGDsA2T, LXVUMCoAHJ, detdj7JHiK];
+                for (_i = 0, decodeFunc_1 = decodeFunc; _i < decodeFunc_1.length; _i++) {
+                    item = decodeFunc_1[_i];
+                    try {
+                        if (dataDecoded) {
+                            continue;
+                        }
+                        result = item(encodeData);
+                        if (!result) {
+                            continue;
+                        }
+                        if (result.indexOf('m3u8') == -1 && result.indexOf('https') == -1) {
+                            continue;
+                        }
+                        dataDecoded = result;
+                    }
+                    catch (errorDecode) {
+                        libs.log({ errorDecode: errorDecode }, PROVIDER, "DECODE ERROR FUNC");
+                    }
+                }
+                libs.log({ dataDecoded: dataDecoded }, PROVIDER, "DECODE DATA");
+                if (!dataDecoded) {
+                    return [2];
+                }
+                parseDecodeData = dataDecoded.split(" or ");
+                libs.log({ parseDecodeData: parseDecodeData }, PROVIDER, "PARSE DECODE DATA");
+                if (!parseDecodeData || parseDecodeData.length == 0) {
+                    return [2];
+                }
+                for (_a = 0, parseDecodeData_1 = parseDecodeData; _a < parseDecodeData_1.length; _a++) {
+                    item = parseDecodeData_1[_a];
+                    directUrl = item.replace(/\{v[0-9]+\}/i, 'shadowlandschronicles.com');
+                    if (directUrl.indexOf("tmstr") == -1) {
+                        continue;
+                    }
+                    libs.log({ directUrl: directUrl }, PROVIDER, "DIRECT URL ITEM");
+                    libs.embed_callback(directUrl, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: directUrl, quality: 1080 }], {
+                        'User-Agent': userAgent,
+                        referer: "https://".concat(host, "/"),
+                        Origin: "https://".concat(host)
+                    });
+                }
+                return [3, 8];
             case 7:
-                e_1 = _a.sent();
+                e_1 = _b.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
                 return [3, 8];
             case 8: return [2];

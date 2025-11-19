@@ -137,7 +137,7 @@ hosts["fstream365"] = function (url, movieInfo, provider, config, callback) { re
                 f = {
                     format: CryptoJSAesJson
                 };
-                encrypted = JSON.parse(cryptoS.AES.encrypt(JSON.stringify(mid + "/movie" + "?srv=1"), hash, f).toString());
+                encrypted = JSON.parse(cryptoS.AES.encrypt(JSON.stringify(mid + "/movie" + "?srv=2"), hash, f).toString());
                 libs.log({ encrypted: encrypted }, HOST, 'ENCRYPT');
                 if (!encrypted) {
                     return [2];

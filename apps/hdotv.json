@@ -14,9 +14,9 @@
   "switch_player_config": {
     "package_name": "com.drama.simpleplayer",
     "activity_name": "com.drama.simpleplayer.PlayerActivity",
-    "apk_url": "https://github.com/hdoonline/dramaplayer/releases/download/v1.0.9/dramaplayer-1.0.9.apk",
+    "apk_url": "https://github.com/hdoonline/dramaplayer/releases/download/v1.0.10/dramaplayer-1.0.10.apk",
     "store_url": "https://play.google.com/store/apps/details?id=com.drama.simpleplayer",
-    "version_build": 9,
+    "version_build": 10,
     "force_player": true,
     "app_name": "Drama Player",
     "sleep_priority_links": 3000,
@@ -29,14 +29,37 @@
       "SERVER A2"
     ]
   },
-  "ads_start_remote" : {
+  "ads_start_remote": {
     "enable_admob": true,
     "enable_applovin": true,
     "enable_unity": true
   },
-  "ads_back_remote" : {
+  "ads_back_remote": {
     "enable_admob": true,
     "enable_applovin": true,
     "enable_unity": true
-  }
+  },
+  "ads_inapp_remote": {
+    "enabled": true,
+    "modal": {
+      "enabled": false,
+      "delay_seconds": 5,
+      "content": {
+        "image_url": "https://domettc.com/uploads/service/2024_03/banner_qrcode_marketing.png",
+        "title": "Khuyến mãi lớn!",
+        "description": "Giảm 50% cho đơn hàng đầu tiên.",
+        "cta_text": "Mua ngay",
+        "cta_link": "https://example.com/sale"
+      }
+    },
+    "floating": {
+      "enabled": false,
+      "position": "bottom_right",
+      "content": {
+        "image_url": "https://quangcaohaidang.com/wp-content/uploads/2024/09/4.-Thiet-ke-QR-code-300x300.jpg",
+        "cta_link": "https://example.com/info"
+      }
+    }
+  },
+  "tmdb_api_key": "3161de04ca660985f0b42e883eb49fef"
 }

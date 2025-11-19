@@ -67,7 +67,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         var _0xd5131b = libs.string_btoa(_0x288bb5);
         return _0xd5131b.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
     }
-    var PROVIDER, DOMAIN, headers, urlDetail, dataDetail, textDetail, userID, v, vrf, apiIDUrl, srcIds, _i, _a, item, directUrl, res, tracks, _b, _c, item_1, lang, parseLang, e_1;
+    var PROVIDER, DOMAIN, headers, urlDetail, dataDetail, textDetail, userID, v, reqVrf, vrf, apiIDUrl, srcIds, _i, _a, item, directUrl, res, tracks, _b, _c, item_1, lang, parseLang, e_1;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
@@ -80,11 +80,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 };
                 _d.label = 1;
             case 1:
-                _d.trys.push([1, 9, , 10]);
+                _d.trys.push([1, 11, , 12]);
                 urlDetail = "".concat(DOMAIN, "/v2/embed/movie/").concat(movieInfo.tmdb_id, "?autoPlay=false");
                 if (movieInfo.type == 'tv') {
                     urlDetail = "".concat(DOMAIN, "/v2/embed/tv/").concat(movieInfo.tmdb_id, "/").concat(movieInfo.season, "/").concat(movieInfo.episode, "?autoPlay=false");
                 }
+                libs.log({ urlDetail: urlDetail }, PROVIDER, "URL DETAIL");
                 return [4, fetch(urlDetail, {
                         headers: headers
                     })];
@@ -105,28 +106,36 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!v) {
                     return [2];
                 }
-                vrf = _0x2dc7d6(_0x35fb63(String(movieInfo.tmdb_id), userID));
+                return [4, fetch("https://aquariumtv.app/vidsrccc?id=".concat(movieInfo.tmdb_id, "&user_id=").concat(userID))];
+            case 4:
+                reqVrf = _d.sent();
+                return [4, reqVrf.text()];
+            case 5:
+                vrf = _d.sent();
                 libs.log({ vrf: vrf }, PROVIDER, "VRF");
+                if (!vrf) {
+                    return [2];
+                }
                 apiIDUrl = "".concat(DOMAIN, "/api/").concat(movieInfo.tmdb_id, "/servers?id=").concat(movieInfo.tmdb_id, "&type=movie&v=").concat(v, "&vrf=").concat(vrf, "&imdbId=").concat(movieInfo.imdb_id);
                 return [4, libs.request_get(apiIDUrl, headers)];
-            case 4:
+            case 6:
                 srcIds = _d.sent();
                 libs.log({ srcIds: srcIds }, PROVIDER, "SRC IDS");
                 if (!srcIds || !srcIds.data || !srcIds.data.length) {
                     return [2];
                 }
                 _i = 0, _a = srcIds.data;
-                _d.label = 5;
-            case 5:
-                if (!(_i < _a.length)) return [3, 8];
+                _d.label = 7;
+            case 7:
+                if (!(_i < _a.length)) return [3, 10];
                 item = _a[_i];
                 directUrl = "".concat(DOMAIN, "/api/source/").concat(item.hash);
                 return [4, libs.request_get(directUrl, headers)];
-            case 6:
+            case 8:
                 res = _d.sent();
                 libs.log({ res: res }, PROVIDER, 'RES FINAL');
                 if (!res || !res.data) {
-                    return [3, 7];
+                    return [3, 9];
                 }
                 tracks = [];
                 for (_b = 0, _c = res.data.subtitles || []; _b < _c.length; _b++) {
@@ -148,21 +157,21 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     });
                 }
                 if (!res.data.source) {
-                    return [3, 7];
+                    return [3, 9];
                 }
                 libs.embed_callback(res.data.source, PROVIDER, PROVIDER, 'Hls', callback, 1, tracks, [{ "file": res.data.source, "quality": 1080 }], headers, {
                     type: "m3u8"
                 });
-                _d.label = 7;
-            case 7:
-                _i++;
-                return [3, 5];
-            case 8: return [3, 10];
+                _d.label = 9;
             case 9:
+                _i++;
+                return [3, 7];
+            case 10: return [3, 12];
+            case 11:
                 e_1 = _d.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
-                return [3, 10];
-            case 10: return [2];
+                return [3, 12];
+            case 12: return [2];
         }
     });
 }); };

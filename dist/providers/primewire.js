@@ -48,7 +48,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
             return decryptedData;
         }
     }
-    var pArray, sBox0, sBox1, sBox2, sBox3, Blowfish, PROVIDER, DOMAIN, KEY, headers, urlSearch, dataSearch, urlDetail, parseDetail, userData, links, embeds, _i, links_1, linkItem, urlEmbed, dataRedirect, embedDirect, redirectUrl, e_1;
+    var pArray, sBox0, sBox1, sBox2, sBox3, Blowfish, PROVIDER, DOMAIN, KEY, headers, urlSearch, dataSearch, urlDetail, parseDetail, userData, links, embeds, _i, links_1, linkItem, urlEmbed, dataRedirect, embedDirect, redirectUrl, errRedirect_1, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -389,7 +389,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 };
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 9, , 10]);
+                _a.trys.push([1, 11, , 12]);
                 urlSearch = "".concat(DOMAIN, "/api/v1/show/?key=").concat(KEY, "&imdb_id=").concat(movieInfo.imdb_id);
                 return [4, libs.request_get(urlSearch, headers)];
             case 2:
@@ -416,17 +416,20 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 _i = 0, links_1 = links;
                 _a.label = 4;
             case 4:
-                if (!(_i < links_1.length)) return [3, 8];
+                if (!(_i < links_1.length)) return [3, 10];
                 linkItem = links_1[_i];
+                _a.label = 5;
+            case 5:
+                _a.trys.push([5, 8, , 9]);
                 urlEmbed = "".concat(DOMAIN, "/links/go/").concat(linkItem);
                 return [4, fetch(urlEmbed, {
                         method: "GET",
                         headers: headers,
                     })];
-            case 5:
+            case 6:
                 dataRedirect = _a.sent();
                 return [4, dataRedirect.json()];
-            case 6:
+            case 7:
                 embedDirect = _a.sent();
                 redirectUrl = embedDirect.link;
                 libs.log(embedDirect, PROVIDER, 'REDIRECT URL');
@@ -434,16 +437,19 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     libs.log(redirectUrl, PROVIDER, 'REDIRECT URL');
                     libs.embed_redirect(redirectUrl, '', movieInfo, PROVIDER, callback, undefined, []);
                 }
-                _a.label = 7;
-            case 7:
+                return [3, 9];
+            case 8:
+                errRedirect_1 = _a.sent();
+                return [3, 9];
+            case 9:
                 _i++;
                 return [3, 4];
-            case 8: return [3, 10];
-            case 9:
+            case 10: return [3, 12];
+            case 11:
                 e_1 = _a.sent();
                 libs.log(e_1, PROVIDER, 'ERROR');
-                return [3, 10];
-            case 10: return [2, true];
+                return [3, 12];
+            case 12: return [2, true];
         }
     });
 }); };

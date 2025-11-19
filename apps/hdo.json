@@ -1,11 +1,11 @@
 {
   "notification": {
-    "url": "https://wianime.com/",
-    "title": "New Anime App",
-    "contents": "<p>Download the app to enjoy your favorite anime shows anytime, anywhere.</p>",
-    "btn_title": "Get it",
+    "url": "https://ostream.io/",
+    "title": "Introducing Our Partner’s iOS App!",
+    "contents": "<p>Visit to explore the quick start guide and enjoy the new experience. ✨📱</p>",
+    "btn_title": "Visit",
     "show": false,
-    "key": "NOTI_1.8"
+    "key": "NOTI_2.1"
   },
   "ads_config": {
     "init_ads": "admob"

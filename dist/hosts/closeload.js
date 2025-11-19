@@ -39,10 +39,10 @@ hosts["closeload"] = function (url, movieInfo, provider, config, callback) { ret
     function dc_o55npDX9dLL(value_parts) {
         var value = value_parts.join('');
         var result = value;
-        result = result.split('').reverse().join('');
         result = result.replace(/[a-zA-Z]/g, function (c) {
             return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
         });
+        result = result.split('').reverse().join('');
         result = libs.string_atob(result);
         var unmix = '';
         for (var i = 0; i < result.length; i++) {
@@ -92,6 +92,9 @@ hosts["closeload"] = function (url, movieInfo, provider, config, callback) { ret
                 parseDirect = dc_o55npDX9dLL(varName);
                 libs.log({ parseDirect: parseDirect }, provider, 'ParseDirect');
                 if (!parseDirect) {
+                    return [2];
+                }
+                if (parseDirect.indexOf("https") == -1) {
                     return [2];
                 }
                 libs.embed_callback(parseDirect, provider, HOST, 'Hls', callback, 1, [], [{ file: parseDirect, quality: 1080 }], {
