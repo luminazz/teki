@@ -180,15 +180,15 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
         }
         return _0x3239f9;
     }
-    var PROVIDER, DOMAIN, userAgent, urlSearch, parseSearch, parseIframe, requestFrame2, parseFrame2, iframePro, host, requestFrame3, textFrame3, parseFrame3, encodeID, encodeData, dataDecoded, decodeFunc, _i, decodeFunc_1, item, result, parseDecodeData, _a, parseDecodeData_1, item, directUrl, e_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var PROVIDER, DOMAIN, userAgent, urlSearch, parseSearch, parseIframe, requestFrame2, parseFrame2, iframePro, host, requestFrame3, textFrame3, dataDecoded, parseDecodeData, _i, parseDecodeData_1, item, directUrl, e_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
                 PROVIDER = 'RVIDSRC';
                 DOMAIN = "https://vidsrc.xyz";
-                _b.label = 1;
+                _a.label = 1;
             case 1:
-                _b.trys.push([1, 7, , 8]);
+                _a.trys.push([1, 7, , 8]);
                 userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36";
                 urlSearch = '';
                 if (movieInfo.type == 'tv') {
@@ -202,7 +202,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
                     }, true)];
             case 2:
-                parseSearch = _b.sent();
+                parseSearch = _a.sent();
                 parseIframe = parseSearch("#player_iframe").attr("src");
                 libs.log({ parseIframe: parseIframe }, PROVIDER, "PARSE IFRAME");
                 if (!parseIframe) {
@@ -219,10 +219,10 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         redirect: "follow"
                     })];
             case 3:
-                requestFrame2 = _b.sent();
+                requestFrame2 = _a.sent();
                 return [4, requestFrame2.text()];
             case 4:
-                parseFrame2 = _b.sent();
+                parseFrame2 = _a.sent();
                 iframePro = parseFrame2.match(/src *\: *\'([^\']+)/i);
                 iframePro = iframePro ? iframePro[1] : "";
                 libs.log({ iframePro: iframePro, parseFrame2: parseFrame2, parseIframe: parseIframe }, PROVIDER, "IFRAME PRO");
@@ -246,43 +246,12 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                         }
                     })];
             case 5:
-                requestFrame3 = _b.sent();
+                requestFrame3 = _a.sent();
                 return [4, requestFrame3.text()];
             case 6:
-                textFrame3 = _b.sent();
-                parseFrame3 = cheerio.load(textFrame3);
-                encodeID = textFrame3.match(/player\_parent\" *\, *file *\: *([A-z0-9]+)/i);
-                encodeID = encodeID ? encodeID[1] : "";
-                libs.log({ encodeID: encodeID }, PROVIDER, "ENCODE ID");
-                if (!encodeID) {
-                    return [2];
-                }
-                encodeData = parseFrame3("#".concat(encodeID)).text();
-                libs.log({ encodeData: encodeData }, PROVIDER, "ENCODE DATA");
-                if (!encodeData) {
-                    return [2];
-                }
-                dataDecoded = "";
-                decodeFunc = [Iry9MQXnLs, IGLImMhWrI, GTAxQyTyBx, MyL1IRSfHe, nZlUnj2VSo, laM1dAi3vO, GuxKGDsA2T, LXVUMCoAHJ, detdj7JHiK];
-                for (_i = 0, decodeFunc_1 = decodeFunc; _i < decodeFunc_1.length; _i++) {
-                    item = decodeFunc_1[_i];
-                    try {
-                        if (dataDecoded) {
-                            continue;
-                        }
-                        result = item(encodeData);
-                        if (!result) {
-                            continue;
-                        }
-                        if (result.indexOf('m3u8') == -1 && result.indexOf('https') == -1) {
-                            continue;
-                        }
-                        dataDecoded = result;
-                    }
-                    catch (errorDecode) {
-                        libs.log({ errorDecode: errorDecode }, PROVIDER, "DECODE ERROR FUNC");
-                    }
-                }
+                textFrame3 = _a.sent();
+                dataDecoded = textFrame3.match(/file *\: *\"([^\"]+)/i);
+                dataDecoded = dataDecoded ? dataDecoded[1] : "";
                 libs.log({ dataDecoded: dataDecoded }, PROVIDER, "DECODE DATA");
                 if (!dataDecoded) {
                     return [2];
@@ -292,8 +261,8 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 if (!parseDecodeData || parseDecodeData.length == 0) {
                     return [2];
                 }
-                for (_a = 0, parseDecodeData_1 = parseDecodeData; _a < parseDecodeData_1.length; _a++) {
-                    item = parseDecodeData_1[_a];
+                for (_i = 0, parseDecodeData_1 = parseDecodeData; _i < parseDecodeData_1.length; _i++) {
+                    item = parseDecodeData_1[_i];
                     directUrl = item.replace(/\{v[0-9]+\}/i, 'shadowlandschronicles.com');
                     if (directUrl.indexOf("tmstr") == -1) {
                         continue;
@@ -307,7 +276,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                 }
                 return [3, 8];
             case 7:
-                e_1 = _b.sent();
+                e_1 = _a.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
                 return [3, 8];
             case 8: return [2];

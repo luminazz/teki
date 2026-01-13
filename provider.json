@@ -2,8 +2,9 @@
 	"providers": [
 
 
-
-
+"dist/providers/m4ufree.js",
+"dist/providers/111movies.js",
+"dist/providers/videasy.js",
 "dist/providers/vixsrc.js",
 "dist/providers/vidsrcvip.js",
 "dist/providers/uniquestream.js",
@@ -12,7 +13,6 @@
 "dist/providers/idflix.js",
 "dist/providers/vidsrccc.js",
 "dist/providers/vidlink.js",
-"dist/providers/fmovies.js",
 "dist/providers/vidsrc.js",
 "dist/providers/tomautoembed.js",
 "dist/providers/vidsrcpro.js",

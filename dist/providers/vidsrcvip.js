@@ -36,9 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 source.getResource = function (movieInfo, config, callback) { return __awaiter(_this, void 0, void 0, function () {
-    var PROVIDER, DOMAIN, headers, C, B, A, D, urlovo, formattedString, reversedString, firstBase64, secondBase64, response, json, firstSource, e_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var PROVIDER, DOMAIN, headers, qw_1, RL, enc, urlovo, response, json, _a, _b, _c, _i, item, source, qualityData, directQuality, _d, _e, qItem, errorRequest_1, e_1;
+    return __generator(this, function (_f) {
+        switch (_f.label) {
             case 0:
                 PROVIDER = 'XVidsrcVip';
                 DOMAIN = "https://vidrock.net";
@@ -47,54 +47,95 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     'referer': "https://vidrock.net/",
                     'origin': "https://vidrock.net"
                 };
-                _a.label = 1;
+                _f.label = 1;
             case 1:
-                _a.trys.push([1, 4, , 5]);
-                C = movieInfo.tmdb_id
-                    .toString()
-                    .split("")
-                    .map(function (digit) {
-                    var encoding = "abcdefghij";
-                    return encoding[parseInt(digit)];
-                })
-                    .join("");
-                B = C.split("").reverse().join("");
-                A = libs.string_btoa(B);
-                D = libs.string_btoa(A);
-                urlovo = "".concat(DOMAIN, "/api/movie/").concat(D);
-                if (movieInfo.type == 'tv') {
-                    formattedString = "".concat(movieInfo.tmdb_id, "-").concat(movieInfo.season, "-").concat(movieInfo.episode);
-                    reversedString = formattedString.split('').reverse().join('');
-                    firstBase64 = libs.string_btoa(reversedString);
-                    secondBase64 = libs.string_btoa(firstBase64);
-                    urlovo = "".concat(DOMAIN, "/api/tv/").concat(secondBase64);
-                }
+                _f.trys.push([1, 11, , 12]);
+                qw_1 = "x7k9mPqT2rWvY8zA5bC3nF6hJ2lK4mN9";
+                RL = function (r, e, t, n) {
+                    var s = e === "tv" ? "".concat(r, "_").concat(t, "_").concat(n) : r, i = cryptoS.enc.Utf8.parse(qw_1), a = cryptoS.enc.Utf8.parse(qw_1.substring(0, 16));
+                    libs.log({ s: s, i: i, a: a }, PROVIDER, "ENCRYPTION INPUTS");
+                    var c = cryptoS.AES.encrypt(s, i, {
+                        iv: a
+                    }).ciphertext.toString(cryptoS.enc.Base64);
+                    c = c.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+                    return c;
+                };
+                enc = RL(String(movieInfo.tmdb_id), movieInfo.type, movieInfo.season, movieInfo.episode);
+                libs.log({ enc: enc }, PROVIDER, "ENCODED");
+                urlovo = "".concat(DOMAIN, "/api/").concat(movieInfo.type, "/").concat(encodeURIComponent(enc));
+                libs.log({ urlovo: urlovo }, PROVIDER, "URL");
                 return [4, fetch(urlovo)];
             case 2:
-                response = _a.sent();
+                response = _f.sent();
                 if (!response.ok) {
                     return [2];
                 }
                 return [4, response.json()];
             case 3:
-                json = _a.sent();
+                json = _f.sent();
                 libs.log({ json: json }, PROVIDER, "JSON");
-                firstSource = json["source1"] && json["source1"].url ? json["source1"] : json["source2"];
-                if (!firstSource.url) {
-                    return [2];
+                _a = json;
+                _b = [];
+                for (_c in _a)
+                    _b.push(_c);
+                _i = 0;
+                _f.label = 4;
+            case 4:
+                if (!(_i < _b.length)) return [3, 10];
+                _c = _b[_i];
+                if (!(_c in _a)) return [3, 9];
+                item = _c;
+                _f.label = 5;
+            case 5:
+                _f.trys.push([5, 8, , 9]);
+                if (!["Astra", "Nova"].includes(item)) {
+                    return [3, 9];
                 }
-                if (firstSource.language != "English") {
-                    return [2];
+                source = json[item];
+                if (!source.url) {
+                    return [3, 9];
                 }
-                libs.embed_callback(firstSource.url, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: firstSource.url, quality: 1080 }], headers, {
+                if (!(source.url.indexOf("cdn.vidrock.store") != -1)) return [3, 7];
+                return [4, libs.request_get(source.url, headers)];
+            case 6:
+                qualityData = _f.sent();
+                libs.log({ qualityData: qualityData }, PROVIDER, "QUALITY DATA");
+                directQuality = [];
+                for (_d = 0, _e = qualityData || []; _d < _e.length; _d++) {
+                    qItem = _e[_d];
+                    libs.log({ qItem: qItem }, PROVIDER, "QUALITY ITEM");
+                    if (qItem.resolution && qItem.url) {
+                        directQuality.push({
+                            file: qItem.url,
+                            quality: qItem.resolution,
+                        });
+                    }
+                }
+                if (directQuality.length > 0) {
+                    libs.log({ directQuality: directQuality }, PROVIDER, "DIRECT QUALITY");
+                    directQuality = _.orderBy(directQuality, ['quality'], ['desc']);
+                    libs.embed_callback(directQuality[0].file, PROVIDER, PROVIDER, 'Hls', callback, 1, [], directQuality, headers, {
+                        type: "m3u8"
+                    });
+                }
+                return [3, 9];
+            case 7:
+                libs.embed_callback(source.url, PROVIDER, PROVIDER, 'Hls', callback, 1, [], [{ file: source.url, quality: 1080 }], headers, {
                     type: "m3u8"
                 });
-                return [3, 5];
-            case 4:
-                e_1 = _a.sent();
+                return [3, 9];
+            case 8:
+                errorRequest_1 = _f.sent();
+                return [3, 9];
+            case 9:
+                _i++;
+                return [3, 4];
+            case 10: return [3, 12];
+            case 11:
+                e_1 = _f.sent();
                 libs.log({ e: e_1 }, PROVIDER, "ERROR");
-                return [3, 5];
-            case 5: return [2];
+                return [3, 12];
+            case 12: return [2];
         }
     });
 }); };
