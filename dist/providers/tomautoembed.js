@@ -69,7 +69,7 @@ source.getResource = function (movieInfo, config, callback) { return __awaiter(_
                     }
                     return JSON.parse(s);
                 };
-                _i = 0, _a = [4, 5];
+                _i = 0, _a = [1, 2];
                 _b.label = 2;
             case 2:
                 if (!(_i < _a.length)) return [3, 5];
